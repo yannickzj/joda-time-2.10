@@ -15,13 +15,13 @@
  */
 package org.joda.time;
 
+import java.util.Locale;
+import java.lang.String;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
-import java.util.Locale;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -806,22 +806,15 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals("2002-06-09", test.toString((String) null));
     }
 
-    //-----------------------------------------------------------------------
-    public void testToString_String_Locale() {
-        YearMonthDay test = new YearMonthDay(2002, 6, 9);
-        assertEquals("\ufffd 9/6", test.toString("EEE d/M", Locale.ENGLISH));
-        assertEquals("\ufffd 9/6", test.toString("EEE d/M", Locale.FRENCH));
-        assertEquals("2002-06-09", test.toString(null, Locale.ENGLISH));
-        assertEquals("\ufffd 9/6", test.toString("EEE d/M", null));
-        assertEquals("2002-06-09", test.toString(null, null));
-    }
+    public void testToString_String_Locale() throws Exception {
+		TestBasicsTestToString_String_LocaleTemplate.testBasicsTestToString_String_LocaleTemplate(
+				new TestYearMonthDay_BasicsTestToString_String_LocaleAdapterImpl(), YearMonthDay.class, "\ufffd 9/6",
+				"\ufffd 9/6", "2002-06-09", "\ufffd 9/6", "2002-06-09");
+	}
 
-    //-----------------------------------------------------------------------
-    public void testToString_DTFormatter() {
-        YearMonthDay test = new YearMonthDay(2002, 6, 9);
-        assertEquals("2002 \ufffd\ufffd", test.toString(DateTimeFormat.forPattern("yyyy HH")));
-        assertEquals("2002-06-09", test.toString((DateTimeFormatter) null));
-    }
+    public void testToString_DTFormatter() throws Exception {
+		TestBasicsTestToString_DTFormatterTemplate.testBasicsTestToString_DTFormatterTemplate(YearMonthDay.class);
+	}
 
     //-----------------------------------------------------------------------
     private void check(YearMonthDay test, int hour, int min, int sec) {
@@ -829,4 +822,11 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(min, test.getMonthOfYear());
         assertEquals(sec, test.getDayOfMonth());
     }
+
+	class TestYearMonthDay_BasicsTestToString_String_LocaleAdapterImpl
+			implements TestBasicsTestToString_String_LocaleAdapter<YearMonthDay> {
+		public String toString(YearMonthDay test, String string1, Locale locale1) throws IllegalArgumentException {
+			return test.toString(string1, locale1);
+		}
+	}
 }

@@ -15,6 +15,7 @@
  */
 package org.joda.time.chrono;
 
+import org.joda.time.DurationFieldType;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -28,7 +29,6 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
-import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.Instant;
 import org.joda.time.Period;
@@ -398,25 +398,10 @@ public class TestGJChronology extends TestCase {
     }
 
     public void testCutoverAddWeekyears() {
-        testAdd("1582-W01-1", DurationFieldType.weekyears(), 1, "1583-W01-1");
-        testAdd("1582-W39-1", DurationFieldType.weekyears(), 1, "1583-W39-1");
-        testAdd("1583-W45-1", DurationFieldType.weekyears(), 1, "1584-W45-1");
-
-        // This test fails, but I'm not sure if its worth fixing. The date
-        // falls after the cutover, but in the cutover year. The add operation
-        // is performed completely within the gregorian calendar, with no
-        // crossing of the cutover. As a result, no special correction is
-        // applied. Since the full gregorian year of 1582 has a different week
-        // numbers than the full julian year of 1582, the week number is off by
-        // one after the addition.
-        //
-        //testAdd("1582-W42-1", DurationFieldType.weekyears(), 1, "1583-W42-1");
-
-        // Leap years...
-        testAdd("1580-W01-1", DurationFieldType.weekyears(), 4, "1584-W01-1");
-        testAdd("1580-W30-7", DurationFieldType.weekyears(), 4, "1584-W30-7");
-        testAdd("1580-W50-7", DurationFieldType.weekyears(), 4, "1584-W50-7");
-    }
+		this.testGJChronologyTestCutoverAddTemplate(new TestGJChronologyTestCutoverAddWeekyearsAdapterImpl(),
+				"1582-W01-1", "1583-W01-1", "1582-W39-1", "1583-W39-1", "1583-W45-1", "1584-W45-1", "1580-W01-1", 4,
+				"1584-W01-1", "1580-W30-7", 4, "1584-W30-7", "1580-W50-7", 4, "1584-W50-7");
+	}
 
     public void testCutoverAddMonths() {
         testAdd("1582-01-01", DurationFieldType.months(), 1, "1582-02-01");
@@ -440,31 +425,22 @@ public class TestGJChronology extends TestCase {
     }
 
     public void testCutoverAddWeeks() {
-        testAdd("1582-01-01", DurationFieldType.weeks(), 1, "1582-01-08");
-        testAdd("1583-01-01", DurationFieldType.weeks(), 1, "1583-01-08");
-
-        // Weeks are precise, and so cutover is not ignored.
-        testAdd("1582-10-01", DurationFieldType.weeks(), 2, "1582-10-25");
-        testAdd("1582-W01-1", DurationFieldType.weeks(), 51, "1583-W01-1");
-    }
+		this.testGJChronologyTestAddTemplate(new TestGJChronologyTestCutoverAddWeeksAdapterImpl(), "1582-01-01", 1,
+				"1582-01-08", "1583-01-01", 1, "1583-01-08", "1582-10-01", 2, "1582-10-25", "1582-W01-1", 51,
+				"1583-W01-1");
+	}
 
     public void testCutoverAddDays() {
-        testAdd("1582-10-03", DurationFieldType.days(), 1, "1582-10-04");
-        testAdd("1582-10-04", DurationFieldType.days(), 1, "1582-10-15");
-        testAdd("1582-10-15", DurationFieldType.days(), 1, "1582-10-16");
-
-        testAdd("1582-09-30", DurationFieldType.days(), 10, "1582-10-20");
-        testAdd("1582-10-04", DurationFieldType.days(), 10, "1582-10-24");
-        testAdd("1582-10-15", DurationFieldType.days(), 10, "1582-10-25");
-    }
+		this.testGJChronologyTestCutoverAddTemplate(new TestGJChronologyTestCutoverAddDaysAdapterImpl(), "1582-10-03",
+				"1582-10-04", "1582-10-04", "1582-10-15", "1582-10-15", "1582-10-16", "1582-09-30", 10, "1582-10-20",
+				"1582-10-04", 10, "1582-10-24", "1582-10-15", 10, "1582-10-25");
+	}
 
     public void testYearEndAddDays() {
-        testAdd("1582-11-05", DurationFieldType.days(), 28, "1582-12-03");
-        testAdd("1582-12-05", DurationFieldType.days(), 28, "1583-01-02");
-        
-        testAdd("2005-11-05", DurationFieldType.days(), 28, "2005-12-03");
-        testAdd("2005-12-05", DurationFieldType.days(), 28, "2006-01-02");
-    }
+		this.testGJChronologyTestAddTemplate(new TestGJChronologyTestYearEndAddDaysAdapterImpl(), "1582-11-05", 28,
+				"1582-12-03", "1582-12-05", 28, "1583-01-02", "2005-11-05", 28, "2005-12-03", "2005-12-05", 28,
+				"2006-01-02");
+	}
 
     public void testSubtractDays() {
         // This is a test for a bug in version 1.0. The dayOfMonth range
@@ -559,5 +535,57 @@ public class TestGJChronology extends TestCase {
         assertEquals(true, dt.dayOfMonth().isLeap());
         assertEquals(true, dt.dayOfYear().isLeap());
     }
+
+	public void testGJChronologyTestCutoverAddTemplate(TestGJChronologyTestCutoverAddAdapter adapter, String string1,
+			String string2, String string3, String string4, String string5, String string6, String string7, int i1,
+			String string8, String string9, int i2, String string10, String string11, int i3, String string12) {
+		testAdd(string1, adapter.action1(), 1, string2);
+		testAdd(string3, adapter.action1(), 1, string4);
+		testAdd(string5, adapter.action1(), 1, string6);
+		testAdd(string7, adapter.action1(), i1, string8);
+		testAdd(string9, adapter.action1(), i2, string10);
+		testAdd(string11, adapter.action1(), i3, string12);
+	}
+
+	interface TestGJChronologyTestCutoverAddAdapter {
+		DurationFieldType action1();
+	}
+
+	class TestGJChronologyTestCutoverAddWeekyearsAdapterImpl implements TestGJChronologyTestCutoverAddAdapter {
+		public DurationFieldType action1() {
+			return DurationFieldType.weekyears();
+		}
+	}
+
+	class TestGJChronologyTestCutoverAddDaysAdapterImpl implements TestGJChronologyTestCutoverAddAdapter {
+		public DurationFieldType action1() {
+			return DurationFieldType.days();
+		}
+	}
+
+	public void testGJChronologyTestAddTemplate(TestGJChronologyTestAddAdapter adapter, String string1, int i1,
+			String string2, String string3, int i2, String string4, String string5, int i3, String string6,
+			String string7, int i4, String string8) {
+		testAdd(string1, adapter.action1(), i1, string2);
+		testAdd(string3, adapter.action1(), i2, string4);
+		testAdd(string5, adapter.action1(), i3, string6);
+		testAdd(string7, adapter.action1(), i4, string8);
+	}
+
+	interface TestGJChronologyTestAddAdapter {
+		DurationFieldType action1();
+	}
+
+	class TestGJChronologyTestCutoverAddWeeksAdapterImpl implements TestGJChronologyTestAddAdapter {
+		public DurationFieldType action1() {
+			return DurationFieldType.weeks();
+		}
+	}
+
+	class TestGJChronologyTestYearEndAddDaysAdapterImpl implements TestGJChronologyTestAddAdapter {
+		public DurationFieldType action1() {
+			return DurationFieldType.days();
+		}
+	}
 
 }

@@ -324,23 +324,12 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
-    //-----------------------------------------------------------------------
     public void testConstructor_long_PeriodType_Chronology1() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MutablePeriod test = new MutablePeriod(length, PeriodType.time().withMillisRemoved(), ISOChronology.getInstance());
-        assertEquals(PeriodType.time().withMillisRemoved(), test.getPeriodType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals((4 * 24) + 5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(0, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1Template
+				.testPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1Template(
+						new TestMutablePeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1AdapterImpl(),
+						MutablePeriod.class);
+	}
 
     public void testConstructor_long_PeriodType_Chronology2() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
@@ -572,21 +561,12 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
-    //-----------------------------------------------------------------------
     public void testConstructor_long_long_PeriodType_Chronology1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
-        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, CopticChronology.getInstance());
-        assertEquals(PeriodType.standard(), test.getPeriodType());
-        assertEquals(1, test.getYears());
-        assertEquals(1, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(1, test.getDays());
-        assertEquals(1, test.getHours());
-        assertEquals(1, test.getMinutes());
-        assertEquals(1, test.getSeconds());
-        assertEquals(1, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1Template
+				.testPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1Template(
+						new TestMutablePeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1AdapterImpl(),
+						MutablePeriod.class);
+	}
 
     public void testConstructor_long_long_PeriodType_Chronology2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -650,34 +630,14 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_RI_RI4() throws Throwable {
-        DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        MutablePeriod test = new MutablePeriod(dt1, dt2);
-        assertEquals(PeriodType.standard(), test.getPeriodType());
-        assertEquals(-3, test.getYears());
-        assertEquals(-1, test.getMonths());
-        assertEquals(-1, test.getWeeks());
-        assertEquals(-1, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(-1, test.getMinutes());
-        assertEquals(-1, test.getSeconds());
-        assertEquals(-1, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_RI_RI4Template.testPeriod_ConstructorsTestConstructor_RI_RI4Template(
+				new TestMutablePeriod_ConstructorsTestConstructor_RI_RI4AdapterImpl(), MutablePeriod.class);
+	}
 
     public void testConstructor_RI_RI5() throws Throwable {
-        DateTime dt1 = null;  // 2002-06-09T01:00+01:00
-        DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        MutablePeriod test = new MutablePeriod(dt1, dt2);
-        assertEquals(PeriodType.standard(), test.getPeriodType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_RI_RI5Template.testPeriod_ConstructorsTestConstructor_RI_RI5Template(
+				new TestMutablePeriod_ConstructorsTestConstructor_RI_RI5AdapterImpl(), MutablePeriod.class);
+	}
 
     //-----------------------------------------------------------------------
     public void testConstructor_RI_RI_PeriodType1() throws Throwable {
@@ -894,17 +854,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_PeriodType2() throws Throwable {
-        MutablePeriod test = new MutablePeriod((Object) null, PeriodType.yearMonthDayTime());
-        assertEquals(PeriodType.yearMonthDayTime(), test.getPeriodType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_Object_PeriodType2Template
+				.testPeriod_ConstructorsTestConstructor_Object_PeriodType2Template(
+						new TestMutablePeriod_ConstructorsTestConstructor_Object_PeriodType2AdapterImpl(),
+						MutablePeriod.class);
+	}
 
     public void testConstructor_Object_PeriodType3() throws Throwable {
         MutablePeriod test = new MutablePeriod(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.dayTime()), PeriodType.yearMonthDayTime());
@@ -968,5 +922,180 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
     }
+
+	class TestMutablePeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1Adapter<MutablePeriod> {
+		public int getYears(MutablePeriod test) {
+			return test.getYears();
+		}
+
+		public int getMonths(MutablePeriod test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(MutablePeriod test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(MutablePeriod test) {
+			return test.getDays();
+		}
+
+		public int getHours(MutablePeriod test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(MutablePeriod test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(MutablePeriod test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(MutablePeriod test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestMutablePeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1Adapter<MutablePeriod> {
+		public int getYears(MutablePeriod test) {
+			return test.getYears();
+		}
+
+		public int getMonths(MutablePeriod test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(MutablePeriod test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(MutablePeriod test) {
+			return test.getDays();
+		}
+
+		public int getHours(MutablePeriod test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(MutablePeriod test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(MutablePeriod test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(MutablePeriod test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestMutablePeriod_ConstructorsTestConstructor_RI_RI5AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RI_RI5Adapter<MutablePeriod> {
+		public int getYears(MutablePeriod test) {
+			return test.getYears();
+		}
+
+		public int getMonths(MutablePeriod test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(MutablePeriod test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(MutablePeriod test) {
+			return test.getDays();
+		}
+
+		public int getHours(MutablePeriod test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(MutablePeriod test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(MutablePeriod test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(MutablePeriod test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestMutablePeriod_ConstructorsTestConstructor_RI_RI4AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RI_RI4Adapter<MutablePeriod> {
+		public int getYears(MutablePeriod test) {
+			return test.getYears();
+		}
+
+		public int getMonths(MutablePeriod test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(MutablePeriod test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(MutablePeriod test) {
+			return test.getDays();
+		}
+
+		public int getHours(MutablePeriod test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(MutablePeriod test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(MutablePeriod test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(MutablePeriod test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestMutablePeriod_ConstructorsTestConstructor_Object_PeriodType2AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_Object_PeriodType2Adapter<MutablePeriod> {
+		public int getYears(MutablePeriod test) {
+			return test.getYears();
+		}
+
+		public int getMonths(MutablePeriod test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(MutablePeriod test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(MutablePeriod test) {
+			return test.getDays();
+		}
+
+		public int getHours(MutablePeriod test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(MutablePeriod test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(MutablePeriod test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(MutablePeriod test) {
+			return test.getMillis();
+		}
+	}
 
 }

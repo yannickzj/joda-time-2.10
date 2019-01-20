@@ -224,12 +224,8 @@ public class TestMinMaxLong extends TestCase {
     }
 
     public void testPrintParseMax() {
-        DateTime test1 = new DateTime(Long.MAX_VALUE);
-        assertEquals(test1, DateTime.parse(test1.toString()));
-        DateTime test2 = new DateTime(Long.valueOf(Long.MAX_VALUE));
-        assertEquals(test2, DateTime.parse(test2.toString()));
-        assertEquals(test2, test1);
-    }
+		this.testMinMaxLongTestPrintParseTemplate(Long.MAX_VALUE, Long.MAX_VALUE);
+	}
 
     //-----------------------------------------------------------------------
     public void testDateTime_min() throws Throwable {
@@ -307,12 +303,8 @@ public class TestMinMaxLong extends TestCase {
     }
 
     public void testPrintParseMin() {
-        DateTime test1 = new DateTime(Long.MIN_VALUE);
-        assertEquals(test1, DateTime.parse(test1.toString()));
-        DateTime test2 = new DateTime(Long.valueOf(Long.MIN_VALUE));
-        assertEquals(test2, DateTime.parse(test2.toString()));
-        assertEquals(test2, test1);
-    }
+		this.testMinMaxLongTestPrintParseTemplate(Long.MIN_VALUE, Long.MIN_VALUE);
+	}
 
     public void testDateTime_aroundZero() {
         DateTime base = new DateTime(1970, 1, 1, 1, 2, DateTimeZone.UTC);
@@ -322,5 +314,13 @@ public class TestMinMaxLong extends TestCase {
             assertEquals(base.getMillis() - i * 3600000L, dt.getMillis());
         }
     }
+
+	public void testMinMaxLongTestPrintParseTemplate(long l1, long l2) {
+		DateTime test1 = new DateTime(l1);
+		assertEquals(test1, DateTime.parse(test1.toString()));
+		DateTime test2 = new DateTime(Long.valueOf(l2));
+		assertEquals(test2, DateTime.parse(test2.toString()));
+		assertEquals(test2, test1);
+	}
 
 }

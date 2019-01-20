@@ -85,28 +85,13 @@ public class TestTextFields extends TestCase {
         originalLocale = null;
     }
 
-    //-----------------------------------------------------------------------
     public void testMonthNames_monthStart() {
-        DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
-        for (int i=0; i<ZONES.length; i++) {
-            for (int month=1; month<=12; month++) {
-                DateTime dt = new DateTime(2004, month, 1, 1, 20, 30, 40, ZONES[i]);
-                String monthText = printer.print(dt);
-                assertEquals(MONTHS[month], monthText);
-            }
-        }
-    }
+		this.testTextFieldsTestMonthNames_monthTemplate(1, 1);
+	}
 
     public void testMonthNames_monthMiddle() {
-        DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
-        for (int i=0; i<ZONES.length; i++) {
-            for (int month=1; month<=12; month++) {
-                DateTime dt = new DateTime(2004, month, 15, 12, 20, 30, 40, ZONES[i]);
-                String monthText = printer.print(dt);
-                assertEquals(MONTHS[month], monthText);
-            }
-        }
-    }
+		this.testTextFieldsTestMonthNames_monthTemplate(15, 12);
+	}
 
     public void testMonthNames_monthEnd() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
@@ -148,4 +133,15 @@ public class TestTextFields extends TestCase {
             }
         }
     }
+
+	public void testTextFieldsTestMonthNames_monthTemplate(int i1, int i2) {
+		DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
+		for (int i = 0; i < ZONES.length; i++) {
+			for (int month = 1; month <= 12; month++) {
+				DateTime dt = new DateTime(2004, month, i1, i2, 20, 30, 40, ZONES[i]);
+				String monthText = printer.print(dt);
+				assertEquals(MONTHS[month], monthText);
+			}
+		}
+	}
 }

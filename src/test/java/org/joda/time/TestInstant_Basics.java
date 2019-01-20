@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.BaseDateTime;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -142,35 +143,9 @@ public class TestInstant_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testGet_DateTimeField() {
-        Instant test = new Instant();  // 2002-06-09
-        assertEquals(1, test.get(ISOChronology.getInstance().era()));
-        assertEquals(20, test.get(ISOChronology.getInstance().centuryOfEra()));
-        assertEquals(2, test.get(ISOChronology.getInstance().yearOfCentury()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().yearOfEra()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().year()));
-        assertEquals(6, test.get(ISOChronology.getInstance().monthOfYear()));
-        assertEquals(9, test.get(ISOChronology.getInstance().dayOfMonth()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().weekyear()));
-        assertEquals(23, test.get(ISOChronology.getInstance().weekOfWeekyear()));
-        assertEquals(7, test.get(ISOChronology.getInstance().dayOfWeek()));
-        assertEquals(160, test.get(ISOChronology.getInstance().dayOfYear()));
-        assertEquals(0, test.get(ISOChronology.getInstance().halfdayOfDay()));
-        assertEquals(1, test.get(ISOChronology.getInstance().hourOfHalfday()));
-        assertEquals(1, test.get(ISOChronology.getInstance().clockhourOfDay()));
-        assertEquals(1, test.get(ISOChronology.getInstance().clockhourOfHalfday()));
-        assertEquals(1, test.get(ISOChronology.getInstance().hourOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().minuteOfHour()));
-        assertEquals(60, test.get(ISOChronology.getInstance().minuteOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().secondOfMinute()));
-        assertEquals(60 * 60, test.get(ISOChronology.getInstance().secondOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().millisOfSecond()));
-        assertEquals(60 * 60 * 1000, test.get(ISOChronology.getInstance().millisOfDay()));
-        try {
-            test.get((DateTimeField) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+    public void testGet_DateTimeField() throws Exception {
+		TestBasicsTestGet_DateTimeFieldTemplate.testBasicsTestGet_DateTimeFieldTemplate(Instant.class);
+	}
 
     public void testGetMethods() {
         Instant test = new Instant();
@@ -398,14 +373,10 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
-    public void testToDateTimeISO() {
-        Instant test = new Instant(TEST_TIME1);
-        DateTime result = test.toDateTimeISO();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
-    }
+    public void testToDateTimeISO() throws Exception {
+		this.testInstant_BasicsTestToDateTimeISOTemplate(new TestInstant_BasicsTestToDateTimeISOAdapterImpl(),
+				DateTime.class);
+	}
 
     public void testToDateTime_DateTimeZone() {
         Instant test = new Instant(TEST_TIME1);
@@ -447,14 +418,10 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
-    public void testToMutableDateTimeISO() {
-        Instant test = new Instant(TEST_TIME1);
-        MutableDateTime result = test.toMutableDateTimeISO();
-        assertSame(MutableDateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
-    }
+    public void testToMutableDateTimeISO() throws Exception {
+		this.testInstant_BasicsTestToDateTimeISOTemplate(new TestInstant_BasicsTestToMutableDateTimeISOAdapterImpl(),
+				MutableDateTime.class);
+	}
 
     public void testToMutableDateTime_DateTimeZone() {
         Instant test = new Instant(TEST_TIME1);
@@ -558,14 +525,8 @@ public class TestInstant_Basics extends TestCase {
     }
     
     public void testPlus_RD() {
-        Instant test = new Instant(TEST_TIME1);
-        Instant result = test.plus(new Duration(123456789L));
-        Instant expected = new Instant(TEST_TIME1 + 123456789L);
-        assertEquals(expected, result);
-        
-        result = test.plus((ReadableDuration) null);
-        assertSame(test, result);
-    }
+		this.testInstant_BasicsTestRDTemplate(new TestInstant_BasicsTestPlus_RDAdapterImpl(), TEST_TIME1 + 123456789L);
+	}
     
     //-----------------------------------------------------------------------    
     public void testMinus_long() {
@@ -576,18 +537,76 @@ public class TestInstant_Basics extends TestCase {
     }
     
     public void testMinus_RD() {
-        Instant test = new Instant(TEST_TIME1);
-        Instant result = test.minus(new Duration(123456789L));
-        Instant expected = new Instant(TEST_TIME1 - 123456789L);
-        assertEquals(expected, result);
-        
-        result = test.minus((ReadableDuration) null);
-        assertSame(test, result);
-    }
+		this.testInstant_BasicsTestRDTemplate(new TestInstant_BasicsTestMinus_RDAdapterImpl(), TEST_TIME1 - 123456789L);
+	}
     
     //-----------------------------------------------------------------------
     public void testImmutable() {
         assertTrue(Modifier.isFinal(Instant.class.getModifiers()));
     }
+
+	public void testInstant_BasicsTestRDTemplate(TestInstant_BasicsTestRDAdapter adapter, long l1) {
+		Instant test = new Instant(TEST_TIME1);
+		Instant result = adapter.action1(test, new Duration(123456789L));
+		Instant expected = new Instant(l1);
+		assertEquals(expected, result);
+		result = adapter.action1(test, (ReadableDuration) null);
+		assertSame(test, result);
+	}
+
+	interface TestInstant_BasicsTestRDAdapter {
+		Instant action1(Instant instant1, ReadableDuration readableDuration1);
+	}
+
+	class TestInstant_BasicsTestPlus_RDAdapterImpl implements TestInstant_BasicsTestRDAdapter {
+		public Instant action1(Instant test, ReadableDuration readableDuration1) {
+			return test.plus(readableDuration1);
+		}
+	}
+
+	class TestInstant_BasicsTestMinus_RDAdapterImpl implements TestInstant_BasicsTestRDAdapter {
+		public Instant action1(Instant test, ReadableDuration readableDuration1) {
+			return test.minus(readableDuration1);
+		}
+	}
+
+	public <TDateTime extends BaseDateTime> void testInstant_BasicsTestToDateTimeISOTemplate(
+			TestInstant_BasicsTestToDateTimeISOAdapter<TDateTime> adapter, Class<TDateTime> clazzTDateTime)
+			throws Exception {
+		Instant test = new Instant(TEST_TIME1);
+		TDateTime result = adapter.toDateTimeISO(test);
+		assertSame(clazzTDateTime, adapter.getClass(result));
+		assertSame(ISOChronology.class, result.getChronology().getClass());
+		assertEquals(test.getMillis(), result.getMillis());
+		assertEquals(ISOChronology.getInstance(), result.getChronology());
+	}
+
+	interface TestInstant_BasicsTestToDateTimeISOAdapter<TDateTime> {
+		TDateTime toDateTimeISO(Instant instant1);
+
+		Class<? extends TDateTime> getClass(TDateTime tDateTime1);
+	}
+
+	class TestInstant_BasicsTestToDateTimeISOAdapterImpl
+			implements TestInstant_BasicsTestToDateTimeISOAdapter<DateTime> {
+		public DateTime toDateTimeISO(Instant test) {
+			return test.toDateTimeISO();
+		}
+
+		public Class<? extends DateTime> getClass(DateTime result) {
+			return result.getClass();
+		}
+	}
+
+	class TestInstant_BasicsTestToMutableDateTimeISOAdapterImpl
+			implements TestInstant_BasicsTestToDateTimeISOAdapter<MutableDateTime> {
+		public MutableDateTime toDateTimeISO(Instant test) {
+			return test.toMutableDateTimeISO();
+		}
+
+		public Class<? extends MutableDateTime> getClass(MutableDateTime result) {
+			return result.getClass();
+		}
+	}
 
 }

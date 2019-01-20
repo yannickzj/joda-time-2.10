@@ -15,6 +15,7 @@
  */
 package org.joda.time.format;
 
+import java.lang.String;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -822,23 +823,9 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     public void testFormat_invalid() {
-        try {
-            DateTimeFormat.forPattern(null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            DateTimeFormat.forPattern("");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            DateTimeFormat.forPattern("A");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            DateTimeFormat.forPattern("dd/mm/AA");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		TestDateTimeFormatTestTemplate
+				.testDateTimeFormatTestTemplate(new TestDateTimeFormatTestFormat_invalidAdapterImpl(), "A", "dd/mm/AA");
+	}
 
     public void testFormat_samples() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
@@ -864,32 +851,13 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt, f.parseDateTime("2004/03/09"));
     }
 
-    //-----------------------------------------------------------------------
     public void testParse_pivotYear() {
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yy").withPivotYear(2050).withZoneUTC();
-        
-        DateTime date = dateFormatter.parseDateTime("25.12.15");
-        assertEquals(date.getYear(), 2015);
-        
-        date = dateFormatter.parseDateTime("25.12.00");
-        assertEquals(date.getYear(), 2000);
-        
-        date = dateFormatter.parseDateTime("25.12.99");
-        assertEquals(date.getYear(), 2099);
-    }
+		this.testDateTimeFormatTestParse_pivotYearTemplate("dd.MM.yy", 2015, 2000, 2099);
+	}
 
     public void testParse_pivotYear_ignored4DigitYear() {
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yyyy").withPivotYear(2050).withZoneUTC();
-        
-        DateTime date = dateFormatter.parseDateTime("25.12.15");
-        assertEquals(date.getYear(), 15);
-        
-        date = dateFormatter.parseDateTime("25.12.00");
-        assertEquals(date.getYear(), 0);
-        
-        date = dateFormatter.parseDateTime("25.12.99");
-        assertEquals(date.getYear(), 99);
-    }
+		this.testDateTimeFormatTestParse_pivotYearTemplate("dd.MM.yyyy", 15, 0, 99);
+	}
 
     //-----------------------------------------------------------------------
     public void testFormatParse_textMonthJanShort_UK() {
@@ -1030,34 +998,13 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 1);
     }
 
-    //-----------------------------------------------------------------------
     public void testFormatParse_textEraAD_UK() {
-        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
-            .appendLiteral('$')
-            .appendEraText()
-            .appendYear(4, 4)
-            .toFormatter()
-            .withLocale(Locale.UK).withZoneUTC();
-        
-        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
-        assertEquals("$AD2007", str);
-        DateTime date = dateFormatter.parseDateTime(str);
-        check(date, 2007, 1, 1);
-    }
+		this.testDateTimeFormatTestFormatParse_textEraAD_Template(Locale.UK, "$AD2007");
+	}
 
     public void testFormatParse_textEraAD_France() {
-        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
-            .appendLiteral('$')
-            .appendEraText()
-            .appendYear(4, 4)
-            .toFormatter()
-            .withLocale(Locale.FRANCE).withZoneUTC();
-        
-        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
-        assertEquals("$ap. J.-C.2007", str);
-        DateTime date = dateFormatter.parseDateTime(str);
-        check(date, 2007, 1, 1);
-    }
+		this.testDateTimeFormatTestFormatParse_textEraAD_Template(Locale.FRANCE, "$ap. J.-C.2007");
+	}
 
     public void testFormatParse_textEraBC_France() {
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
@@ -1148,11 +1095,8 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     public void testFormatParse_zoneId_noColon_parseZ() {
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm Z").withZoneUTC();
-        DateTime parsed = dateFormatter.parseDateTime("01:02 Z");
-        assertEquals(1, parsed.getHourOfDay());
-        assertEquals(2, parsed.getMinuteOfHour());
-    }
+		this.testDateTimeFormatTestFormatParse_zoneZTemplate("HH:mm Z");
+	}
 
     public void testFormatParse_zoneId_colon() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm ZZ").withZoneUTC();
@@ -1164,11 +1108,8 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     public void testFormatParse_zoneId_colon_parseZ() {
-        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm ZZ").withZoneUTC();
-        DateTime parsed = dateFormatter.parseDateTime("01:02 Z");
-        assertEquals(1, parsed.getHourOfDay());
-        assertEquals(2, parsed.getMinuteOfHour());
-    }
+		this.testDateTimeFormatTestFormatParse_zoneZTemplate("HH:mm ZZ");
+	}
 
     //-----------------------------------------------------------------------
     private void check(DateTime test, int hour, int min, int sec) {
@@ -1176,5 +1117,37 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(min, test.getMonthOfYear());
         assertEquals(sec, test.getDayOfMonth());
     }
+
+	class TestDateTimeFormatTestFormat_invalidAdapterImpl implements TestDateTimeFormatTestAdapter {
+		public DateTimeFormatter forAction(String string1) {
+			return DateTimeFormat.forPattern(string1);
+		}
+	}
+
+	public void testDateTimeFormatTestFormatParse_textEraAD_Template(Locale locale1, String string1) {
+		DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder().appendLiteral('$').appendEraText()
+				.appendYear(4, 4).toFormatter().withLocale(locale1).withZoneUTC();
+		String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+		assertEquals(string1, str);
+		DateTime date = dateFormatter.parseDateTime(str);
+		check(date, 2007, 1, 1);
+	}
+
+	public void testDateTimeFormatTestParse_pivotYearTemplate(String string1, int i1, int i2, int i3) {
+		DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(string1).withPivotYear(2050).withZoneUTC();
+		DateTime date = dateFormatter.parseDateTime("25.12.15");
+		assertEquals(date.getYear(), i1);
+		date = dateFormatter.parseDateTime("25.12.00");
+		assertEquals(date.getYear(), i2);
+		date = dateFormatter.parseDateTime("25.12.99");
+		assertEquals(date.getYear(), i3);
+	}
+
+	public void testDateTimeFormatTestFormatParse_zoneZTemplate(String string1) {
+		DateTimeFormatter dateFormatter = DateTimeFormat.forPattern(string1).withZoneUTC();
+		DateTime parsed = dateFormatter.parseDateTime("01:02 Z");
+		assertEquals(1, parsed.getHourOfDay());
+		assertEquals(2, parsed.getMinuteOfHour());
+	}
 
 }

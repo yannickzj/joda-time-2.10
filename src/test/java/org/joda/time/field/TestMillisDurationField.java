@@ -112,18 +112,13 @@ public class TestMillisDurationField extends TestCase {
         assertEquals(((long) (Integer.MAX_VALUE)) + 1L, MillisDurationField.INSTANCE.getValueAsLong(((long) (Integer.MAX_VALUE)) + 1L, 567L));
     }
 
-    //-----------------------------------------------------------------------
     public void test_getMillis_int() {
-        assertEquals(0, MillisDurationField.INSTANCE.getMillis(0));
-        assertEquals(1234, MillisDurationField.INSTANCE.getMillis(1234));
-        assertEquals(-1234, MillisDurationField.INSTANCE.getMillis(-1234));
-    }
+		this.testMillisDurationFieldTest_getTemplate(0, 0, 1234, 1234, -1234, -1234);
+	}
 
     public void test_getMillis_long() {
-        assertEquals(0L, MillisDurationField.INSTANCE.getMillis(0L));
-        assertEquals(1234L, MillisDurationField.INSTANCE.getMillis(1234L));
-        assertEquals(-1234L, MillisDurationField.INSTANCE.getMillis(-1234L));
-    }
+		this.testMillisDurationFieldTest_getTemplate(0L, 0L, 1234L, 1234L, -1234L, -1234L);
+	}
 
     public void test_getMillis_int_long() {
         assertEquals(0, MillisDurationField.INSTANCE.getMillis(0, 567L));
@@ -212,5 +207,11 @@ public class TestMillisDurationField extends TestCase {
         
         assertSame(test, result);
     }
+
+	public void testMillisDurationFieldTest_getTemplate(long l1, long l2, long l3, long l4, long l5, long l6) {
+		assertEquals(l1, MillisDurationField.INSTANCE.getMillis(l2));
+		assertEquals(l3, MillisDurationField.INSTANCE.getMillis(l4));
+		assertEquals(l5, MillisDurationField.INSTANCE.getMillis(l6));
+	}
 
 }

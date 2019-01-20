@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.DateMidnight.Property;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -317,32 +318,16 @@ public class TestDateMidnight_Properties extends TestCase {
     }
 
     public void testPropertyRoundHalfFloorMonthOfYear() {
-        DateMidnight test = new DateMidnight(2004, 6, 16);
-        DateMidnight copy = test.monthOfYear().roundHalfFloorCopy();
-        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
-        
-        test = new DateMidnight(2004, 6, 17);
-        copy = test.monthOfYear().roundHalfFloorCopy();
-        assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
-        
-        test = new DateMidnight(2004, 6, 15);
-        copy = test.monthOfYear().roundHalfFloorCopy();
-        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
-    }
+		this.testDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearTemplate(
+				new TestDateMidnight_PropertiesTestPropertyRoundHalfFloorMonthOfYearAdapterImpl(),
+				"2004-06-01T00:00:00.000+01:00");
+	}
 
     public void testPropertyRoundHalfCeilingMonthOfYear() {
-        DateMidnight test = new DateMidnight(2004, 6, 16);
-        DateMidnight copy = test.monthOfYear().roundHalfCeilingCopy();
-        assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
-        
-        test = new DateMidnight(2004, 6, 17);
-        copy = test.monthOfYear().roundHalfCeilingCopy();
-        assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
-        
-        test = new DateMidnight(2004, 6, 15);
-        copy = test.monthOfYear().roundHalfCeilingCopy();
-        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
-    }
+		this.testDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearTemplate(
+				new TestDateMidnight_PropertiesTestPropertyRoundHalfCeilingMonthOfYearAdapterImpl(),
+				"2004-07-01T00:00:00.000+01:00");
+	}
 
     public void testPropertyRoundHalfEvenMonthOfYear() {
         DateMidnight test = new DateMidnight(2004, 6, 16);
@@ -393,18 +378,16 @@ public class TestDateMidnight_Properties extends TestCase {
     }
 
     public void testPropertyWithMaximumValueDayOfMonth() {
-        DateMidnight test = new DateMidnight(2004, 6, 9);
-        DateMidnight copy = test.dayOfMonth().withMaximumValue();
-        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
-        assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
-    }
+		this.testDateMidnight_PropertiesTestPropertyWithValueDayOfMonthTemplate(
+				new TestDateMidnight_PropertiesTestPropertyWithMaximumValueDayOfMonthAdapterImpl(),
+				"2004-06-30T00:00:00.000+01:00");
+	}
 
     public void testPropertyWithMinimumValueDayOfMonth() {
-        DateMidnight test = new DateMidnight(2004, 6, 9);
-        DateMidnight copy = test.dayOfMonth().withMinimumValue();
-        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
-        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
-    }
+		this.testDateMidnight_PropertiesTestPropertyWithValueDayOfMonthTemplate(
+				new TestDateMidnight_PropertiesTestPropertyWithMinimumValueDayOfMonthAdapterImpl(),
+				"2004-06-01T00:00:00.000+01:00");
+	}
 
     //-----------------------------------------------------------------------
     public void testPropertyGetDayOfYear() {
@@ -541,5 +524,62 @@ public class TestDateMidnight_Properties extends TestCase {
         assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
         assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
     }
+
+	public void testDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearTemplate(
+			TestDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearAdapter adapter, String string1) {
+		DateMidnight test = new DateMidnight(2004, 6, 16);
+		DateMidnight copy = adapter.roundHalfCopy(test.monthOfYear());
+		assertEquals(string1, copy.toString());
+		test = new DateMidnight(2004, 6, 17);
+		copy = adapter.roundHalfCopy(test.monthOfYear());
+		assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
+		test = new DateMidnight(2004, 6, 15);
+		copy = adapter.roundHalfCopy(test.monthOfYear());
+		assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
+	}
+
+	interface TestDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearAdapter {
+		DateMidnight roundHalfCopy(DateMidnight.Property property1);
+	}
+
+	class TestDateMidnight_PropertiesTestPropertyRoundHalfFloorMonthOfYearAdapterImpl
+			implements TestDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearAdapter {
+		public DateMidnight roundHalfCopy(DateMidnight.Property property1) {
+			return property1.roundHalfFloorCopy();
+		}
+	}
+
+	class TestDateMidnight_PropertiesTestPropertyRoundHalfCeilingMonthOfYearAdapterImpl
+			implements TestDateMidnight_PropertiesTestPropertyRoundHalfMonthOfYearAdapter {
+		public DateMidnight roundHalfCopy(DateMidnight.Property property1) {
+			return property1.roundHalfCeilingCopy();
+		}
+	}
+
+	public void testDateMidnight_PropertiesTestPropertyWithValueDayOfMonthTemplate(
+			TestDateMidnight_PropertiesTestPropertyWithValueDayOfMonthAdapter adapter, String string1) {
+		DateMidnight test = new DateMidnight(2004, 6, 9);
+		DateMidnight copy = adapter.withValue(test.dayOfMonth());
+		assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+		assertEquals(string1, copy.toString());
+	}
+
+	interface TestDateMidnight_PropertiesTestPropertyWithValueDayOfMonthAdapter {
+		DateMidnight withValue(DateMidnight.Property property1);
+	}
+
+	class TestDateMidnight_PropertiesTestPropertyWithMaximumValueDayOfMonthAdapterImpl
+			implements TestDateMidnight_PropertiesTestPropertyWithValueDayOfMonthAdapter {
+		public DateMidnight withValue(DateMidnight.Property property1) {
+			return property1.withMaximumValue();
+		}
+	}
+
+	class TestDateMidnight_PropertiesTestPropertyWithMinimumValueDayOfMonthAdapterImpl
+			implements TestDateMidnight_PropertiesTestPropertyWithValueDayOfMonthAdapter {
+		public DateMidnight withValue(DateMidnight.Property property1) {
+			return property1.withMinimumValue();
+		}
+	}
 
 }

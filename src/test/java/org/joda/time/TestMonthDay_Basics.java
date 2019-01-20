@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.field.AbstractPartialFieldProperty;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -145,17 +146,9 @@ public class TestMonthDay_Basics extends TestCase {
         assertNotSame(test.getFields(), test.getFields());
     }
 
-    public void testGetValue() {
-        MonthDay test = new MonthDay();
-        assertEquals(6, test.getValue(0));
-        assertEquals(9, test.getValue(1));
-        try {
-            test.getValue(-1);
-        } catch (IndexOutOfBoundsException ex) {}
-        try {
-            test.getValue(2);
-        } catch (IndexOutOfBoundsException ex) {}
-    }
+    public void testGetValue() throws Exception {
+		TestBasicsTestGetValueTemplate.testBasicsTestGetValueTemplate(MonthDay.class, 6, 9);
+	}
 
     public void testGetValues() {
         MonthDay test = new MonthDay();
@@ -219,48 +212,10 @@ public class TestMonthDay_Basics extends TestCase {
         }
     }
 
-    //-----------------------------------------------------------------------
-    public void testCompareTo() {
-        MonthDay test1 = new MonthDay(6, 6);
-        MonthDay test1a = new MonthDay(6, 6);
-        assertEquals(0, test1.compareTo(test1a));
-        assertEquals(0, test1a.compareTo(test1));
-        assertEquals(0, test1.compareTo(test1));
-        assertEquals(0, test1a.compareTo(test1a));
-        
-        MonthDay test2 = new MonthDay(6, 7);
-        assertEquals(-1, test1.compareTo(test2));
-        assertEquals(+1, test2.compareTo(test1));
-        
-        MonthDay test3 = new MonthDay(6, 7, GregorianChronology.getInstanceUTC());
-        assertEquals(-1, test1.compareTo(test3));
-        assertEquals(+1, test3.compareTo(test1));
-        assertEquals(0, test3.compareTo(test2));
-        
-        DateTimeFieldType[] types = new DateTimeFieldType[] {
-            DateTimeFieldType.monthOfYear(),
-            DateTimeFieldType.dayOfMonth()
-        };
-        int[] values = new int[] {6, 6};
-        Partial p = new Partial(types, values);
-        assertEquals(0, test1.compareTo(p));
-        try {
-            test1.compareTo(null);
-            fail();
-        } catch (NullPointerException ex) {}
-        try {
-            test1.compareTo(new LocalTime());
-            fail();
-        } catch (ClassCastException ex) {}
-        Partial partial = new Partial()
-            .with(DateTimeFieldType.centuryOfEra(), 1)
-            .with(DateTimeFieldType.halfdayOfDay(), 0)
-            .with(DateTimeFieldType.dayOfMonth(), 9);
-        try {
-            new MonthDay(10, 6).compareTo(partial);
-            fail();
-        } catch (ClassCastException ex) {}
-    }
+    public void testCompareTo() throws Exception {
+		TestBasicsTestCompareToTemplate
+				.testBasicsTestCompareToTemplate(new TestMonthDay_BasicsTestCompareToAdapterImpl(), MonthDay.class, 6);
+	}
     
     //-----------------------------------------------------------------------
     public void testIsEqual_MD() {
@@ -747,20 +702,10 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    //-----------------------------------------------------------------------
-    public void testProperty() {
-        MonthDay test = new MonthDay(6, 6);
-        assertEquals(test.monthOfYear(), test.property(DateTimeFieldType.monthOfYear()));
-        assertEquals(test.dayOfMonth(), test.property(DateTimeFieldType.dayOfMonth()));
-        try {
-            test.property(DateTimeFieldType.millisOfDay());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            test.property(null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+    public void testProperty() throws Exception {
+		TestBasicsTestPropertyTemplate.testBasicsTestPropertyTemplate(new TestMonthDay_BasicsTestPropertyAdapterImpl(),
+				MonthDay.class);
+	}
 
     //-----------------------------------------------------------------------
     public void testSerialization() throws Exception {
@@ -818,4 +763,36 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(month, test.getMonthOfYear());
         assertEquals(day, test.getDayOfMonth());
     }
+
+	class TestMonthDay_BasicsTestCompareToAdapterImpl implements TestBasicsTestCompareToAdapter<MonthDay> {
+		public int compareTo(MonthDay test1, ReadablePartial test1a) {
+			return test1.compareTo(test1a);
+		}
+
+		public DateTimeFieldType year() {
+			return DateTimeFieldType.monthOfYear();
+		}
+
+		public DateTimeFieldType monthOf() {
+			return DateTimeFieldType.dayOfMonth();
+		}
+	}
+
+	class TestMonthDay_BasicsTestPropertyAdapterImpl implements TestBasicsTestPropertyAdapter<MonthDay> {
+		public AbstractPartialFieldProperty monthOfYear(MonthDay test) {
+			return test.monthOfYear();
+		}
+
+		public AbstractPartialFieldProperty property(MonthDay test, DateTimeFieldType dateTimeFieldType1) {
+			return test.property(dateTimeFieldType1);
+		}
+
+		public AbstractPartialFieldProperty action1(MonthDay test) {
+			return test.dayOfMonth();
+		}
+
+		public DateTimeFieldType action2() {
+			return DateTimeFieldType.dayOfMonth();
+		}
+	}
 }

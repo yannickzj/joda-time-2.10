@@ -134,28 +134,14 @@ public class TestCompiler extends TestCase {
     }
 
     public void testCompileOnBrokenTimeZoneFile() throws Exception {
-        try {
-            Provider provider = compileAndLoad(BROKEN_TIMEZONE_FILE);
-            fail();
-        } catch(NoSuchElementException nsee) {
-            // This used to be thrown in the Rule constructor
-            fail("NoSuchElementException was thrown; broken timezone file?");
-        } catch(IllegalArgumentException iae) {
-            assertEquals("Attempting to create a Rule from an incomplete tokenizer", iae.getMessage());
-        }
-    }
+		this.testCompilerTestCompileOnBrokenTimeZoneTemplate("Attempting to create a Rule from an incomplete tokenizer",
+				BROKEN_TIMEZONE_FILE);
+	}
 
     public void testCompileOnBrokenTimeZoneFile_2() throws Exception {
-        try {
-            Provider provider = compileAndLoad(BROKEN_TIMEZONE_FILE_2);
-            fail();
-        } catch (NoSuchElementException nsee) {
-            // This thrown from the Zone constructor
-            fail("NoSuchElementException was thrown; broken timezone file?");
-        } catch (IllegalArgumentException iae) {
-            assertEquals("Attempting to create a Zone from an incomplete tokenizer", iae.getMessage());
-        }
-    }
+		this.testCompilerTestCompileOnBrokenTimeZoneTemplate("Attempting to create a Zone from an incomplete tokenizer",
+				BROKEN_TIMEZONE_FILE_2);
+	}
 
     private Provider compileAndLoad(String data) throws Exception {
         File tempDir = createDataFile(data);
@@ -269,5 +255,16 @@ public class TestCompiler extends TestCase {
         long next = zone.nextTransition(dt.getMillis());
         assertEquals(next, new DateTime(2006, 3, 31, 0, 0, DateTimeZone.forOffsetHours(2)).getMillis());
     }
+
+	public void testCompilerTestCompileOnBrokenTimeZoneTemplate(String string1, String string2) throws Exception {
+		try {
+			Provider provider = compileAndLoad(string2);
+			fail();
+		} catch (NoSuchElementException nsee) {
+			fail("NoSuchElementException was thrown; broken timezone file?");
+		} catch (IllegalArgumentException iae) {
+			assertEquals(string1, iae.getMessage());
+		}
+	}
 
 }

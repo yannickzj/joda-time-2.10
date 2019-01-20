@@ -1043,14 +1043,9 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     public void testPlus_RD() {
-        DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
-        DateTime result = test.plus(new Duration(123456789L));
-        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BUDDHIST_DEFAULT);
-        assertEquals(expected, result);
-        
-        result = test.plus((ReadableDuration) null);
-        assertSame(test, result);
-    }
+		this.testDateTime_BasicsTestRDTemplate(new TestDateTime_BasicsTestPlus_RDAdapterImpl(),
+				TEST_TIME1 + 123456789L);
+	}
     
     public void testPlus_RP() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
@@ -1083,26 +1078,16 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     public void testPlusMonths_intMax() {
-        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
-        assertEquals(new DateTime(178958986, 7, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE - 2));
-        assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE - 1));
-        assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MAX_VALUE));
-
-        assertEquals(new DateTime(178958986, 7, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MAX_VALUE - 2));
-        assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MAX_VALUE - 1));
-        assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MAX_VALUE));
-    }
+		this.testDateTime_BasicsTestPlusMonths_intTemplate(178958986, 7, Integer.MAX_VALUE - 2, 178958986, 8,
+				Integer.MAX_VALUE - 1, 178958986, 9, Integer.MAX_VALUE, 178958986, 7, Integer.MAX_VALUE - 2, 178958986,
+				8, Integer.MAX_VALUE - 1, 178958986, 9, Integer.MAX_VALUE);
+	}
 
     public void testPlusMonths_intMin() {
-        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
-        assertEquals(new DateTime(-178954955, 8, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MIN_VALUE + 2));
-        assertEquals(new DateTime(-178954955, 7, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MIN_VALUE + 1));
-        assertEquals(new DateTime(-178954955, 6, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(Integer.MIN_VALUE));
-
-        assertEquals(new DateTime(-178954955, 8, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MIN_VALUE + 2));
-        assertEquals(new DateTime(-178954955, 7, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MIN_VALUE + 1));
-        assertEquals(new DateTime(-178954955, 6, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(Integer.MIN_VALUE));
-    }
+		this.testDateTime_BasicsTestPlusMonths_intTemplate(-178954955, 8, Integer.MIN_VALUE + 2, -178954955, 7,
+				Integer.MIN_VALUE + 1, -178954955, 6, Integer.MIN_VALUE, -178954955, 8, Integer.MIN_VALUE + 2,
+				-178954955, 7, Integer.MIN_VALUE + 1, -178954955, 6, Integer.MIN_VALUE);
+	}
 
     public void testPlusWeeks_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
@@ -1173,14 +1158,9 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     public void testMinus_RD() {
-        DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
-        DateTime result = test.minus(new Duration(123456789L));
-        DateTime expected = new DateTime(TEST_TIME1 - 123456789L, BUDDHIST_DEFAULT);
-        assertEquals(expected, result);
-        
-        result = test.minus((ReadableDuration) null);
-        assertSame(test, result);
-    }
+		this.testDateTime_BasicsTestRDTemplate(new TestDateTime_BasicsTestMinus_RDAdapterImpl(),
+				TEST_TIME1 - 123456789L);
+	}
     
     public void testMinus_RP() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
@@ -1213,18 +1193,14 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     public void testMinusMonths_intMax() {
-        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
-        assertEquals(new DateTime(-178954955, 9, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MAX_VALUE - 2));
-        assertEquals(new DateTime(-178954955, 8, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MAX_VALUE - 1));
-        assertEquals(new DateTime(-178954955, 7, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MAX_VALUE));
-    }
+		this.testDateTime_BasicsTestMinusMonths_intTemplate(-178954955, 9, Integer.MAX_VALUE - 2, -178954955, 8,
+				Integer.MAX_VALUE - 1, -178954955, 7, Integer.MAX_VALUE);
+	}
 
     public void testMinusMonths_intMin() {
-        DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
-        assertEquals(new DateTime(178958986, 8, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MIN_VALUE + 2));
-        assertEquals(new DateTime(178958986, 9, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MIN_VALUE + 1));
-        assertEquals(new DateTime(178958986, 10, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(Integer.MIN_VALUE));
-    }
+		this.testDateTime_BasicsTestMinusMonths_intTemplate(178958986, 8, Integer.MIN_VALUE + 2, 178958986, 9,
+				Integer.MIN_VALUE + 1, 178958986, 10, Integer.MIN_VALUE);
+	}
 
     public void testMinusWeeks_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BUDDHIST_DEFAULT);
@@ -1325,5 +1301,49 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(sec, test.getSecondOfMinute());
         assertEquals(mil, test.getMillisOfSecond());
     }
+
+	public void testDateTime_BasicsTestPlusMonths_intTemplate(int i1, int i2, int i3, int i4, int i5, int i6, int i7,
+			int i8, int i9, int i10, int i11, int i12, int i13, int i14, int i15, int i16, int i17, int i18) {
+		DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
+		assertEquals(new DateTime(i1, i2, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(i3));
+		assertEquals(new DateTime(i4, i5, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(i6));
+		assertEquals(new DateTime(i7, i8, 20, 1, 2, 3, 4, ISO_UTC), test.plusMonths(i9));
+		assertEquals(new DateTime(i10, i11, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(i12));
+		assertEquals(new DateTime(i13, i14, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(i15));
+		assertEquals(new DateTime(i16, i17, 20, 1, 2, 3, 4, ISO_UTC), test.monthOfYear().addToCopy(i18));
+	}
+
+	public void testDateTime_BasicsTestRDTemplate(TestDateTime_BasicsTestRDAdapter adapter, long l1) {
+		DateTime test = new DateTime(TEST_TIME1, BUDDHIST_DEFAULT);
+		DateTime result = adapter.action1(test, new Duration(123456789L));
+		DateTime expected = new DateTime(l1, BUDDHIST_DEFAULT);
+		assertEquals(expected, result);
+		result = adapter.action1(test, (ReadableDuration) null);
+		assertSame(test, result);
+	}
+
+	interface TestDateTime_BasicsTestRDAdapter {
+		DateTime action1(DateTime dateTime1, ReadableDuration readableDuration1);
+	}
+
+	class TestDateTime_BasicsTestPlus_RDAdapterImpl implements TestDateTime_BasicsTestRDAdapter {
+		public DateTime action1(DateTime test, ReadableDuration readableDuration1) {
+			return test.plus(readableDuration1);
+		}
+	}
+
+	class TestDateTime_BasicsTestMinus_RDAdapterImpl implements TestDateTime_BasicsTestRDAdapter {
+		public DateTime action1(DateTime test, ReadableDuration readableDuration1) {
+			return test.minus(readableDuration1);
+		}
+	}
+
+	public void testDateTime_BasicsTestMinusMonths_intTemplate(int i1, int i2, int i3, int i4, int i5, int i6, int i7,
+			int i8, int i9) {
+		DateTime test = new DateTime(2016, 2, 20, 1, 2, 3, 4, ISO_UTC);
+		assertEquals(new DateTime(i1, i2, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(i3));
+		assertEquals(new DateTime(i4, i5, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(i6));
+		assertEquals(new DateTime(i7, i8, 20, 1, 2, 3, 4, ISO_UTC), test.minusMonths(i9));
+	}
 
 }

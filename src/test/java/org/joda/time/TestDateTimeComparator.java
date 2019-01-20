@@ -190,21 +190,13 @@ public class TestDateTimeComparator extends TestCase {
         assertEquals("DateTimeComparator[]", c.toString());
     }        
     public void testStaticGetDateOnlyInstance() {
-        DateTimeComparator c = DateTimeComparator.getDateOnlyInstance();
-        assertEquals(DateTimeFieldType.dayOfYear(), c.getLowerLimit());
-        assertEquals(null, c.getUpperLimit());
-        assertEquals("DateTimeComparator[dayOfYear-]", c.toString());
-        
-        assertSame(DateTimeComparator.getDateOnlyInstance(), DateTimeComparator.getDateOnlyInstance());
-    }
+		this.testDateTimeComparatorTestStaticGetOnlyInstanceTemplate(
+				new TestDateTimeComparatorTestStaticGetDateOnlyInstanceAdapterImpl(), "DateTimeComparator[dayOfYear-]");
+	}
     public void testStaticGetTimeOnlyInstance() {
-        DateTimeComparator c = DateTimeComparator.getTimeOnlyInstance();
-        assertEquals(null, c.getLowerLimit());
-        assertEquals(DateTimeFieldType.dayOfYear(), c.getUpperLimit());
-        assertEquals("DateTimeComparator[-dayOfYear]", c.toString());
-        
-        assertSame(DateTimeComparator.getTimeOnlyInstance(), DateTimeComparator.getTimeOnlyInstance());
-    }
+		this.testDateTimeComparatorTestStaticGetOnlyInstanceTemplate(
+				new TestDateTimeComparatorTestStaticGetTimeOnlyInstanceAdapterImpl(), "DateTimeComparator[-dayOfYear]");
+	}
     public void testStaticGetInstanceLower() {
         DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay());
         assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
@@ -466,22 +458,13 @@ public class TestDateTimeComparator extends TestCase {
     }   // end of testMinute
 
     /**
-     * Test unequal comparisons with hour comparators.
-     */
-    public void testHour() {
-        aDateTime = getADate( "1969-12-31T22:00:00" );
-        bDateTime = getADate( "1969-12-31T23:00:00" );
-        assertEquals( "HourM1a", -1, cHour.compare( aDateTime, bDateTime ) );
-        assertEquals( "HourP1a", 1, cHour.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1970-01-01T00:00:00" );
-        bDateTime = getADate( "1970-01-01T01:00:00" );
-        assertEquals( "HourM1b", -1, cHour.compare( aDateTime, bDateTime ) );
-        assertEquals( "HourP1b", 1, cHour.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1969-12-31T23:59:59" );
-        bDateTime = getADate( "1970-01-01T00:00:00" );
-        assertEquals( "HourP1c", 1, cHour.compare( aDateTime, bDateTime ) );
-        assertEquals( "HourM1c", -1, cHour.compare( bDateTime, aDateTime ) );
-    }   // end of testHour
+	 * Test unequal comparisons with hour comparators.
+	 */
+	public void testHour() {
+		this.testDateTimeComparatorTestTemplate("1969-12-31T22:00:00", "1969-12-31T23:00:00", "HourM1a", cHour,
+				"HourP1a", cHour, "1970-01-01T00:00:00", "1970-01-01T01:00:00", "HourM1b", cHour, "HourP1b", cHour,
+				"HourP1c", aDateTime, bDateTime, cHour, "HourM1c", bDateTime, aDateTime, cHour);
+	}
 
     /**
      * Test unequal comparisons with day of week comparators.
@@ -573,22 +556,13 @@ public class TestDateTimeComparator extends TestCase {
     }   // end of testMonth
 
     /**
-     * Test unequal comparisons with year comparators.
-     */
-    public void testYear() {
-        aDateTime = getADate( "2000-01-01T00:00:00" );
-        bDateTime = getADate( "2001-01-01T00:00:00" );
-        assertEquals( "YEARM1a", -1, cYear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YEARP1a", 1, cYear.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1968-12-31T23:59:59" );
-        bDateTime = getADate( "1970-01-01T00:00:00" );
-        assertEquals( "YEARM1b", -1, cYear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YEARP1b", 1, cYear.compare( bDateTime, aDateTime ) );
-        aDateTime = getADate( "1969-12-31T23:59:59" );
-        bDateTime = getADate( "1970-01-01T00:00:00" );
-        assertEquals( "YEARM1c", -1, cYear.compare( aDateTime, bDateTime ) );
-        assertEquals( "YEARP1c", 1, cYear.compare( bDateTime, aDateTime ) );
-    }   // end of testYear
+	 * Test unequal comparisons with year comparators.
+	 */
+	public void testYear() {
+		this.testDateTimeComparatorTestTemplate("2000-01-01T00:00:00", "2001-01-01T00:00:00", "YEARM1a", cYear,
+				"YEARP1a", cYear, "1968-12-31T23:59:59", "1970-01-01T00:00:00", "YEARM1b", cYear, "YEARP1b", cYear,
+				"YEARP1c", bDateTime, aDateTime, cYear, "YEARM1c", aDateTime, bDateTime, cYear);
+	}
 
     /*
      * 'List' processing tests follow.
@@ -954,5 +928,71 @@ public class TestDateTimeComparator extends TestCase {
         }
         return true;
     }
+
+	public void testDateTimeComparatorTestTemplate(String string1, String string2, String string3,
+			Comparator comparator1, String string4, Comparator comparator2, String string5, String string6,
+			String string7, Comparator comparator3, String string8, Comparator comparator4, String string9,
+			DateTime dateTime1, DateTime dateTime2, Comparator comparator5, String string10, DateTime dateTime3,
+			DateTime dateTime4, Comparator comparator6) {
+		aDateTime = getADate(string1);
+		bDateTime = getADate(string2);
+		assertEquals(string3, -1, comparator1.compare(aDateTime, bDateTime));
+		assertEquals(string4, 1, comparator2.compare(bDateTime, aDateTime));
+		aDateTime = getADate(string5);
+		bDateTime = getADate(string6);
+		assertEquals(string7, -1, comparator3.compare(aDateTime, bDateTime));
+		assertEquals(string8, 1, comparator4.compare(bDateTime, aDateTime));
+		aDateTime = getADate("1969-12-31T23:59:59");
+		bDateTime = getADate("1970-01-01T00:00:00");
+		assertEquals(string9, 1, comparator5.compare(dateTime1, dateTime2));
+		assertEquals(string10, -1, comparator6.compare(dateTime3, dateTime4));
+	}
+
+	public void testDateTimeComparatorTestStaticGetOnlyInstanceTemplate(
+			TestDateTimeComparatorTestStaticGetOnlyInstanceAdapter adapter, String string1) {
+		DateTimeComparator c = adapter.getOnlyInstance();
+		assertEquals(DateTimeFieldType.dayOfYear(), adapter.getLimit(c));
+		assertEquals(null, adapter.getLimit1(c));
+		assertEquals(string1, c.toString());
+		assertSame(adapter.getOnlyInstance(), adapter.getOnlyInstance());
+	}
+
+	interface TestDateTimeComparatorTestStaticGetOnlyInstanceAdapter {
+		DateTimeComparator getOnlyInstance();
+
+		DateTimeFieldType getLimit(DateTimeComparator dateTimeComparator1);
+
+		DateTimeFieldType getLimit1(DateTimeComparator dateTimeComparator1);
+	}
+
+	class TestDateTimeComparatorTestStaticGetDateOnlyInstanceAdapterImpl
+			implements TestDateTimeComparatorTestStaticGetOnlyInstanceAdapter {
+		public DateTimeComparator getOnlyInstance() {
+			return DateTimeComparator.getDateOnlyInstance();
+		}
+
+		public DateTimeFieldType getLimit(DateTimeComparator c) {
+			return c.getLowerLimit();
+		}
+
+		public DateTimeFieldType getLimit1(DateTimeComparator c) {
+			return c.getUpperLimit();
+		}
+	}
+
+	class TestDateTimeComparatorTestStaticGetTimeOnlyInstanceAdapterImpl
+			implements TestDateTimeComparatorTestStaticGetOnlyInstanceAdapter {
+		public DateTimeComparator getOnlyInstance() {
+			return DateTimeComparator.getTimeOnlyInstance();
+		}
+
+		public DateTimeFieldType getLimit(DateTimeComparator c) {
+			return c.getUpperLimit();
+		}
+
+		public DateTimeFieldType getLimit1(DateTimeComparator c) {
+			return c.getLowerLimit();
+		}
+	}
 
 }

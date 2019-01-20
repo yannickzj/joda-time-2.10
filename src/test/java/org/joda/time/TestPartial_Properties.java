@@ -81,33 +81,15 @@ public class TestPartial_Properties extends TestCase {
         zone = null;
     }
 
-    //-----------------------------------------------------------------------
     public void testPropertyGetHour() {
-        Partial test = new Partial(TYPES, VALUES);
-        assertSame(test.getChronology().hourOfDay(), test.property(DateTimeFieldType.hourOfDay()).getField());
-        assertEquals("hourOfDay", test.property(DateTimeFieldType.hourOfDay()).getName());
-        assertEquals("Property[hourOfDay]", test.property(DateTimeFieldType.hourOfDay()).toString());
-        assertSame(test, test.property(DateTimeFieldType.hourOfDay()).getReadablePartial());
-        assertSame(test, test.property(DateTimeFieldType.hourOfDay()).getPartial());
-        assertEquals(10, test.property(DateTimeFieldType.hourOfDay()).get());
-        assertEquals("10", test.property(DateTimeFieldType.hourOfDay()).getAsString());
-        assertEquals("10", test.property(DateTimeFieldType.hourOfDay()).getAsText());
-        assertEquals("10", test.property(DateTimeFieldType.hourOfDay()).getAsText(Locale.FRENCH));
-        assertEquals("10", test.property(DateTimeFieldType.hourOfDay()).getAsShortText());
-        assertEquals("10", test.property(DateTimeFieldType.hourOfDay()).getAsShortText(Locale.FRENCH));
-        assertEquals(test.getChronology().hours(), test.property(DateTimeFieldType.hourOfDay()).getDurationField());
-        assertEquals(test.getChronology().days(), test.property(DateTimeFieldType.hourOfDay()).getRangeDurationField());
-        assertEquals(2, test.property(DateTimeFieldType.hourOfDay()).getMaximumTextLength(null));
-        assertEquals(2, test.property(DateTimeFieldType.hourOfDay()).getMaximumShortTextLength(null));
-    }
+		this.testPartial_PropertiesTestPropertyGetTemplate(new TestPartial_PropertiesTestPropertyGetHourAdapterImpl(),
+				"hourOfDay", "Property[hourOfDay]", 10, "10", "10", "10", "10", "10");
+	}
 
     public void testPropertyGetMaxMinValuesHour() {
-        Partial test = new Partial(TYPES, VALUES);
-        assertEquals(0, test.property(DateTimeFieldType.hourOfDay()).getMinimumValue());
-        assertEquals(0, test.property(DateTimeFieldType.hourOfDay()).getMinimumValueOverall());
-        assertEquals(23, test.property(DateTimeFieldType.hourOfDay()).getMaximumValue());
-        assertEquals(23, test.property(DateTimeFieldType.hourOfDay()).getMaximumValueOverall());
-    }
+		this.testPartial_PropertiesTestPropertyGetMaxMinValuesTemplate(
+				new TestPartial_PropertiesTestPropertyGetMaxMinValuesHourAdapterImpl(), 23, 23);
+	}
 
 //    public void testPropertyAddHour() {
 //        Partial test = new Partial(TYPES, VALUES);
@@ -213,54 +195,19 @@ public class TestPartial_Properties extends TestCase {
     }
 
     public void testPropertyCompareToHour() {
-        Partial test1 = new Partial(TYPES, VALUES1);
-        Partial test2 = new Partial(TYPES, VALUES2);
-        assertEquals(true, test1.property(DateTimeFieldType.hourOfDay()).compareTo(test2) < 0);
-        assertEquals(true, test2.property(DateTimeFieldType.hourOfDay()).compareTo(test1) > 0);
-        assertEquals(true, test1.property(DateTimeFieldType.hourOfDay()).compareTo(test1) == 0);
-        try {
-            test1.property(DateTimeFieldType.hourOfDay()).compareTo((ReadablePartial) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        
-        DateTime dt1 = new DateTime(TEST_TIME1);
-        DateTime dt2 = new DateTime(TEST_TIME2);
-        assertEquals(true, test1.property(DateTimeFieldType.hourOfDay()).compareTo(dt2) < 0);
-        assertEquals(true, test2.property(DateTimeFieldType.hourOfDay()).compareTo(dt1) > 0);
-        assertEquals(true, test1.property(DateTimeFieldType.hourOfDay()).compareTo(dt1) == 0);
-        try {
-            test1.property(DateTimeFieldType.hourOfDay()).compareTo((ReadableInstant) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPartial_PropertiesTestPropertyCompareToTemplate(
+				new TestPartial_PropertiesTestPropertyCompareToHourAdapterImpl());
+	}
 
-    //-----------------------------------------------------------------------
     public void testPropertyGetMinute() {
-        Partial test = new Partial(TYPES, VALUES);
-        assertSame(test.getChronology().minuteOfHour(), test.property(DateTimeFieldType.minuteOfHour()).getField());
-        assertEquals("minuteOfHour", test.property(DateTimeFieldType.minuteOfHour()).getName());
-        assertEquals("Property[minuteOfHour]", test.property(DateTimeFieldType.minuteOfHour()).toString());
-        assertSame(test, test.property(DateTimeFieldType.minuteOfHour()).getReadablePartial());
-        assertSame(test, test.property(DateTimeFieldType.minuteOfHour()).getPartial());
-        assertEquals(20, test.property(DateTimeFieldType.minuteOfHour()).get());
-        assertEquals("20", test.property(DateTimeFieldType.minuteOfHour()).getAsString());
-        assertEquals("20", test.property(DateTimeFieldType.minuteOfHour()).getAsText());
-        assertEquals("20", test.property(DateTimeFieldType.minuteOfHour()).getAsText(Locale.FRENCH));
-        assertEquals("20", test.property(DateTimeFieldType.minuteOfHour()).getAsShortText());
-        assertEquals("20", test.property(DateTimeFieldType.minuteOfHour()).getAsShortText(Locale.FRENCH));
-        assertEquals(test.getChronology().minutes(), test.property(DateTimeFieldType.minuteOfHour()).getDurationField());
-        assertEquals(test.getChronology().hours(), test.property(DateTimeFieldType.minuteOfHour()).getRangeDurationField());
-        assertEquals(2, test.property(DateTimeFieldType.minuteOfHour()).getMaximumTextLength(null));
-        assertEquals(2, test.property(DateTimeFieldType.minuteOfHour()).getMaximumShortTextLength(null));
-    }
+		this.testPartial_PropertiesTestPropertyGetTemplate(new TestPartial_PropertiesTestPropertyGetMinuteAdapterImpl(),
+				"minuteOfHour", "Property[minuteOfHour]", 20, "20", "20", "20", "20", "20");
+	}
 
     public void testPropertyGetMaxMinValuesMinute() {
-        Partial test = new Partial(TYPES, VALUES);
-        assertEquals(0, test.property(DateTimeFieldType.minuteOfHour()).getMinimumValue());
-        assertEquals(0, test.property(DateTimeFieldType.minuteOfHour()).getMinimumValueOverall());
-        assertEquals(59, test.property(DateTimeFieldType.minuteOfHour()).getMaximumValue());
-        assertEquals(59, test.property(DateTimeFieldType.minuteOfHour()).getMaximumValueOverall());
-    }
+		this.testPartial_PropertiesTestPropertyGetMaxMinValuesTemplate(
+				new TestPartial_PropertiesTestPropertyGetMaxMinValuesMinuteAdapterImpl(), 59, 59);
+	}
 
 //    public void testPropertyAddMinute() {
 //        Partial test = new Partial(TYPES, VALUES);
@@ -385,26 +332,9 @@ public class TestPartial_Properties extends TestCase {
     }
 
     public void testPropertyCompareToMinute() {
-        Partial test1 = new Partial(TYPES, VALUES1);
-        Partial test2 = new Partial(TYPES, VALUES2);
-        assertEquals(true, test1.property(DateTimeFieldType.minuteOfHour()).compareTo(test2) < 0);
-        assertEquals(true, test2.property(DateTimeFieldType.minuteOfHour()).compareTo(test1) > 0);
-        assertEquals(true, test1.property(DateTimeFieldType.minuteOfHour()).compareTo(test1) == 0);
-        try {
-            test1.property(DateTimeFieldType.minuteOfHour()).compareTo((ReadablePartial) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        
-        DateTime dt1 = new DateTime(TEST_TIME1);
-        DateTime dt2 = new DateTime(TEST_TIME2);
-        assertEquals(true, test1.property(DateTimeFieldType.minuteOfHour()).compareTo(dt2) < 0);
-        assertEquals(true, test2.property(DateTimeFieldType.minuteOfHour()).compareTo(dt1) > 0);
-        assertEquals(true, test1.property(DateTimeFieldType.minuteOfHour()).compareTo(dt1) == 0);
-        try {
-            test1.property(DateTimeFieldType.minuteOfHour()).compareTo((ReadableInstant) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPartial_PropertiesTestPropertyCompareToTemplate(
+				new TestPartial_PropertiesTestPropertyCompareToMinuteAdapterImpl());
+	}
 
     //-----------------------------------------------------------------------
     private void check(Partial test, int hour, int min, int sec, int milli) {
@@ -413,4 +343,141 @@ public class TestPartial_Properties extends TestCase {
         assertEquals(sec, test.get(DateTimeFieldType.secondOfMinute()));
         assertEquals(milli, test.get(DateTimeFieldType.millisOfSecond()));
     }
+
+	public void testPartial_PropertiesTestPropertyCompareToTemplate(
+			TestPartial_PropertiesTestPropertyCompareToAdapter adapter) {
+		Partial test1 = new Partial(TYPES, VALUES1);
+		Partial test2 = new Partial(TYPES, VALUES2);
+		assertEquals(true, test1.property(adapter.ofHour()).compareTo(test2) < 0);
+		assertEquals(true, test2.property(adapter.ofHour()).compareTo(test1) > 0);
+		assertEquals(true, test1.property(adapter.ofHour()).compareTo(test1) == 0);
+		try {
+			test1.property(adapter.ofHour()).compareTo((ReadablePartial) null);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		DateTime dt1 = new DateTime(TEST_TIME1);
+		DateTime dt2 = new DateTime(TEST_TIME2);
+		assertEquals(true, test1.property(adapter.ofHour()).compareTo(dt2) < 0);
+		assertEquals(true, test2.property(adapter.ofHour()).compareTo(dt1) > 0);
+		assertEquals(true, test1.property(adapter.ofHour()).compareTo(dt1) == 0);
+		try {
+			test1.property(adapter.ofHour()).compareTo((ReadableInstant) null);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
+
+	interface TestPartial_PropertiesTestPropertyCompareToAdapter {
+		DateTimeFieldType ofHour();
+	}
+
+	class TestPartial_PropertiesTestPropertyCompareToHourAdapterImpl
+			implements TestPartial_PropertiesTestPropertyCompareToAdapter {
+		public DateTimeFieldType ofHour() {
+			return DateTimeFieldType.hourOfDay();
+		}
+	}
+
+	class TestPartial_PropertiesTestPropertyCompareToMinuteAdapterImpl
+			implements TestPartial_PropertiesTestPropertyCompareToAdapter {
+		public DateTimeFieldType ofHour() {
+			return DateTimeFieldType.minuteOfHour();
+		}
+	}
+
+	public void testPartial_PropertiesTestPropertyGetTemplate(TestPartial_PropertiesTestPropertyGetAdapter adapter,
+			String string1, String string2, int i1, String string3, String string4, String string5, String string6,
+			String string7) {
+		Partial test = new Partial(TYPES, VALUES);
+		assertSame(adapter.ofHour(test.getChronology()), test.property(adapter.ofHour1()).getField());
+		assertEquals(string1, test.property(adapter.ofHour1()).getName());
+		assertEquals(string2, test.property(adapter.ofHour1()).toString());
+		assertSame(test, test.property(adapter.ofHour1()).getReadablePartial());
+		assertSame(test, test.property(adapter.ofHour1()).getPartial());
+		assertEquals(i1, test.property(adapter.ofHour1()).get());
+		assertEquals(string3, test.property(adapter.ofHour1()).getAsString());
+		assertEquals(string4, test.property(adapter.ofHour1()).getAsText());
+		assertEquals(string5, test.property(adapter.ofHour1()).getAsText(Locale.FRENCH));
+		assertEquals(string6, test.property(adapter.ofHour1()).getAsShortText());
+		assertEquals(string7, test.property(adapter.ofHour1()).getAsShortText(Locale.FRENCH));
+		assertEquals(adapter.action1(test.getChronology()), test.property(adapter.ofHour1()).getDurationField());
+		assertEquals(adapter.action2(test.getChronology()), test.property(adapter.ofHour1()).getRangeDurationField());
+		assertEquals(2, test.property(adapter.ofHour1()).getMaximumTextLength(null));
+		assertEquals(2, test.property(adapter.ofHour1()).getMaximumShortTextLength(null));
+	}
+
+	interface TestPartial_PropertiesTestPropertyGetAdapter {
+		DateTimeField ofHour(Chronology chronology1);
+
+		DateTimeFieldType ofHour1();
+
+		DurationField action1(Chronology chronology1);
+
+		DurationField action2(Chronology chronology1);
+	}
+
+	class TestPartial_PropertiesTestPropertyGetHourAdapterImpl implements TestPartial_PropertiesTestPropertyGetAdapter {
+		public DateTimeField ofHour(Chronology chronology1) {
+			return chronology1.hourOfDay();
+		}
+
+		public DateTimeFieldType ofHour1() {
+			return DateTimeFieldType.hourOfDay();
+		}
+
+		public DurationField action1(Chronology chronology1) {
+			return chronology1.hours();
+		}
+
+		public DurationField action2(Chronology chronology1) {
+			return chronology1.days();
+		}
+	}
+
+	class TestPartial_PropertiesTestPropertyGetMinuteAdapterImpl
+			implements TestPartial_PropertiesTestPropertyGetAdapter {
+		public DateTimeField ofHour(Chronology chronology1) {
+			return chronology1.minuteOfHour();
+		}
+
+		public DateTimeFieldType ofHour1() {
+			return DateTimeFieldType.minuteOfHour();
+		}
+
+		public DurationField action1(Chronology chronology1) {
+			return chronology1.minutes();
+		}
+
+		public DurationField action2(Chronology chronology1) {
+			return chronology1.hours();
+		}
+	}
+
+	public void testPartial_PropertiesTestPropertyGetMaxMinValuesTemplate(
+			TestPartial_PropertiesTestPropertyGetMaxMinValuesAdapter adapter, int i1, int i2) {
+		Partial test = new Partial(TYPES, VALUES);
+		assertEquals(0, test.property(adapter.ofHour()).getMinimumValue());
+		assertEquals(0, test.property(adapter.ofHour()).getMinimumValueOverall());
+		assertEquals(i1, test.property(adapter.ofHour()).getMaximumValue());
+		assertEquals(i2, test.property(adapter.ofHour()).getMaximumValueOverall());
+	}
+
+	interface TestPartial_PropertiesTestPropertyGetMaxMinValuesAdapter {
+		DateTimeFieldType ofHour();
+	}
+
+	class TestPartial_PropertiesTestPropertyGetMaxMinValuesHourAdapterImpl
+			implements TestPartial_PropertiesTestPropertyGetMaxMinValuesAdapter {
+		public DateTimeFieldType ofHour() {
+			return DateTimeFieldType.hourOfDay();
+		}
+	}
+
+	class TestPartial_PropertiesTestPropertyGetMaxMinValuesMinuteAdapterImpl
+			implements TestPartial_PropertiesTestPropertyGetMaxMinValuesAdapter {
+		public DateTimeFieldType ofHour() {
+			return DateTimeFieldType.minuteOfHour();
+		}
+	}
 }

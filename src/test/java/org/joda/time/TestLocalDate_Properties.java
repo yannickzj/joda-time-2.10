@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.lang.Object;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -488,30 +489,10 @@ public class TestLocalDate_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testPropertyEquals() {
-        LocalDate test1 = new LocalDate(2005, 11, 8);
-        LocalDate test2 = new LocalDate(2005, 11, 9);
-        LocalDate test3 = new LocalDate(2005, 11, 8, CopticChronology.getInstanceUTC());
-        assertEquals(false, test1.dayOfMonth().equals(test1.year()));
-        assertEquals(false, test1.dayOfMonth().equals(test1.monthOfYear()));
-        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
-        assertEquals(false, test1.dayOfMonth().equals(test2.year()));
-        assertEquals(false, test1.dayOfMonth().equals(test2.monthOfYear()));
-        assertEquals(false, test1.dayOfMonth().equals(test2.dayOfMonth()));
-        
-        assertEquals(false, test1.monthOfYear().equals(test1.year()));
-        assertEquals(true, test1.monthOfYear().equals(test1.monthOfYear()));
-        assertEquals(false, test1.monthOfYear().equals(test1.dayOfMonth()));
-        assertEquals(false, test1.monthOfYear().equals(test2.year()));
-        assertEquals(true, test1.monthOfYear().equals(test2.monthOfYear()));
-        assertEquals(false, test1.monthOfYear().equals(test2.dayOfMonth()));
-        
-        assertEquals(false, test1.dayOfMonth().equals(null));
-        assertEquals(false, test1.dayOfMonth().equals("any"));
-        
-        // chrono
-        assertEquals(false, test1.dayOfMonth().equals(test3.dayOfMonth()));
-    }
+    public void testPropertyEquals() throws Exception {
+		TestPropertiesTestPropertyEqualsTemplate.testPropertiesTestPropertyEqualsTemplate(
+				new TestLocalDate_PropertiesTestPropertyEqualsAdapterImpl(), LocalDate.class);
+	}
 
     public void testPropertyHashCode() {
         LocalDate test1 = new LocalDate(2005, 11, 8);
@@ -552,4 +533,19 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(month, test.getMonthOfYear());
         assertEquals(day, test.getDayOfMonth());
     }
+
+	class TestLocalDate_PropertiesTestPropertyEqualsAdapterImpl
+			implements TestPropertiesTestPropertyEqualsAdapter<LocalDate> {
+		public Object year(LocalDate test1) {
+			return test1.year();
+		}
+
+		public Object dayOfMonth(LocalDate test1) {
+			return test1.dayOfMonth();
+		}
+
+		public Object monthOfYear(LocalDate test1) {
+			return test1.monthOfYear();
+		}
+	}
 }

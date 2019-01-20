@@ -265,65 +265,15 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertNoPrint(parser);
     }
 
-    //-----------------------------------------------------------------------
     public void test_dateTimeParser() {
-        DateTimeFormatter parser = ISODateTimeFormat.dateTimeParser();
-        assertParse(parser, true, "2006-06-09");
-        assertParse(parser, true, "2006-W27-3");
-        assertParse(parser, true, "2006-123");
-        assertParse(parser, true, "2006-06-09T+02:00");
-        assertParse(parser, true, "2006-W27-3T+02:00");
-        assertParse(parser, true, "2006-123T+02:00");
-        
-        assertParse(parser, true, "2006-06-09T10:20:30.040");
-        assertParse(parser, true, "2006-W27-3T10:20:30.040");
-        assertParse(parser, true, "2006-123T10:20:30.040");
-        assertParse(parser, true, "2006-06-09T10:20:30.040+02:00");
-        assertParse(parser, true, "2006-W27-3T10:20:30.040+02:00");
-        assertParse(parser, true, "2006-123T10:20:30.040+02:00");
-        
-        assertParse(parser, true, "T10:20:30.040");
-        assertParse(parser, true, "T10.5");
-        assertParse(parser, true, "T10:20:30.040+02:00");
-        assertParse(parser, true, "T10.5+02:00");
-        
-        assertParse(parser, false, "10:20:30.040");
-        assertParse(parser, false, "10.5");
-        assertParse(parser, false, "10:20:30.040+02:00");
-        assertParse(parser, false, "10.5+02:00");
-        
-        assertNoPrint(parser);
-    }
+		this.testISODateTimeFormatParsingTest_dateTimeParserTemplate(
+				new TestISODateTimeFormatParsingTest_dateTimeParserAdapterImpl(), true, true, true, true);
+	}
 
-    //-----------------------------------------------------------------------
     public void test_dateOptionalTimeParser() {
-        DateTimeFormatter parser = ISODateTimeFormat.dateOptionalTimeParser();
-        assertParse(parser, true, "2006-06-09");
-        assertParse(parser, true, "2006-W27-3");
-        assertParse(parser, true, "2006-123");
-        assertParse(parser, true, "2006-06-09T+02:00");
-        assertParse(parser, true, "2006-W27-3T+02:00");
-        assertParse(parser, true, "2006-123T+02:00");
-        
-        assertParse(parser, true, "2006-06-09T10:20:30.040");
-        assertParse(parser, true, "2006-W27-3T10:20:30.040");
-        assertParse(parser, true, "2006-123T10:20:30.040");
-        assertParse(parser, true, "2006-06-09T10:20:30.040+02:00");
-        assertParse(parser, true, "2006-W27-3T10:20:30.040+02:00");
-        assertParse(parser, true, "2006-123T10:20:30.040+02:00");
-        
-        assertParse(parser, false, "T10:20:30.040");
-        assertParse(parser, false, "T10.5");
-        assertParse(parser, false, "T10:20:30.040+02:00");
-        assertParse(parser, false, "T10.5+02:00");
-        
-        assertParse(parser, false, "10:20:30.040");
-        assertParse(parser, false, "10.5");
-        assertParse(parser, false, "10:20:30.040+02:00");
-        assertParse(parser, false, "10.5+02:00");
-        
-        assertNoPrint(parser);
-    }
+		this.testISODateTimeFormatParsingTest_dateTimeParserTemplate(
+				new TestISODateTimeFormatParsingTest_dateOptionalTimeParserAdapterImpl(), false, false, false, false);
+	}
 
     //-----------------------------------------------------------------------
     public void test_localDateOptionalTimeParser() {
@@ -388,17 +338,11 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "1.400Z");
     }
 
-    //-----------------------------------------------------------------------
     public void test_timeNoMillis() {
-        DateTimeZone.setDefault(DateTimeZone.UTC);
-        DateTimeFormatter parser = ISODateTimeFormat.timeNoMillis();
-        assertParse(parser, "10:20:30Z", new DateTime(1970, 1, 1, 10, 20, 30, 0));
-        assertParse(parser, "5:6:7Z", new DateTime(1970, 1, 1, 5, 6, 7, 0));
-        assertParse(parser, false, "10:20Z");
-        assertParse(parser, false, "10:2Z");
-        assertParse(parser, false, "10Z");
-        assertParse(parser, false, "1Z");
-    }
+		this.testISODateTimeFormatParsingNoMillisTemplate(
+				new TestISODateTimeFormatParsingTest_timeNoMillisAdapterImpl(), "10:20:30Z", "5:6:7Z", "10:20Z",
+				"10:2Z", "10Z", "1Z");
+	}
 
     //-----------------------------------------------------------------------
     public void test_tTime() {
@@ -415,17 +359,11 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "T1.400Z");
     }
 
-    //-----------------------------------------------------------------------
     public void test_tTimeNoMillis() {
-        DateTimeZone.setDefault(DateTimeZone.UTC);
-        DateTimeFormatter parser = ISODateTimeFormat.tTimeNoMillis();
-        assertParse(parser, "T10:20:30Z", new DateTime(1970, 1, 1, 10, 20, 30, 0));
-        assertParse(parser, "T5:6:7Z", new DateTime(1970, 1, 1, 5, 6, 7, 0));
-        assertParse(parser, false, "T10:20Z");
-        assertParse(parser, false, "T10:2Z");
-        assertParse(parser, false, "T10Z");
-        assertParse(parser, false, "T1Z");
-    }
+		this.testISODateTimeFormatParsingNoMillisTemplate(
+				new TestISODateTimeFormatParsingTest_tTimeNoMillisAdapterImpl(), "T10:20:30Z", "T5:6:7Z", "T10:20Z",
+				"T10:2Z", "T10Z", "T1Z");
+	}
 
     //-----------------------------------------------------------------------
     public void test_dateTime() {
@@ -604,17 +542,11 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "1.400Z");
     }
 
-    //-----------------------------------------------------------------------
     public void test_basicTimeNoMillis() {
-        DateTimeZone.setDefault(DateTimeZone.UTC);
-        DateTimeFormatter parser = ISODateTimeFormat.basicTimeNoMillis();
-        assertParse(parser, "102030Z", new DateTime(1970, 1, 1, 10, 20, 30, 0));
-        assertParse(parser, false, "10203Z");
-        assertParse(parser, false, "1020Z");
-        assertParse(parser, false, "102Z");
-        assertParse(parser, false, "10Z");
-        assertParse(parser, false, "1Z");
-    }
+		this.testISODateTimeFormatParsingTest_basicTimeNoMillisTemplate(
+				new TestISODateTimeFormatParsingTest_basicTimeNoMillisAdapterImpl(), "102030Z", "10203Z", "1020Z",
+				"102Z", "10Z", "1Z");
+	}
 
     //-----------------------------------------------------------------------
     public void test_basicTTime() {
@@ -631,17 +563,11 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "T1.400Z");
     }
 
-    //-----------------------------------------------------------------------
     public void test_basicTTimeNoMillis() {
-        DateTimeZone.setDefault(DateTimeZone.UTC);
-        DateTimeFormatter parser = ISODateTimeFormat.basicTTimeNoMillis();
-        assertParse(parser, "T102030Z", new DateTime(1970, 1, 1, 10, 20, 30, 0));
-        assertParse(parser, false, "T10203Z");
-        assertParse(parser, false, "T1020Z");
-        assertParse(parser, false, "T102Z");
-        assertParse(parser, false, "T10Z");
-        assertParse(parser, false, "T1Z");
-    }
+		this.testISODateTimeFormatParsingTest_basicTimeNoMillisTemplate(
+				new TestISODateTimeFormatParsingTest_basicTTimeNoMillisAdapterImpl(), "T102030Z", "T10203Z", "T1020Z",
+				"T102Z", "T10Z", "T1Z");
+	}
 
     //-----------------------------------------------------------------------
     public void test_basicDateTime() {
@@ -780,37 +706,16 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, false, "2006W273T1Z");
     }
 
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
     public void test_hourMinute() {
-        DateTimeZone.setDefault(DateTimeZone.UTC);
-        DateTimeFormatter parser = ISODateTimeFormat.hourMinute();
-        assertParse(parser, "10:20", new DateTime(1970, 1, 1, 10, 20, 0, 0));
-        assertParse(parser, "5:6", new DateTime(1970, 1, 1, 5, 6, 0, 0));
-        assertParse(parser, false, "10:20:30.400999999");
-        assertParse(parser, false, "10:20:30.400");
-        assertParse(parser, false, "10:20:30");
-        assertParse(parser, false, "10:20.400");
-        assertParse(parser, false, "10:2.400");
-        assertParse(parser, false, "10.400");
-        assertParse(parser, false, "1.400");
-    }
+		this.testISODateTimeFormatParsingTest_hourMinuteTemplate(
+				new TestISODateTimeFormatParsingTest_hourMinuteAdapterImpl(), "10:20", 0, "5:6", 0, "10:20:30");
+	}
 
-    //-----------------------------------------------------------------------
     public void test_hourMinuteSecond() {
-        DateTimeZone.setDefault(DateTimeZone.UTC);
-        DateTimeFormatter parser = ISODateTimeFormat.hourMinuteSecond();
-        assertParse(parser, "10:20:30", new DateTime(1970, 1, 1, 10, 20, 30, 0));
-        assertParse(parser, "5:6:7", new DateTime(1970, 1, 1, 5, 6, 7, 0));
-        assertParse(parser, false, "10:20:30.400999999");
-        assertParse(parser, false, "10:20:30.400");
-        assertParse(parser, false, "10:20:30.4");
-        assertParse(parser, false, "10:20.400");
-        assertParse(parser, false, "10:2.400");
-        assertParse(parser, false, "10.400");
-        assertParse(parser, false, "1.400");
-    }
+		this.testISODateTimeFormatParsingTest_hourMinuteTemplate(
+				new TestISODateTimeFormatParsingTest_hourMinuteSecondAdapterImpl(), "10:20:30", 30, "5:6:7", 7,
+				"10:20:30.4");
+	}
 
     //-----------------------------------------------------------------------
     public void test_hourMinuteSecondMillis() {
@@ -870,5 +775,145 @@ public class TestISODateTimeFormatParsing extends TestCase {
             // expected
         }
     }
+
+	public void testISODateTimeFormatParsingTest_dateTimeParserTemplate(
+			TestISODateTimeFormatParsingTest_dateTimeParserAdapter adapter, boolean b1, boolean b2, boolean b3,
+			boolean b4) {
+		DateTimeFormatter parser = adapter.dateTimeParser();
+		assertParse(parser, true, "2006-06-09");
+		assertParse(parser, true, "2006-W27-3");
+		assertParse(parser, true, "2006-123");
+		assertParse(parser, true, "2006-06-09T+02:00");
+		assertParse(parser, true, "2006-W27-3T+02:00");
+		assertParse(parser, true, "2006-123T+02:00");
+		assertParse(parser, true, "2006-06-09T10:20:30.040");
+		assertParse(parser, true, "2006-W27-3T10:20:30.040");
+		assertParse(parser, true, "2006-123T10:20:30.040");
+		assertParse(parser, true, "2006-06-09T10:20:30.040+02:00");
+		assertParse(parser, true, "2006-W27-3T10:20:30.040+02:00");
+		assertParse(parser, true, "2006-123T10:20:30.040+02:00");
+		assertParse(parser, b1, "T10:20:30.040");
+		assertParse(parser, b2, "T10.5");
+		assertParse(parser, b3, "T10:20:30.040+02:00");
+		assertParse(parser, b4, "T10.5+02:00");
+		assertParse(parser, false, "10:20:30.040");
+		assertParse(parser, false, "10.5");
+		assertParse(parser, false, "10:20:30.040+02:00");
+		assertParse(parser, false, "10.5+02:00");
+		assertNoPrint(parser);
+	}
+
+	interface TestISODateTimeFormatParsingTest_dateTimeParserAdapter {
+		DateTimeFormatter dateTimeParser();
+	}
+
+	class TestISODateTimeFormatParsingTest_dateTimeParserAdapterImpl
+			implements TestISODateTimeFormatParsingTest_dateTimeParserAdapter {
+		public DateTimeFormatter dateTimeParser() {
+			return ISODateTimeFormat.dateTimeParser();
+		}
+	}
+
+	class TestISODateTimeFormatParsingTest_dateOptionalTimeParserAdapterImpl
+			implements TestISODateTimeFormatParsingTest_dateTimeParserAdapter {
+		public DateTimeFormatter dateTimeParser() {
+			return ISODateTimeFormat.dateOptionalTimeParser();
+		}
+	}
+
+	public void testISODateTimeFormatParsingTest_hourMinuteTemplate(
+			TestISODateTimeFormatParsingTest_hourMinuteAdapter adapter, String string1, int i1, String string2, int i2,
+			String string3) {
+		DateTimeZone.setDefault(DateTimeZone.UTC);
+		DateTimeFormatter parser = adapter.hourMinute();
+		assertParse(parser, string1, new DateTime(1970, 1, 1, 10, 20, i1, 0));
+		assertParse(parser, string2, new DateTime(1970, 1, 1, 5, 6, i2, 0));
+		assertParse(parser, false, "10:20:30.400999999");
+		assertParse(parser, false, "10:20:30.400");
+		assertParse(parser, false, string3);
+		assertParse(parser, false, "10:20.400");
+		assertParse(parser, false, "10:2.400");
+		assertParse(parser, false, "10.400");
+		assertParse(parser, false, "1.400");
+	}
+
+	interface TestISODateTimeFormatParsingTest_hourMinuteAdapter {
+		DateTimeFormatter hourMinute();
+	}
+
+	class TestISODateTimeFormatParsingTest_hourMinuteAdapterImpl
+			implements TestISODateTimeFormatParsingTest_hourMinuteAdapter {
+		public DateTimeFormatter hourMinute() {
+			return ISODateTimeFormat.hourMinute();
+		}
+	}
+
+	class TestISODateTimeFormatParsingTest_hourMinuteSecondAdapterImpl
+			implements TestISODateTimeFormatParsingTest_hourMinuteAdapter {
+		public DateTimeFormatter hourMinute() {
+			return ISODateTimeFormat.hourMinuteSecond();
+		}
+	}
+
+	public void testISODateTimeFormatParsingTest_basicTimeNoMillisTemplate(
+			TestISODateTimeFormatParsingTest_basicTimeNoMillisAdapter adapter, String string1, String string2,
+			String string3, String string4, String string5, String string6) {
+		DateTimeZone.setDefault(DateTimeZone.UTC);
+		DateTimeFormatter parser = adapter.basicTimeNoMillis();
+		assertParse(parser, string1, new DateTime(1970, 1, 1, 10, 20, 30, 0));
+		assertParse(parser, false, string2);
+		assertParse(parser, false, string3);
+		assertParse(parser, false, string4);
+		assertParse(parser, false, string5);
+		assertParse(parser, false, string6);
+	}
+
+	interface TestISODateTimeFormatParsingTest_basicTimeNoMillisAdapter {
+		DateTimeFormatter basicTimeNoMillis();
+	}
+
+	class TestISODateTimeFormatParsingTest_basicTimeNoMillisAdapterImpl
+			implements TestISODateTimeFormatParsingTest_basicTimeNoMillisAdapter {
+		public DateTimeFormatter basicTimeNoMillis() {
+			return ISODateTimeFormat.basicTimeNoMillis();
+		}
+	}
+
+	class TestISODateTimeFormatParsingTest_basicTTimeNoMillisAdapterImpl
+			implements TestISODateTimeFormatParsingTest_basicTimeNoMillisAdapter {
+		public DateTimeFormatter basicTimeNoMillis() {
+			return ISODateTimeFormat.basicTTimeNoMillis();
+		}
+	}
+
+	public void testISODateTimeFormatParsingNoMillisTemplate(TestISODateTimeFormatParsingNoMillisAdapter adapter,
+			String string1, String string2, String string3, String string4, String string5, String string6) {
+		DateTimeZone.setDefault(DateTimeZone.UTC);
+		DateTimeFormatter parser = adapter.timeNoMillis();
+		assertParse(parser, string1, new DateTime(1970, 1, 1, 10, 20, 30, 0));
+		assertParse(parser, string2, new DateTime(1970, 1, 1, 5, 6, 7, 0));
+		assertParse(parser, false, string3);
+		assertParse(parser, false, string4);
+		assertParse(parser, false, string5);
+		assertParse(parser, false, string6);
+	}
+
+	interface TestISODateTimeFormatParsingNoMillisAdapter {
+		DateTimeFormatter timeNoMillis();
+	}
+
+	class TestISODateTimeFormatParsingTest_timeNoMillisAdapterImpl
+			implements TestISODateTimeFormatParsingNoMillisAdapter {
+		public DateTimeFormatter timeNoMillis() {
+			return ISODateTimeFormat.timeNoMillis();
+		}
+	}
+
+	class TestISODateTimeFormatParsingTest_tTimeNoMillisAdapterImpl
+			implements TestISODateTimeFormatParsingNoMillisAdapter {
+		public DateTimeFormatter timeNoMillis() {
+			return ISODateTimeFormat.tTimeNoMillis();
+		}
+	}
 
 }

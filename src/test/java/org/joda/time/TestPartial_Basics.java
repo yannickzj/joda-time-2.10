@@ -423,24 +423,12 @@ public class TestPartial_Basics extends TestCase {
     }        
 
     public void testWith3e() {
-        Partial test = new Partial(DateTimeFieldType.era(), 1);
-        Partial result = test.with(DateTimeFieldType.halfdayOfDay(), 0);
-        assertEquals(2, result.size());
-        assertEquals(1, result.get(DateTimeFieldType.era()));
-        assertEquals(0, result.get(DateTimeFieldType.halfdayOfDay()));
-        assertEquals(0, result.indexOf(DateTimeFieldType.era()));
-        assertEquals(1, result.indexOf(DateTimeFieldType.halfdayOfDay()));
-    }        
+		this.testPartial_BasicsTestTemplate(new TestPartial_BasicsTestWith3eAdapterImpl(), 1, 0);
+	}        
 
     public void testWith3f() {
-        Partial test = new Partial(DateTimeFieldType.halfdayOfDay(), 0);
-        Partial result = test.with(DateTimeFieldType.era(), 1);
-        assertEquals(2, result.size());
-        assertEquals(1, result.get(DateTimeFieldType.era()));
-        assertEquals(0, result.get(DateTimeFieldType.halfdayOfDay()));
-        assertEquals(0, result.indexOf(DateTimeFieldType.era()));
-        assertEquals(1, result.indexOf(DateTimeFieldType.halfdayOfDay()));
-    }        
+		this.testPartial_BasicsTestTemplate(new TestPartial_BasicsTestWith3fAdapterImpl(), 0, 1);
+	}        
 
     public void testWith4() {
         Partial test = createHourMinPartial();
@@ -601,44 +589,12 @@ public class TestPartial_Basics extends TestCase {
     }
 
     public void testWithFieldAdded7() {
-        Partial test = createHourMinPartial(23, 59, ISO_UTC);
-        try {
-            test.withFieldAdded(DurationFieldType.minutes(), 1);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            // expected
-        }
-        check(test, 23, 59);
-        
-        test = createHourMinPartial(23, 59, ISO_UTC);
-        try {
-            test.withFieldAdded(DurationFieldType.hours(), 1);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            // expected
-        }
-        check(test, 23, 59);
-    }
+		this.testPartial_BasicsTestWithFieldTemplate(23, 59, 1, 23, 59, 23, 59, 1, 23, 59);
+	}
 
     public void testWithFieldAdded8() {
-        Partial test = createHourMinPartial(0, 0, ISO_UTC);
-        try {
-            test.withFieldAdded(DurationFieldType.minutes(), -1);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            // expected
-        }
-        check(test, 0, 0);
-        
-        test = createHourMinPartial(0, 0, ISO_UTC);
-        try {
-            test.withFieldAdded(DurationFieldType.hours(), -1);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            // expected
-        }
-        check(test, 0, 0);
-    }
+		this.testPartial_BasicsTestWithFieldTemplate(0, 0, -1, 0, 0, 0, 0, -1, 0, 0);
+	}
 
     //-----------------------------------------------------------------------
     public void testWithFieldAddWrapped1() {
@@ -693,28 +649,12 @@ public class TestPartial_Basics extends TestCase {
     }
 
     public void testWithFieldAddWrapped7() {
-        Partial test = createHourMinPartial(23, 59, ISO_UTC);
-        Partial result = test.withFieldAddWrapped(DurationFieldType.minutes(), 1);
-        check(test, 23, 59);
-        check(result, 0, 0);
-        
-        test = createHourMinPartial(23, 59, ISO_UTC);
-        result = test.withFieldAddWrapped(DurationFieldType.hours(), 1);
-        check(test, 23, 59);
-        check(result, 0, 59);
-    }
+		this.testPartial_BasicsTestWithFieldAddTemplate(23, 59, 1, 23, 59, 0, 0, 23, 59, 1, 23, 59, 0, 59);
+	}
 
     public void testWithFieldAddWrapped8() {
-        Partial test = createHourMinPartial(0, 0, ISO_UTC);
-        Partial result = test.withFieldAddWrapped(DurationFieldType.minutes(), -1);
-        check(test, 0, 0);
-        check(result, 23, 59);
-        
-        test = createHourMinPartial(0, 0, ISO_UTC);
-        result = test.withFieldAddWrapped(DurationFieldType.hours(), -1);
-        check(test, 0, 0);
-        check(result, 23, 0);
-    }
+		this.testPartial_BasicsTestWithFieldAddTemplate(0, 0, -1, 0, 0, 23, 59, 0, 0, -1, 0, 0, 23, 0);
+	}
 
     //-----------------------------------------------------------------------
     public void testPlus_RP() {
@@ -927,4 +867,70 @@ public class TestPartial_Basics extends TestCase {
         assertEquals(test.toString(), hour, test.get(DateTimeFieldType.hourOfDay()));
         assertEquals(test.toString(), min, test.get(DateTimeFieldType.minuteOfHour()));
     }
+
+	public void testPartial_BasicsTestWithFieldTemplate(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8,
+			int i9, int i10) {
+		Partial test = createHourMinPartial(i1, i2, ISO_UTC);
+		try {
+			test.withFieldAdded(DurationFieldType.minutes(), i3);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		check(test, i4, i5);
+		test = createHourMinPartial(i6, i7, ISO_UTC);
+		try {
+			test.withFieldAdded(DurationFieldType.hours(), i8);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		check(test, i9, i10);
+	}
+
+	public void testPartial_BasicsTestWithFieldAddTemplate(int i1, int i2, int i3, int i4, int i5, int i6, int i7,
+			int i8, int i9, int i10, int i11, int i12, int i13, int i14) {
+		Partial test = createHourMinPartial(i1, i2, ISO_UTC);
+		Partial result = test.withFieldAddWrapped(DurationFieldType.minutes(), i3);
+		check(test, i4, i5);
+		check(result, i6, i7);
+		test = createHourMinPartial(i8, i9, ISO_UTC);
+		result = test.withFieldAddWrapped(DurationFieldType.hours(), i10);
+		check(test, i11, i12);
+		check(result, i13, i14);
+	}
+
+	public void testPartial_BasicsTestTemplate(TestPartial_BasicsTestAdapter adapter, int i1, int i2) {
+		Partial test = new Partial(adapter.action1(), i1);
+		Partial result = test.with(adapter.action2(), i2);
+		assertEquals(2, result.size());
+		assertEquals(1, result.get(DateTimeFieldType.era()));
+		assertEquals(0, result.get(DateTimeFieldType.halfdayOfDay()));
+		assertEquals(0, result.indexOf(DateTimeFieldType.era()));
+		assertEquals(1, result.indexOf(DateTimeFieldType.halfdayOfDay()));
+	}
+
+	interface TestPartial_BasicsTestAdapter {
+		DateTimeFieldType action1();
+
+		DateTimeFieldType action2();
+	}
+
+	class TestPartial_BasicsTestWith3eAdapterImpl implements TestPartial_BasicsTestAdapter {
+		public DateTimeFieldType action1() {
+			return DateTimeFieldType.era();
+		}
+
+		public DateTimeFieldType action2() {
+			return DateTimeFieldType.halfdayOfDay();
+		}
+	}
+
+	class TestPartial_BasicsTestWith3fAdapterImpl implements TestPartial_BasicsTestAdapter {
+		public DateTimeFieldType action1() {
+			return DateTimeFieldType.halfdayOfDay();
+		}
+
+		public DateTimeFieldType action2() {
+			return DateTimeFieldType.era();
+		}
+	}
 }

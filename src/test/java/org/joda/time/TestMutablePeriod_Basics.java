@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.lang.String;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -399,17 +400,10 @@ public class TestMutablePeriod_Basics extends TestCase {
 //        } catch (IllegalArgumentException ex) {}
 //    }
     
-    //-----------------------------------------------------------------------
-    public void testToString() {
-        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString());
-        
-        test = new MutablePeriod(0, 0, 0, 0, 0, 0, 0, 0);
-        assertEquals("PT0S", test.toString());
-        
-        test = new MutablePeriod(12345L);
-        assertEquals("PT12.345S", test.toString());
-    }
+    public void testToString() throws Exception {
+		TestPeriod_BasicsTestToStringTemplate.testPeriod_BasicsTestToStringTemplate(
+				new TestMutablePeriod_BasicsTestToStringAdapterImpl(), MutablePeriod.class);
+	}
 
     //-----------------------------------------------------------------------
     public void testToPeriod() {
@@ -450,5 +444,12 @@ public class TestMutablePeriod_Basics extends TestCase {
         assertEquals(test.getPeriodType(), copy.getPeriodType());
         assertEquals(test, copy);
     }
+
+	class TestMutablePeriod_BasicsTestToStringAdapterImpl
+			implements TestPeriod_BasicsTestToStringAdapter<MutablePeriod> {
+		public String toString(MutablePeriod test) {
+			return test.toString();
+		}
+	}
     
 }

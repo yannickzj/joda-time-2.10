@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import org.joda.time.DateTime.Property;
+import org.joda.time.chrono.AssembledChronology;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -711,46 +713,14 @@ public class TestDateTime_Properties extends TestCase {
     }
 
     public void testPropertyGetMaxMinValuesDayOfYear() {
-        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        assertEquals(1, test.dayOfYear().getMinimumValue());
-        assertEquals(1, test.dayOfYear().getMinimumValueOverall());
-        assertEquals(366, test.dayOfYear().getMaximumValue());
-        assertEquals(366, test.dayOfYear().getMaximumValueOverall());
-        test = new DateTime(2002, 6, 9, 0, 0, 0, 0);
-        assertEquals(365, test.dayOfYear().getMaximumValue());
-        assertEquals(366, test.dayOfYear().getMaximumValueOverall());
-    }
+		this.testDateTime_PropertiesTestPropertyGetMaxMinValuesOfTemplate(
+				new TestDateTime_PropertiesTestPropertyGetMaxMinValuesDayOfYearAdapterImpl(), 366, 366, 2002, 365, 366);
+	}
 
     public void testPropertyAddDayOfYear() {
-        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime copy = test.dayOfYear().addToCopy(9);
-        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
-        assertEquals("2004-06-18T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(21);
-        assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(22);
-        assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
-        assertEquals("2004-12-31T00:00:00.000Z", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
-        assertEquals("2005-01-01T00:00:00.000Z", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(-8);
-        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(-9);
-        assertEquals("2004-05-31T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(-8 - 31 - 30 - 31 - 29 - 31);
-        assertEquals("2004-01-01T00:00:00.000Z", copy.toString());
-        
-        copy = test.dayOfYear().addToCopy(-9 - 31 - 30 - 31 - 29 - 31);
-        assertEquals("2003-12-31T00:00:00.000Z", copy.toString());
-    }
+		this.testDateTime_PropertiesTestPropertyAddDayOfTemplate(
+				new TestDateTime_PropertiesTestPropertyAddDayOfYearAdapterImpl(), 9, "2004-06-18T00:00:00.000+01:00");
+	}
 
     public void testPropertyAddWrapFieldDayOfYear() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -858,15 +828,10 @@ public class TestDateTime_Properties extends TestCase {
     }
 
     public void testPropertyGetMaxMinValuesWeekOfWeekyear() {
-        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        assertEquals(1, test.weekOfWeekyear().getMinimumValue());
-        assertEquals(1, test.weekOfWeekyear().getMinimumValueOverall());
-        assertEquals(53, test.weekOfWeekyear().getMaximumValue());
-        assertEquals(53, test.weekOfWeekyear().getMaximumValueOverall());
-        test = new DateTime(2005, 6, 9, 0, 0, 0, 0);
-        assertEquals(52, test.weekOfWeekyear().getMaximumValue());
-        assertEquals(53, test.weekOfWeekyear().getMaximumValueOverall());
-    }
+		this.testDateTime_PropertiesTestPropertyGetMaxMinValuesOfTemplate(
+				new TestDateTime_PropertiesTestPropertyGetMaxMinValuesWeekOfWeekyearAdapterImpl(), 53, 53, 2005, 52,
+				53);
+	}
 
     public void testPropertyAddWeekOfWeekyear() {
         DateTime test = new DateTime(2004, 6, 7, 0, 0, 0, 0);
@@ -981,35 +946,9 @@ public class TestDateTime_Properties extends TestCase {
     }
 
     public void testPropertyAddDayOfWeek() {
-        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime copy = test.dayOfWeek().addToCopy(1);
-        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
-        assertEquals("2004-06-10T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(21);
-        assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(22);
-        assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
-        assertEquals("2004-12-31T00:00:00.000Z", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
-        assertEquals("2005-01-01T00:00:00.000Z", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(-8);
-        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(-9);
-        assertEquals("2004-05-31T00:00:00.000+01:00", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(-8 - 31 - 30 - 31 - 29 - 31);
-        assertEquals("2004-01-01T00:00:00.000Z", copy.toString());
-        
-        copy = test.dayOfWeek().addToCopy(-9 - 31 - 30 - 31 - 29 - 31);
-        assertEquals("2003-12-31T00:00:00.000Z", copy.toString());
-    }
+		this.testDateTime_PropertiesTestPropertyAddDayOfTemplate(
+				new TestDateTime_PropertiesTestPropertyAddDayOfWeekAdapterImpl(), 1, "2004-06-10T00:00:00.000+01:00");
+	}
 
     public void testPropertyAddLongDayOfWeek() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -1132,32 +1071,16 @@ public class TestDateTime_Properties extends TestCase {
     }
 
     public void testPropertyRoundHalfFloorHourOfDay() {
-        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
-        DateTime copy = test.hourOfDay().roundHalfFloorCopy();
-        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
-        
-        test = new DateTime(2004, 6, 9, 13, 30, 0, 1);
-        copy = test.hourOfDay().roundHalfFloorCopy();
-        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
-        
-        test = new DateTime(2004, 6, 9, 13, 29, 59, 999);
-        copy = test.hourOfDay().roundHalfFloorCopy();
-        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
-    }
+		this.testDateTime_PropertiesTestPropertyRoundHalfHourOfDayTemplate(
+				new TestDateTime_PropertiesTestPropertyRoundHalfFloorHourOfDayAdapterImpl(),
+				"2004-06-09T13:00:00.000+01:00");
+	}
 
     public void testPropertyRoundHalfCeilingHourOfDay() {
-        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
-        DateTime copy = test.hourOfDay().roundHalfCeilingCopy();
-        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
-        
-        test = new DateTime(2004, 6, 9, 13, 30, 0, 1);
-        copy = test.hourOfDay().roundHalfCeilingCopy();
-        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
-        
-        test = new DateTime(2004, 6, 9, 13, 29, 59, 999);
-        copy = test.hourOfDay().roundHalfCeilingCopy();
-        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
-    }
+		this.testDateTime_PropertiesTestPropertyRoundHalfHourOfDayTemplate(
+				new TestDateTime_PropertiesTestPropertyRoundHalfCeilingHourOfDayAdapterImpl(),
+				"2004-06-09T14:00:00.000+01:00");
+	}
 
     public void testPropertyRoundHalfEvenHourOfDay() {
         DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
@@ -1371,27 +1294,148 @@ public class TestDateTime_Properties extends TestCase {
     }
 
     public void testPropertyEqualsHashCodeLenient() {
-        DateTime test1 = new DateTime(1970, 6, 9, 0, 0, 0, 0, LenientChronology.getInstance(COPTIC_PARIS));
-        DateTime test2 = new DateTime(1970, 6, 9, 0, 0, 0, 0, LenientChronology.getInstance(COPTIC_PARIS));
-        assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
-        assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
-        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
-        assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
-        assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
-        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
-        assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
-    }
+		this.testDateTime_PropertiesTestPropertyEqualsHashCodeTemplate(
+				new TestDateTime_PropertiesTestPropertyEqualsHashCodeLenientAdapterImpl());
+	}
 
     public void testPropertyEqualsHashCodeStrict() {
-        DateTime test1 = new DateTime(1970, 6, 9, 0, 0, 0, 0, StrictChronology.getInstance(COPTIC_PARIS));
-        DateTime test2 = new DateTime(1970, 6, 9, 0, 0, 0, 0, StrictChronology.getInstance(COPTIC_PARIS));
-        assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
-        assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
-        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
-        assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
-        assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
-        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
-        assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
-    }
+		this.testDateTime_PropertiesTestPropertyEqualsHashCodeTemplate(
+				new TestDateTime_PropertiesTestPropertyEqualsHashCodeStrictAdapterImpl());
+	}
+
+	public void testDateTime_PropertiesTestPropertyAddDayOfTemplate(
+			TestDateTime_PropertiesTestPropertyAddDayOfAdapter adapter, int i1, String string1) {
+		DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+		DateTime copy = adapter.dayOf(test).addToCopy(i1);
+		assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+		assertEquals(string1, copy.toString());
+		copy = adapter.dayOf(test).addToCopy(21);
+		assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(22);
+		assertEquals("2004-07-01T00:00:00.000+01:00", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
+		assertEquals("2004-12-31T00:00:00.000Z", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
+		assertEquals("2005-01-01T00:00:00.000Z", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(-8);
+		assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(-9);
+		assertEquals("2004-05-31T00:00:00.000+01:00", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(-8 - 31 - 30 - 31 - 29 - 31);
+		assertEquals("2004-01-01T00:00:00.000Z", copy.toString());
+		copy = adapter.dayOf(test).addToCopy(-9 - 31 - 30 - 31 - 29 - 31);
+		assertEquals("2003-12-31T00:00:00.000Z", copy.toString());
+	}
+
+	interface TestDateTime_PropertiesTestPropertyAddDayOfAdapter {
+		DateTime.Property dayOf(DateTime dateTime1);
+	}
+
+	class TestDateTime_PropertiesTestPropertyAddDayOfYearAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyAddDayOfAdapter {
+		public DateTime.Property dayOf(DateTime test) {
+			return test.dayOfYear();
+		}
+	}
+
+	class TestDateTime_PropertiesTestPropertyAddDayOfWeekAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyAddDayOfAdapter {
+		public DateTime.Property dayOf(DateTime test) {
+			return test.dayOfWeek();
+		}
+	}
+
+	public void testDateTime_PropertiesTestPropertyRoundHalfHourOfDayTemplate(
+			TestDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter adapter, String string1) {
+		DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+		DateTime copy = adapter.roundHalfCopy(test.hourOfDay());
+		assertEquals(string1, copy.toString());
+		test = new DateTime(2004, 6, 9, 13, 30, 0, 1);
+		copy = adapter.roundHalfCopy(test.hourOfDay());
+		assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+		test = new DateTime(2004, 6, 9, 13, 29, 59, 999);
+		copy = adapter.roundHalfCopy(test.hourOfDay());
+		assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
+	}
+
+	interface TestDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter {
+		DateTime roundHalfCopy(DateTime.Property property1);
+	}
+
+	class TestDateTime_PropertiesTestPropertyRoundHalfFloorHourOfDayAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter {
+		public DateTime roundHalfCopy(DateTime.Property property1) {
+			return property1.roundHalfFloorCopy();
+		}
+	}
+
+	class TestDateTime_PropertiesTestPropertyRoundHalfCeilingHourOfDayAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter {
+		public DateTime roundHalfCopy(DateTime.Property property1) {
+			return property1.roundHalfCeilingCopy();
+		}
+	}
+
+	public void testDateTime_PropertiesTestPropertyEqualsHashCodeTemplate(
+			TestDateTime_PropertiesTestPropertyEqualsHashCodeAdapter adapter) {
+		DateTime test1 = new DateTime(1970, 6, 9, 0, 0, 0, 0, adapter.getInstance(COPTIC_PARIS));
+		DateTime test2 = new DateTime(1970, 6, 9, 0, 0, 0, 0, adapter.getInstance(COPTIC_PARIS));
+		assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
+		assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
+		assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
+		assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
+		assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+		assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
+		assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+	}
+
+	interface TestDateTime_PropertiesTestPropertyEqualsHashCodeAdapter {
+		AssembledChronology getInstance(Chronology chronology1);
+	}
+
+	class TestDateTime_PropertiesTestPropertyEqualsHashCodeLenientAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyEqualsHashCodeAdapter {
+		public AssembledChronology getInstance(Chronology COPTIC_PARIS) {
+			return LenientChronology.getInstance(COPTIC_PARIS);
+		}
+	}
+
+	class TestDateTime_PropertiesTestPropertyEqualsHashCodeStrictAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyEqualsHashCodeAdapter {
+		public AssembledChronology getInstance(Chronology COPTIC_PARIS) {
+			return StrictChronology.getInstance(COPTIC_PARIS);
+		}
+	}
+
+	public void testDateTime_PropertiesTestPropertyGetMaxMinValuesOfTemplate(
+			TestDateTime_PropertiesTestPropertyGetMaxMinValuesOfAdapter adapter, int i1, int i2, int i3, int i4,
+			int i5) {
+		DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+		assertEquals(1, adapter.of(test).getMinimumValue());
+		assertEquals(1, adapter.of(test).getMinimumValueOverall());
+		assertEquals(i1, adapter.of(test).getMaximumValue());
+		assertEquals(i2, adapter.of(test).getMaximumValueOverall());
+		test = new DateTime(i3, 6, 9, 0, 0, 0, 0);
+		assertEquals(i4, adapter.of(test).getMaximumValue());
+		assertEquals(i5, adapter.of(test).getMaximumValueOverall());
+	}
+
+	interface TestDateTime_PropertiesTestPropertyGetMaxMinValuesOfAdapter {
+		DateTime.Property of(DateTime dateTime1);
+	}
+
+	class TestDateTime_PropertiesTestPropertyGetMaxMinValuesDayOfYearAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyGetMaxMinValuesOfAdapter {
+		public DateTime.Property of(DateTime test) {
+			return test.dayOfYear();
+		}
+	}
+
+	class TestDateTime_PropertiesTestPropertyGetMaxMinValuesWeekOfWeekyearAdapterImpl
+			implements TestDateTime_PropertiesTestPropertyGetMaxMinValuesOfAdapter {
+		public DateTime.Property of(DateTime test) {
+			return test.weekOfWeekyear();
+		}
+	}
 
 }

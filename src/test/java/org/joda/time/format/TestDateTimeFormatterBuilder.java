@@ -681,48 +681,17 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(expected, f.withOffsetParsed().parseLocalDateTime("2007-03-04 12:30 +07:00 Asia/Tokyo"));
     }
 
-    //-----------------------------------------------------------------------
     public void test_printParseShortName() {
-        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneShortName();
-        DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
-        
-        assertEquals(true, f.isPrinter());
-        assertEquals(false, f.isParser());
-        DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-01-04 12:30 GMT", f.print(dt1));
-        DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-07-04 12:30 BST", f.print(dt2));
-        try {
-            f.parseDateTime("2007-03-04 12:30 GMT");
-            fail();
-        } catch (UnsupportedOperationException e) {
-        }
-    }
+		this.testDateTimeFormatterBuilderTest_printParseNameTemplate(
+				new TestDateTimeFormatterBuilderTest_printParseShortNameAdapterImpl(), "2011-01-04 12:30 GMT",
+				"2011-07-04 12:30 BST");
+	}
 
     public void test_printParseShortNameWithLookup() {
-        Map<String, DateTimeZone> lookup = new LinkedHashMap<String, DateTimeZone>();
-        lookup.put("GMT", LONDON);
-        lookup.put("BST", LONDON);
-        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneShortName(lookup);
-        DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
-        
-        assertEquals(true, f.isPrinter());
-        assertEquals(true, f.isParser());
-        DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-01-04 12:30 GMT", f.print(dt1));
-        DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-07-04 12:30 BST", f.print(dt2));
-        
-        assertEquals(dt1, f.parseDateTime("2011-01-04 12:30 GMT"));
-        assertEquals(dt2, f.parseDateTime("2011-07-04 12:30 BST"));
-        try {
-            f.parseDateTime("2007-03-04 12:30 EST");
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-    }
+		this.testDateTimeFormatterBuilderTest_printParseNameWithLookupTemplate(
+				new TestDateTimeFormatterBuilderTest_printParseShortNameWithLookupAdapterImpl(), "GMT", "BST",
+				"2011-01-04 12:30 GMT", "2011-07-04 12:30 BST", "2011-01-04 12:30 GMT", "2011-07-04 12:30 BST");
+	}
 
     public void test_printParseShortNameWithAutoLookup() {
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
@@ -755,48 +724,18 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         }
     }
 
-    //-----------------------------------------------------------------------
     public void test_printParseLongName() {
-        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneName();
-        DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
-        
-        assertEquals(true, f.isPrinter());
-        assertEquals(false, f.isParser());
-        DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-01-04 12:30 Greenwich Mean Time", f.print(dt1));
-        DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-07-04 12:30 British Summer Time", f.print(dt2));
-        try {
-            f.parseDateTime("2007-03-04 12:30 GMT");
-            fail();
-        } catch (UnsupportedOperationException e) {
-        }
-    }
+		this.testDateTimeFormatterBuilderTest_printParseNameTemplate(
+				new TestDateTimeFormatterBuilderTest_printParseLongNameAdapterImpl(),
+				"2011-01-04 12:30 Greenwich Mean Time", "2011-07-04 12:30 British Summer Time");
+	}
 
     public void test_printParseLongNameWithLookup() {
-        Map<String, DateTimeZone> lookup = new LinkedHashMap<String, DateTimeZone>();
-        lookup.put("Greenwich Mean Time", LONDON);
-        lookup.put("British Summer Time", LONDON);
-        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneName(lookup);
-        DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
-        
-        assertEquals(true, f.isPrinter());
-        assertEquals(true, f.isParser());
-        DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-01-04 12:30 Greenwich Mean Time", f.print(dt1));
-        DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
-        assertEquals("2011-07-04 12:30 British Summer Time", f.print(dt2));
-        
-        assertEquals(dt1, f.parseDateTime("2011-01-04 12:30 Greenwich Mean Time"));
-        assertEquals(dt2, f.parseDateTime("2011-07-04 12:30 British Summer Time"));
-        try {
-            f.parseDateTime("2007-03-04 12:30 EST");
-            fail();
-        } catch (IllegalArgumentException e) {
-        }
-    }
+		this.testDateTimeFormatterBuilderTest_printParseNameWithLookupTemplate(
+				new TestDateTimeFormatterBuilderTest_printParseLongNameWithLookupAdapterImpl(), "Greenwich Mean Time",
+				"British Summer Time", "2011-01-04 12:30 Greenwich Mean Time", "2011-07-04 12:30 British Summer Time",
+				"2011-01-04 12:30 Greenwich Mean Time", "2011-07-04 12:30 British Summer Time");
+	}
 
     private static void assertPrint(String expected, DateTimeFormatter f, DateTime dt) {
         assertEquals(expected, f.print(dt));
@@ -810,5 +749,86 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         }
         assertEquals(expected, out.toString());
     }
+
+	public void testDateTimeFormatterBuilderTest_printParseNameWithLookupTemplate(
+			TestDateTimeFormatterBuilderTest_printParseNameWithLookupAdapter adapter, String string1, String string2,
+			String string3, String string4, String string5, String string6) {
+		Map<String, DateTimeZone> lookup = new LinkedHashMap<String, DateTimeZone>();
+		lookup.put(string1, LONDON);
+		lookup.put(string2, LONDON);
+		DateTimeFormatterBuilder bld = adapter
+				.appendTimeZoneName(new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm "), lookup);
+		DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
+		assertEquals(true, f.isPrinter());
+		assertEquals(true, f.isParser());
+		DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
+		assertEquals(string3, f.print(dt1));
+		DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
+		assertEquals(string4, f.print(dt2));
+		assertEquals(dt1, f.parseDateTime(string5));
+		assertEquals(dt2, f.parseDateTime(string6));
+		try {
+			f.parseDateTime("2007-03-04 12:30 EST");
+			fail();
+		} catch (IllegalArgumentException e) {
+		}
+	}
+
+	interface TestDateTimeFormatterBuilderTest_printParseNameWithLookupAdapter {
+		DateTimeFormatterBuilder appendTimeZoneName(DateTimeFormatterBuilder dateTimeFormatterBuilder1,
+				Map<String, DateTimeZone> mapStringDateTimeZone1);
+	}
+
+	class TestDateTimeFormatterBuilderTest_printParseShortNameWithLookupAdapterImpl
+			implements TestDateTimeFormatterBuilderTest_printParseNameWithLookupAdapter {
+		public DateTimeFormatterBuilder appendTimeZoneName(DateTimeFormatterBuilder dateTimeFormatterBuilder1,
+				Map<String, DateTimeZone> lookup) {
+			return dateTimeFormatterBuilder1.appendTimeZoneShortName(lookup);
+		}
+	}
+
+	class TestDateTimeFormatterBuilderTest_printParseLongNameWithLookupAdapterImpl
+			implements TestDateTimeFormatterBuilderTest_printParseNameWithLookupAdapter {
+		public DateTimeFormatterBuilder appendTimeZoneName(DateTimeFormatterBuilder dateTimeFormatterBuilder1,
+				Map<String, DateTimeZone> lookup) {
+			return dateTimeFormatterBuilder1.appendTimeZoneName(lookup);
+		}
+	}
+
+	public void testDateTimeFormatterBuilderTest_printParseNameTemplate(
+			TestDateTimeFormatterBuilderTest_printParseNameAdapter adapter, String string1, String string2) {
+		DateTimeFormatterBuilder bld = adapter
+				.appendTimeZoneName(new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd HH:mm "));
+		DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
+		assertEquals(true, f.isPrinter());
+		assertEquals(false, f.isParser());
+		DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
+		assertEquals(string1, f.print(dt1));
+		DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
+		assertEquals(string2, f.print(dt2));
+		try {
+			f.parseDateTime("2007-03-04 12:30 GMT");
+			fail();
+		} catch (UnsupportedOperationException e) {
+		}
+	}
+
+	interface TestDateTimeFormatterBuilderTest_printParseNameAdapter {
+		DateTimeFormatterBuilder appendTimeZoneName(DateTimeFormatterBuilder dateTimeFormatterBuilder1);
+	}
+
+	class TestDateTimeFormatterBuilderTest_printParseShortNameAdapterImpl
+			implements TestDateTimeFormatterBuilderTest_printParseNameAdapter {
+		public DateTimeFormatterBuilder appendTimeZoneName(DateTimeFormatterBuilder dateTimeFormatterBuilder1) {
+			return dateTimeFormatterBuilder1.appendTimeZoneShortName();
+		}
+	}
+
+	class TestDateTimeFormatterBuilderTest_printParseLongNameAdapterImpl
+			implements TestDateTimeFormatterBuilderTest_printParseNameAdapter {
+		public DateTimeFormatterBuilder appendTimeZoneName(DateTimeFormatterBuilder dateTimeFormatterBuilder1) {
+			return dateTimeFormatterBuilder1.appendTimeZoneName();
+		}
+	}
 
 }

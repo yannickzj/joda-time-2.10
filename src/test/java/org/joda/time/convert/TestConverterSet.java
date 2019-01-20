@@ -110,25 +110,13 @@ public class TestConverterSet extends TestCase {
         assertEquals(4, set.size());
     }
 
-    //-----------------------------------------------------------------------
     public void testAddNullRemoved1() {
-        Converter[] array = new Converter[] {
-            c1, c2, c3, c4,
-        };
-        ConverterSet set = new ConverterSet(array);
-        ConverterSet result = set.add(c5, null);
-        assertEquals(4, set.size());
-        assertEquals(5, result.size());
-    }
+		this.testConverterSetTestNullRemoved1Template(new TestConverterSetTestAddNullRemoved1AdapterImpl(), c5, 5);
+	}
 
     public void testAddNullRemoved2() {
-        Converter[] array = new Converter[] {
-            c1, c2, c3, c4,
-        };
-        ConverterSet set = new ConverterSet(array);
-        ConverterSet result = set.add(c4, null);
-        assertSame(set, result);
-    }
+		this.testConverterSetTestNullRemoved2Template(new TestConverterSetTestAddNullRemoved2AdapterImpl(), c4);
+	}
 
     public void testAddNullRemoved3() {
         Converter[] array = new Converter[] {
@@ -141,49 +129,80 @@ public class TestConverterSet extends TestCase {
         assertEquals(4, result.size());
     }
 
-    //-----------------------------------------------------------------------
     public void testRemoveNullRemoved1() {
-        Converter[] array = new Converter[] {
-            c1, c2, c3, c4,
-        };
-        ConverterSet set = new ConverterSet(array);
-        ConverterSet result = set.remove(c3, null);
-        assertEquals(4, set.size());
-        assertEquals(3, result.size());
-    }
+		this.testConverterSetTestNullRemoved1Template(new TestConverterSetTestRemoveNullRemoved1AdapterImpl(), c3, 3);
+	}
 
     public void testRemoveNullRemoved2() {
-        Converter[] array = new Converter[] {
-            c1, c2, c3, c4,
-        };
-        ConverterSet set = new ConverterSet(array);
-        ConverterSet result = set.remove(c5, null);
-        assertSame(set, result);
-    }
+		this.testConverterSetTestNullRemoved2Template(new TestConverterSetTestRemoveNullRemoved2AdapterImpl(), c5);
+	}
 
-    //-----------------------------------------------------------------------
     public void testRemoveBadIndex1() {
-        Converter[] array = new Converter[] {
-            c1, c2, c3, c4,
-        };
-        ConverterSet set = new ConverterSet(array);
-        try {
-            set.remove(200, null);
-            fail();
-        } catch (IndexOutOfBoundsException ex) {}
-        assertEquals(4, set.size());
-    }
+		this.testConverterSetTestRemoveBadTemplate(200);
+	}
 
     public void testRemoveBadIndex2() {
-        Converter[] array = new Converter[] {
-            c1, c2, c3, c4,
-        };
-        ConverterSet set = new ConverterSet(array);
-        try {
-            set.remove(-1, null);
-            fail();
-        } catch (IndexOutOfBoundsException ex) {}
-        assertEquals(4, set.size());
-    }
+		this.testConverterSetTestRemoveBadTemplate(-1);
+	}
+
+	public void testConverterSetTestRemoveBadTemplate(int i1) {
+		Converter[] array = new Converter[] { c1, c2, c3, c4 };
+		ConverterSet set = new ConverterSet(array);
+		try {
+			set.remove(i1, null);
+			fail();
+		} catch (IndexOutOfBoundsException ex) {
+		}
+		assertEquals(4, set.size());
+	}
+
+	public void testConverterSetTestNullRemoved1Template(TestConverterSetTestNullRemoved1Adapter adapter,
+			Converter converter1, int i1) {
+		Converter[] array = new Converter[] { c1, c2, c3, c4 };
+		ConverterSet set = new ConverterSet(array);
+		ConverterSet result = adapter.action1(set, converter1, null);
+		assertEquals(4, set.size());
+		assertEquals(i1, result.size());
+	}
+
+	interface TestConverterSetTestNullRemoved1Adapter {
+		ConverterSet action1(ConverterSet converterSet1, Converter converter1, Converter[] converterArray1);
+	}
+
+	class TestConverterSetTestAddNullRemoved1AdapterImpl implements TestConverterSetTestNullRemoved1Adapter {
+		public ConverterSet action1(ConverterSet set, Converter c5, Converter[] converterArray1) {
+			return set.add(c5, converterArray1);
+		}
+	}
+
+	class TestConverterSetTestRemoveNullRemoved1AdapterImpl implements TestConverterSetTestNullRemoved1Adapter {
+		public ConverterSet action1(ConverterSet set, Converter c3, Converter[] converterArray1) {
+			return set.remove(c3, converterArray1);
+		}
+	}
+
+	public void testConverterSetTestNullRemoved2Template(TestConverterSetTestNullRemoved2Adapter adapter,
+			Converter converter1) {
+		Converter[] array = new Converter[] { c1, c2, c3, c4 };
+		ConverterSet set = new ConverterSet(array);
+		ConverterSet result = adapter.action1(set, converter1, null);
+		assertSame(set, result);
+	}
+
+	interface TestConverterSetTestNullRemoved2Adapter {
+		ConverterSet action1(ConverterSet converterSet1, Converter converter1, Converter[] converterArray1);
+	}
+
+	class TestConverterSetTestAddNullRemoved2AdapterImpl implements TestConverterSetTestNullRemoved2Adapter {
+		public ConverterSet action1(ConverterSet set, Converter c4, Converter[] converterArray1) {
+			return set.add(c4, converterArray1);
+		}
+	}
+
+	class TestConverterSetTestRemoveNullRemoved2AdapterImpl implements TestConverterSetTestNullRemoved2Adapter {
+		public ConverterSet action1(ConverterSet set, Converter c5, Converter[] converterArray1) {
+			return set.remove(c5, converterArray1);
+		}
+	}
 
 }

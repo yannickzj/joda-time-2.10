@@ -212,12 +212,8 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_LocalDate_new_Gaza() {
-        LocalDate date1 = new LocalDate(CUTOVER_GAZA, MOCK_GAZA);
-        assertEquals("2007-04-01", date1.toString());
-        
-        LocalDate date2 = new LocalDate(CUTOVER_GAZA - 1, MOCK_GAZA);
-        assertEquals("2007-03-31", date2.toString());
-    }
+		this.testDateTimeZoneCutoverTest_LocalDate_new_Template(CUTOVER_GAZA, MOCK_GAZA, CUTOVER_GAZA, MOCK_GAZA);
+	}
 
     public void test_LocalDate_toDateMidnight_Gaza() {
         LocalDate date = new LocalDate(2007, 4, 1);
@@ -230,13 +226,8 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_DateTime_new_Gaza() {
-        try {
-            new DateTime(2007, 4, 1, 0, 0, 0, 0, MOCK_GAZA);
-            fail();
-        } catch (IllegalInstantException ex) {
-            assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
-        }
-    }
+		this.testDateTimeZoneCutoverTest_DateTime_new_Template(MOCK_GAZA);
+	}
 
     public void test_DateTime_newValid_Gaza() {
         new DateTime(2007, 3, 31, 19, 0, 0, 0, MOCK_GAZA);
@@ -429,12 +420,8 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_LocalDate_new_Turk() {
-        LocalDate date1 = new LocalDate(CUTOVER_TURK, MOCK_TURK);
-        assertEquals("2007-04-01", date1.toString());
-        
-        LocalDate date2 = new LocalDate(CUTOVER_TURK - 1, MOCK_TURK);
-        assertEquals("2007-03-31", date2.toString());
-    }
+		this.testDateTimeZoneCutoverTest_LocalDate_new_Template(CUTOVER_TURK, MOCK_TURK, CUTOVER_TURK, MOCK_TURK);
+	}
 
     public void test_LocalDate_toDateMidnight_Turk() {
         LocalDate date = new LocalDate(2007, 4, 1);
@@ -447,13 +434,8 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_DateTime_new_Turk() {
-        try {
-            new DateTime(2007, 4, 1, 0, 0, 0, 0, MOCK_TURK);
-            fail();
-        } catch (IllegalInstantException ex) {
-            assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
-        }
-    }
+		this.testDateTimeZoneCutoverTest_DateTime_new_Template(MOCK_TURK);
+	}
 
     public void test_DateTime_newValid_Turk() {
         new DateTime(2007, 3, 31, 23, 0, 0, 0, MOCK_TURK);
@@ -1010,44 +992,20 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void test_DateTime_plusHour_Guatemata_Autumn() {
-        DateTime dt = new DateTime(2006, 9, 30, 20, 0, 0, 0, ZONE_GUATEMALA);
-        assertEquals("2006-09-30T20:00:00.000-05:00", dt.toString());
-        
-        DateTime plus1 = dt.plusHours(1);
-        assertEquals("2006-09-30T21:00:00.000-05:00", plus1.toString());
-        DateTime plus2 = dt.plusHours(2);
-        assertEquals("2006-09-30T22:00:00.000-05:00", plus2.toString());
-        DateTime plus3 = dt.plusHours(3);
-        assertEquals("2006-09-30T23:00:00.000-05:00", plus3.toString());
-        DateTime plus4 = dt.plusHours(4);
-        assertEquals("2006-09-30T23:00:00.000-06:00", plus4.toString());
-        DateTime plus5 = dt.plusHours(5);
-        assertEquals("2006-10-01T00:00:00.000-06:00", plus5.toString());
-        DateTime plus6 = dt.plusHours(6);
-        assertEquals("2006-10-01T01:00:00.000-06:00", plus6.toString());
-        DateTime plus7 = dt.plusHours(7);
-        assertEquals("2006-10-01T02:00:00.000-06:00", plus7.toString());
-    }
+		this.testDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnTemplate(
+				new TestDateTimeZoneCutoverTest_DateTime_plusHour_Guatemata_AutumnAdapterImpl(), 9, 30, 20,
+				"2006-09-30T20:00:00.000-05:00", "2006-09-30T21:00:00.000-05:00", "2006-09-30T22:00:00.000-05:00",
+				"2006-09-30T23:00:00.000-05:00", "2006-09-30T23:00:00.000-06:00", "2006-10-01T00:00:00.000-06:00",
+				"2006-10-01T01:00:00.000-06:00", "2006-10-01T02:00:00.000-06:00");
+	}
 
     public void test_DateTime_minusHour_Guatemata_Autumn() {
-        DateTime dt = new DateTime(2006, 10, 1, 2, 0, 0, 0, ZONE_GUATEMALA);
-        assertEquals("2006-10-01T02:00:00.000-06:00", dt.toString());
-        
-        DateTime minus1 = dt.minusHours(1);
-        assertEquals("2006-10-01T01:00:00.000-06:00", minus1.toString());
-        DateTime minus2 = dt.minusHours(2);
-        assertEquals("2006-10-01T00:00:00.000-06:00", minus2.toString());
-        DateTime minus3 = dt.minusHours(3);
-        assertEquals("2006-09-30T23:00:00.000-06:00", minus3.toString());
-        DateTime minus4 = dt.minusHours(4);
-        assertEquals("2006-09-30T23:00:00.000-05:00", minus4.toString());
-        DateTime minus5 = dt.minusHours(5);
-        assertEquals("2006-09-30T22:00:00.000-05:00", minus5.toString());
-        DateTime minus6 = dt.minusHours(6);
-        assertEquals("2006-09-30T21:00:00.000-05:00", minus6.toString());
-        DateTime minus7 = dt.minusHours(7);
-        assertEquals("2006-09-30T20:00:00.000-05:00", minus7.toString());
-    }
+		this.testDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnTemplate(
+				new TestDateTimeZoneCutoverTest_DateTime_minusHour_Guatemata_AutumnAdapterImpl(), 10, 1, 2,
+				"2006-10-01T02:00:00.000-06:00", "2006-10-01T01:00:00.000-06:00", "2006-10-01T00:00:00.000-06:00",
+				"2006-09-30T23:00:00.000-06:00", "2006-09-30T23:00:00.000-05:00", "2006-09-30T22:00:00.000-05:00",
+				"2006-09-30T21:00:00.000-05:00", "2006-09-30T20:00:00.000-05:00");
+	}
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -1206,42 +1164,12 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     public void testBug2182444_usCentral() {
-        Chronology chronUSCentral = GregorianChronology.getInstance(DateTimeZone.forID("US/Central"));
-        Chronology chronUTC = GregorianChronology.getInstance(DateTimeZone.UTC);
-        DateTime usCentralStandardInUTC = new DateTime(2008, 11, 2, 7, 0, 0, 0, chronUTC);
-        DateTime usCentralDaylightInUTC = new DateTime(2008, 11, 2, 6, 0, 0, 0, chronUTC);
-        assertTrue("Should be standard time", chronUSCentral.getZone().isStandardOffset(usCentralStandardInUTC.getMillis()));
-        assertFalse("Should be daylight time", chronUSCentral.getZone().isStandardOffset(usCentralDaylightInUTC.getMillis()));
-        
-        DateTime usCentralStandardInUSCentral = usCentralStandardInUTC.toDateTime(chronUSCentral);
-        DateTime usCentralDaylightInUSCentral = usCentralDaylightInUTC.toDateTime(chronUSCentral);
-        assertEquals(1, usCentralStandardInUSCentral.getHourOfDay());
-        assertEquals(usCentralStandardInUSCentral.getHourOfDay(), usCentralDaylightInUSCentral.getHourOfDay());
-        assertTrue(usCentralStandardInUSCentral.getMillis() != usCentralDaylightInUSCentral.getMillis());
-        assertEquals(usCentralStandardInUSCentral, usCentralStandardInUSCentral.withHourOfDay(1));
-        assertEquals(usCentralStandardInUSCentral.getMillis() + 3, usCentralStandardInUSCentral.withMillisOfSecond(3).getMillis());
-        assertEquals(usCentralDaylightInUSCentral, usCentralDaylightInUSCentral.withHourOfDay(1));
-        assertEquals(usCentralDaylightInUSCentral.getMillis() + 3, usCentralDaylightInUSCentral.withMillisOfSecond(3).getMillis());
-    }
+		this.testDateTimeZoneCutoverTestTemplate("US/Central", 11, 2, 7, 11, 2, 6, 1, 1, 1);
+	}
 
     public void testBug2182444_ausNSW() {
-        Chronology chronAusNSW = GregorianChronology.getInstance(DateTimeZone.forID("Australia/NSW"));
-        Chronology chronUTC = GregorianChronology.getInstance(DateTimeZone.UTC);
-        DateTime australiaNSWStandardInUTC = new DateTime(2008, 4, 5, 16, 0, 0, 0, chronUTC);
-        DateTime australiaNSWDaylightInUTC = new DateTime(2008, 4, 5, 15, 0, 0, 0, chronUTC);
-        assertTrue("Should be standard time", chronAusNSW.getZone().isStandardOffset(australiaNSWStandardInUTC.getMillis()));
-        assertFalse("Should be daylight time", chronAusNSW.getZone().isStandardOffset(australiaNSWDaylightInUTC.getMillis()));
-        
-        DateTime australiaNSWStandardInAustraliaNSW = australiaNSWStandardInUTC.toDateTime(chronAusNSW);
-        DateTime australiaNSWDaylightInAusraliaNSW = australiaNSWDaylightInUTC.toDateTime(chronAusNSW);
-        assertEquals(2, australiaNSWStandardInAustraliaNSW.getHourOfDay());
-        assertEquals(australiaNSWStandardInAustraliaNSW.getHourOfDay(), australiaNSWDaylightInAusraliaNSW.getHourOfDay());
-        assertTrue(australiaNSWStandardInAustraliaNSW.getMillis() != australiaNSWDaylightInAusraliaNSW.getMillis());
-        assertEquals(australiaNSWStandardInAustraliaNSW, australiaNSWStandardInAustraliaNSW.withHourOfDay(2));
-        assertEquals(australiaNSWStandardInAustraliaNSW.getMillis() + 3, australiaNSWStandardInAustraliaNSW.withMillisOfSecond(3).getMillis());
-        assertEquals(australiaNSWDaylightInAusraliaNSW, australiaNSWDaylightInAusraliaNSW.withHourOfDay(2));
-        assertEquals(australiaNSWDaylightInAusraliaNSW.getMillis() + 3, australiaNSWDaylightInAusraliaNSW.withMillisOfSecond(3).getMillis());
-    }
+		this.testDateTimeZoneCutoverTestTemplate("Australia/NSW", 4, 5, 16, 4, 5, 15, 2, 2, 2);
+	}
 
     public void testPeriod() {
         DateTime a = new DateTime("2010-10-31T02:00:00.000+02:00", ZONE_PARIS);
@@ -1370,5 +1298,82 @@ public class TestDateTimeZoneCutover extends TestCase {
         DateTime res = new DateTime(dt.getMillis() - offset, zone);
         assertEquals(res.toString(), expected, res.toString());
     }
+
+	public void testDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnTemplate(
+			TestDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnAdapter adapter, int i1, int i2, int i3,
+			String string1, String string2, String string3, String string4, String string5, String string6,
+			String string7, String string8) {
+		DateTime dt = new DateTime(2006, i1, i2, i3, 0, 0, 0, ZONE_GUATEMALA);
+		assertEquals(string1, dt.toString());
+		DateTime v1 = adapter.hours(dt, 1);
+		assertEquals(string2, v1.toString());
+		DateTime v2 = adapter.hours(dt, 2);
+		assertEquals(string3, v2.toString());
+		DateTime v3 = adapter.hours(dt, 3);
+		assertEquals(string4, v3.toString());
+		DateTime v4 = adapter.hours(dt, 4);
+		assertEquals(string5, v4.toString());
+		DateTime v5 = adapter.hours(dt, 5);
+		assertEquals(string6, v5.toString());
+		DateTime v6 = adapter.hours(dt, 6);
+		assertEquals(string7, v6.toString());
+		DateTime v7 = adapter.hours(dt, 7);
+		assertEquals(string8, v7.toString());
+	}
+
+	interface TestDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnAdapter {
+		DateTime hours(DateTime dateTime1, int i1);
+	}
+
+	class TestDateTimeZoneCutoverTest_DateTime_plusHour_Guatemata_AutumnAdapterImpl
+			implements TestDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnAdapter {
+		public DateTime hours(DateTime dt, int i1) {
+			return dt.plusHours(i1);
+		}
+	}
+
+	class TestDateTimeZoneCutoverTest_DateTime_minusHour_Guatemata_AutumnAdapterImpl
+			implements TestDateTimeZoneCutoverTest_DateHour_Guatemata_AutumnAdapter {
+		public DateTime hours(DateTime dt, int i1) {
+			return dt.minusHours(i1);
+		}
+	}
+
+	public void testDateTimeZoneCutoverTestTemplate(String string1, int i1, int i2, int i3, int i4, int i5, int i6,
+			int i7, int i8, int i9) {
+		Chronology chron1 = GregorianChronology.getInstance(DateTimeZone.forID(string1));
+		Chronology chronUTC = GregorianChronology.getInstance(DateTimeZone.UTC);
+		DateTime standardInUTC2 = new DateTime(2008, i1, i2, i3, 0, 0, 0, chronUTC);
+		DateTime daylightInUTC3 = new DateTime(2008, i4, i5, i6, 0, 0, 0, chronUTC);
+		assertTrue("Should be standard time", chron1.getZone().isStandardOffset(standardInUTC2.getMillis()));
+		assertFalse("Should be daylight time", chron1.getZone().isStandardOffset(daylightInUTC3.getMillis()));
+		DateTime standardInAustraliaNSW4 = standardInUTC2.toDateTime(chron1);
+		DateTime daylightInNSW5 = daylightInUTC3.toDateTime(chron1);
+		assertEquals(i7, standardInAustraliaNSW4.getHourOfDay());
+		assertEquals(standardInAustraliaNSW4.getHourOfDay(), daylightInNSW5.getHourOfDay());
+		assertTrue(standardInAustraliaNSW4.getMillis() != daylightInNSW5.getMillis());
+		assertEquals(standardInAustraliaNSW4, standardInAustraliaNSW4.withHourOfDay(i8));
+		assertEquals(standardInAustraliaNSW4.getMillis() + 3,
+				standardInAustraliaNSW4.withMillisOfSecond(3).getMillis());
+		assertEquals(daylightInNSW5, daylightInNSW5.withHourOfDay(i9));
+		assertEquals(daylightInNSW5.getMillis() + 3, daylightInNSW5.withMillisOfSecond(3).getMillis());
+	}
+
+	public void testDateTimeZoneCutoverTest_DateTime_new_Template(DateTimeZone dateTimeZone1) {
+		try {
+			new DateTime(2007, 4, 1, 0, 0, 0, 0, dateTimeZone1);
+			fail();
+		} catch (IllegalInstantException ex) {
+			assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
+		}
+	}
+
+	public void testDateTimeZoneCutoverTest_LocalDate_new_Template(long l1, DateTimeZone dateTimeZone1, long l2,
+			DateTimeZone dateTimeZone2) {
+		LocalDate date1 = new LocalDate(l1, dateTimeZone1);
+		assertEquals("2007-04-01", date1.toString());
+		LocalDate date2 = new LocalDate(l2 - 1, dateTimeZone2);
+		assertEquals("2007-03-31", date2.toString());
+	}
 
 }

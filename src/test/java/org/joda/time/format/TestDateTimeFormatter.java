@@ -15,6 +15,10 @@
  */
 package org.joda.time.format;
 
+import java.lang.String;
+import org.joda.time.MutableDateTime;
+import org.joda.time.DateTime;
+import org.joda.time.base.BaseDateTime;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -25,14 +29,12 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
-import org.joda.time.MutableDateTime;
 import org.joda.time.ReadablePartial;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
@@ -564,17 +566,10 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new LocalDateTime(2012, 2, 29, 13, 40, 0, 0, chrono), f.parseLocalDateTime("2 29 13 40"));
     }
 
-    //-----------------------------------------------------------------------
-    public void testParseDateTime_simple() {
-        DateTime expect = null;
-        expect = new DateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
-        assertEquals(expect, g.parseDateTime("2004-06-09T10:20:30Z"));
-        
-        try {
-            g.parseDateTime("ABC");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+    public void testParseDateTime_simple() throws Exception {
+		this.testDateTimeFormatterTestParseDateTime_simpleTemplate(
+				new TestDateTimeFormatterTestParseDateTime_simpleAdapterImpl(), DateTime.class);
+	}
 
     public void testParseDateTime_zone() {
         DateTime expect = null;
@@ -600,35 +595,13 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withZone(PARIS).parseDateTime("2004-06-09T06:20:30-04:00"));
     }
 
-    public void testParseDateTime_zone3() {
-        DateTimeFormatter h = new DateTimeFormatterBuilder()
-        .append(ISODateTimeFormat.date())
-        .appendLiteral('T')
-        .append(ISODateTimeFormat.timeElementParser())
-        .toFormatter();
-        
-        DateTime expect = null;
-        expect = new DateTime(2004, 6, 9, 10, 20, 30, 0, LONDON);
-        assertEquals(expect, h.withZone(LONDON).parseDateTime("2004-06-09T10:20:30"));
-        
-        expect = new DateTime(2004, 6, 9, 10, 20, 30, 0, LONDON);
-        assertEquals(expect, h.withZone(null).parseDateTime("2004-06-09T10:20:30"));
-        
-        expect = new DateTime(2004, 6, 9, 10, 20, 30, 0, PARIS);
-        assertEquals(expect, h.withZone(PARIS).parseDateTime("2004-06-09T10:20:30"));
-    }
+    public void testParseDateTime_zone3() throws Exception {
+		this.testDateTimeFormatterTestParseDateTime_zone3Template(DateTime.class);
+	}
 
-    public void testParseDateTime_simple_precedence() {
-        DateTime expect = null;
-        // use correct day of week
-        expect = new DateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
-        assertEquals(expect, f.parseDateTime("Wed 2004-06-09T10:20:30Z"));
-        
-        // use wrong day of week
-        expect = new DateTime(2004, 6, 7, 11, 20, 30, 0, LONDON);
-        // DayOfWeek takes precedence, because week < month in length
-        assertEquals(expect, f.parseDateTime("Mon 2004-06-09T10:20:30Z"));
-    }
+    public void testParseDateTime_simple_precedence() throws Exception {
+		this.testDateTimeFormatterTestParseDateTime_simple_precedenceTemplate(DateTime.class);
+	}
 
     public void testParseDateTime_offsetParsed() {
         DateTime expect = null;
@@ -659,17 +632,10 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withChronology(BUDDHIST_PARIS).parseDateTime("2004-06-09T10:20:30Z"));
     }
 
-    //-----------------------------------------------------------------------
-    public void testParseMutableDateTime_simple() {
-        MutableDateTime expect = null;
-        expect = new MutableDateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
-        assertEquals(expect, g.parseMutableDateTime("2004-06-09T10:20:30Z"));
-        
-        try {
-            g.parseMutableDateTime("ABC");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+    public void testParseMutableDateTime_simple() throws Exception {
+		this.testDateTimeFormatterTestParseDateTime_simpleTemplate(
+				new TestDateTimeFormatterTestParseMutableDateTime_simpleAdapterImpl(), MutableDateTime.class);
+	}
 
     public void testParseMutableDateTime_zone() {
         MutableDateTime expect = null;
@@ -695,35 +661,13 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withZone(PARIS).parseMutableDateTime("2004-06-09T06:20:30-04:00"));
     }
 
-    public void testParseMutableDateTime_zone3() {
-        DateTimeFormatter h = new DateTimeFormatterBuilder()
-        .append(ISODateTimeFormat.date())
-        .appendLiteral('T')
-        .append(ISODateTimeFormat.timeElementParser())
-        .toFormatter();
-        
-        MutableDateTime expect = null;
-        expect = new MutableDateTime(2004, 6, 9, 10, 20, 30, 0, LONDON);
-        assertEquals(expect, h.withZone(LONDON).parseMutableDateTime("2004-06-09T10:20:30"));
-        
-        expect = new MutableDateTime(2004, 6, 9, 10, 20, 30, 0, LONDON);
-        assertEquals(expect, h.withZone(null).parseMutableDateTime("2004-06-09T10:20:30"));
-        
-        expect = new MutableDateTime(2004, 6, 9, 10, 20, 30, 0, PARIS);
-        assertEquals(expect, h.withZone(PARIS).parseMutableDateTime("2004-06-09T10:20:30"));
-    }
+    public void testParseMutableDateTime_zone3() throws Exception {
+		this.testDateTimeFormatterTestParseDateTime_zone3Template(MutableDateTime.class);
+	}
 
-    public void testParseMutableDateTime_simple_precedence() {
-        MutableDateTime expect = null;
-        // use correct day of week
-        expect = new MutableDateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
-        assertEquals(expect, f.parseDateTime("Wed 2004-06-09T10:20:30Z"));
-        
-        // use wrong day of week
-        expect = new MutableDateTime(2004, 6, 7, 11, 20, 30, 0, LONDON);
-        // DayOfWeek takes precedence, because week < month in length
-        assertEquals(expect, f.parseDateTime("Mon 2004-06-09T10:20:30Z"));
-    }
+    public void testParseMutableDateTime_simple_precedence() throws Exception {
+		this.testDateTimeFormatterTestParseDateTime_simple_precedenceTemplate(MutableDateTime.class);
+	}
 
     public void testParseMutableDateTime_offsetParsed() {
         MutableDateTime expect = null;
@@ -1088,5 +1032,64 @@ public class TestDateTimeFormatter extends TestCase {
             out.write("Hi");
         }
     }
+
+	public <TDateTime extends BaseDateTime> void testDateTimeFormatterTestParseDateTime_zone3Template(
+			Class<TDateTime> clazzTDateTime) throws Exception {
+		DateTimeFormatter h = new DateTimeFormatterBuilder().append(ISODateTimeFormat.date()).appendLiteral('T')
+				.append(ISODateTimeFormat.timeElementParser()).toFormatter();
+		TDateTime expect = null;
+		expect = clazzTDateTime.getDeclaredConstructor(int.class, int.class, int.class, int.class, int.class, int.class,
+				int.class, DateTimeZone.class).newInstance(2004, 6, 9, 10, 20, 30, 0, LONDON);
+		assertEquals(expect, h.withZone(LONDON).parseDateTime("2004-06-09T10:20:30"));
+		expect = clazzTDateTime.getDeclaredConstructor(int.class, int.class, int.class, int.class, int.class, int.class,
+				int.class, DateTimeZone.class).newInstance(2004, 6, 9, 10, 20, 30, 0, LONDON);
+		assertEquals(expect, h.withZone(null).parseDateTime("2004-06-09T10:20:30"));
+		expect = clazzTDateTime.getDeclaredConstructor(int.class, int.class, int.class, int.class, int.class, int.class,
+				int.class, DateTimeZone.class).newInstance(2004, 6, 9, 10, 20, 30, 0, PARIS);
+		assertEquals(expect, h.withZone(PARIS).parseDateTime("2004-06-09T10:20:30"));
+	}
+
+	public <TDateTime extends BaseDateTime> void testDateTimeFormatterTestParseDateTime_simple_precedenceTemplate(
+			Class<TDateTime> clazzTDateTime) throws Exception {
+		TDateTime expect = null;
+		expect = clazzTDateTime.getDeclaredConstructor(int.class, int.class, int.class, int.class, int.class, int.class,
+				int.class, DateTimeZone.class).newInstance(2004, 6, 9, 11, 20, 30, 0, LONDON);
+		assertEquals(expect, f.parseDateTime("Wed 2004-06-09T10:20:30Z"));
+		expect = clazzTDateTime.getDeclaredConstructor(int.class, int.class, int.class, int.class, int.class, int.class,
+				int.class, DateTimeZone.class).newInstance(2004, 6, 7, 11, 20, 30, 0, LONDON);
+		assertEquals(expect, f.parseDateTime("Mon 2004-06-09T10:20:30Z"));
+	}
+
+	public <TDateTime extends BaseDateTime> void testDateTimeFormatterTestParseDateTime_simpleTemplate(
+			TestDateTimeFormatterTestParseDateTime_simpleAdapter<TDateTime> adapter, Class<TDateTime> clazzTDateTime)
+			throws Exception {
+		TDateTime expect = null;
+		expect = clazzTDateTime.getDeclaredConstructor(int.class, int.class, int.class, int.class, int.class, int.class,
+				int.class, DateTimeZone.class).newInstance(2004, 6, 9, 11, 20, 30, 0, LONDON);
+		assertEquals(expect, g.parseDateTime("2004-06-09T10:20:30Z"));
+		try {
+			adapter.parseDateTime(g, "ABC");
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
+
+	interface TestDateTimeFormatterTestParseDateTime_simpleAdapter<TDateTime> {
+		TDateTime parseDateTime(DateTimeFormatter dateTimeFormatter1, String string1);
+	}
+
+	class TestDateTimeFormatterTestParseDateTime_simpleAdapterImpl
+			implements TestDateTimeFormatterTestParseDateTime_simpleAdapter<DateTime> {
+		public DateTime parseDateTime(DateTimeFormatter g, String string1) {
+			return g.parseDateTime(string1);
+		}
+	}
+
+	class TestDateTimeFormatterTestParseMutableDateTime_simpleAdapterImpl
+			implements TestDateTimeFormatterTestParseDateTime_simpleAdapter<MutableDateTime> {
+		public MutableDateTime parseDateTime(DateTimeFormatter g, String string1) {
+			return g.parseMutableDateTime(string1);
+		}
+	}
 
 }

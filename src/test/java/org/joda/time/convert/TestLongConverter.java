@@ -100,13 +100,10 @@ public class TestLongConverter extends TestCase {
         assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (Chronology) null));
     }
 
-    //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
-        TimeOfDay tod = new TimeOfDay();
-        int[] expected = ISOChronology.getInstance().get(tod, 12345678L);
-        int[] actual = LongConverter.INSTANCE.getPartialValues(tod, new Long(12345678L), ISOChronology.getInstance());
-        assertEquals(true, Arrays.equals(expected, actual));
-    }
+		TestConverterTestGetPartialValuesTemplate.testConverterTestGetPartialValuesTemplate(Long.class,
+				LongConverter.INSTANCE);
+	}
 
     //-----------------------------------------------------------------------
     public void testGetDurationMillis_Object() throws Exception {

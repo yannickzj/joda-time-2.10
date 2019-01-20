@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.field.AbstractPartialFieldProperty;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -325,14 +326,10 @@ public class TestYearMonth_Properties extends TestCase {
         assertEquals(false, test1.monthOfYear().equals(test3.monthOfYear()));
     }
 
-    public void testPropertyHashCode() {
-        YearMonth test1 = new YearMonth(2005, 11);
-        YearMonth test2 = new YearMonth(2005, 12);
-        assertEquals(true, test1.monthOfYear().hashCode() == test1.monthOfYear().hashCode());
-        assertEquals(false, test1.monthOfYear().hashCode() == test2.monthOfYear().hashCode());
-        assertEquals(true, test1.year().hashCode() == test1.year().hashCode());
-        assertEquals(true, test1.year().hashCode() == test2.year().hashCode());
-    }
+    public void testPropertyHashCode() throws Exception {
+		TestPropertiesTestPropertyHashCodeTemplate.testPropertiesTestPropertyHashCodeTemplate(
+				new TestYearMonth_PropertiesTestPropertyHashCodeAdapterImpl(), YearMonth.class, true, false);
+	}
 
     public void testPropertyEqualsHashCodeLenient() {
         YearMonth test1 = new YearMonth(1970, 6, LenientChronology.getInstance(COPTIC_PARIS));
@@ -363,4 +360,15 @@ public class TestYearMonth_Properties extends TestCase {
         assertEquals(year, test.getYear());
         assertEquals(month, test.getMonthOfYear());
     }
+
+	class TestYearMonth_PropertiesTestPropertyHashCodeAdapterImpl
+			implements TestPropertiesTestPropertyHashCodeAdapter<YearMonth> {
+		public AbstractPartialFieldProperty action1(YearMonth test1) {
+			return (AbstractPartialFieldProperty) test1.year();
+		}
+
+		public AbstractPartialFieldProperty monthOfYear(YearMonth test1) {
+			return (AbstractPartialFieldProperty) test1.monthOfYear();
+		}
+	}
 }

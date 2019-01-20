@@ -123,12 +123,9 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     public void testFormat_time_partial() {
-        Partial dt = new Partial(
-                new DateTimeFieldType[] {DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
-                        DateTimeFieldType.secondOfMinute(), DateTimeFieldType.millisOfSecond()},
-                new int[] {10, 20, 30, 40});
-        assertEquals("10:20:30.040", ISODateTimeFormat.time().print(dt));
-    }
+		this.testISODateTimeFormatTestTemplate(new TestISODateTimeFormatTestFormat_time_partialAdapterImpl(),
+				"10:20:30.040");
+	}
 
     public void testFormat_timeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
@@ -142,12 +139,9 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     public void testFormat_timeNoMillis_partial() {
-        Partial dt = new Partial(
-                new DateTimeFieldType[] {DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
-                        DateTimeFieldType.secondOfMinute(), DateTimeFieldType.millisOfSecond()},
-                new int[] {10, 20, 30, 40});
-        assertEquals("10:20:30", ISODateTimeFormat.timeNoMillis().print(dt));
-    }
+		this.testISODateTimeFormatTestTemplate(new TestISODateTimeFormatTestFormat_timeNoMillis_partialAdapterImpl(),
+				"10:20:30");
+	}
 
     public void testFormat_tTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
@@ -593,5 +587,29 @@ public class TestISODateTimeFormat extends TestCase {
         dt = dt.withZone(PARIS);
         assertEquals("2004-06-09T12:20:30.040", ISODateTimeFormat.dateHourMinuteSecondFraction().print(dt));
     }
+
+	public void testISODateTimeFormatTestTemplate(TestISODateTimeFormatTestAdapter adapter, String string1) {
+		Partial dt = new Partial(
+				new DateTimeFieldType[] { DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
+						DateTimeFieldType.secondOfMinute(), DateTimeFieldType.millisOfSecond() },
+				new int[] { 10, 20, 30, 40 });
+		assertEquals(string1, adapter.time().print(dt));
+	}
+
+	interface TestISODateTimeFormatTestAdapter {
+		DateTimeFormatter time();
+	}
+
+	class TestISODateTimeFormatTestFormat_time_partialAdapterImpl implements TestISODateTimeFormatTestAdapter {
+		public DateTimeFormatter time() {
+			return ISODateTimeFormat.time();
+		}
+	}
+
+	class TestISODateTimeFormatTestFormat_timeNoMillis_partialAdapterImpl implements TestISODateTimeFormatTestAdapter {
+		public DateTimeFormatter time() {
+			return ISODateTimeFormat.timeNoMillis();
+		}
+	}
 
 }

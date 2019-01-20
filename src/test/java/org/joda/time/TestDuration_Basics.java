@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.BaseSingleFieldPeriod;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -341,29 +342,10 @@ public class TestDuration_Basics extends TestCase {
         }
     }
 
-    //-----------------------------------------------------------------------
     public void testToStandardHours() {
-        Duration test = new Duration(0L);
-        assertEquals(Hours.hours(0), test.toStandardHours());
-        test = new Duration(1L);
-        assertEquals(Hours.hours(0), test.toStandardHours());
-        test = new Duration(3600000L - 1);
-        assertEquals(Hours.hours(0), test.toStandardHours());
-        test = new Duration(3600000L);
-        assertEquals(Hours.hours(1), test.toStandardHours());
-        test = new Duration(3600000L + 1);
-        assertEquals(Hours.hours(1), test.toStandardHours());
-        test = new Duration(2 * 3600000L - 1);
-        assertEquals(Hours.hours(1), test.toStandardHours());
-        test = new Duration(2 * 3600000L);
-        assertEquals(Hours.hours(2), test.toStandardHours());
-        test = new Duration(-1L);
-        assertEquals(Hours.hours(0), test.toStandardHours());
-        test = new Duration(-3600000L + 1);
-        assertEquals(Hours.hours(0), test.toStandardHours());
-        test = new Duration(-3600000L);
-        assertEquals(Hours.hours(-1), test.toStandardHours());
-    }
+		this.testDuration_BasicsTestToStandardTemplate(new TestDuration_BasicsTestToStandardHoursAdapterImpl(),
+				3600000L, 3600000L, 3600000L, 3600000L, 3600000L, -3600000L, -3600000L);
+	}
 
     public void testToStandardHours_overflow() {
         Duration test = new Duration(((long) Integer.MAX_VALUE) * 3600000L + 3600000L);
@@ -375,29 +357,10 @@ public class TestDuration_Basics extends TestCase {
         }
     }
 
-    //-----------------------------------------------------------------------
     public void testToStandardMinutes() {
-        Duration test = new Duration(0L);
-        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
-        test = new Duration(1L);
-        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
-        test = new Duration(60000L - 1);
-        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
-        test = new Duration(60000L);
-        assertEquals(Minutes.minutes(1), test.toStandardMinutes());
-        test = new Duration(60000L + 1);
-        assertEquals(Minutes.minutes(1), test.toStandardMinutes());
-        test = new Duration(2 * 60000L - 1);
-        assertEquals(Minutes.minutes(1), test.toStandardMinutes());
-        test = new Duration(2 * 60000L);
-        assertEquals(Minutes.minutes(2), test.toStandardMinutes());
-        test = new Duration(-1L);
-        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
-        test = new Duration(-60000L + 1);
-        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
-        test = new Duration(-60000L);
-        assertEquals(Minutes.minutes(-1), test.toStandardMinutes());
-    }
+		this.testDuration_BasicsTestToStandardTemplate(new TestDuration_BasicsTestToStandardMinutesAdapterImpl(),
+				60000L, 60000L, 60000L, 60000L, 60000L, -60000L, -60000L);
+	}
 
     public void testToStandardMinutes_overflow() {
         Duration test = new Duration(((long) Integer.MAX_VALUE) * 60000L + 60000L);
@@ -853,5 +816,55 @@ public class TestDuration_Basics extends TestCase {
             super.setMillis(duration);
         }
     }
+
+	public void testDuration_BasicsTestToStandardTemplate(TestDuration_BasicsTestToStandardAdapter adapter, long l1,
+			long l2, long l3, long l4, long l5, long l6, long l7) {
+		Duration test = new Duration(0L);
+		assertEquals(adapter.action1(0), adapter.toStandard(test));
+		test = new Duration(1L);
+		assertEquals(adapter.action1(0), adapter.toStandard(test));
+		test = new Duration(l1 - 1);
+		assertEquals(adapter.action1(0), adapter.toStandard(test));
+		test = new Duration(l2);
+		assertEquals(adapter.action1(1), adapter.toStandard(test));
+		test = new Duration(l3 + 1);
+		assertEquals(adapter.action1(1), adapter.toStandard(test));
+		test = new Duration(2 * l4 - 1);
+		assertEquals(adapter.action1(1), adapter.toStandard(test));
+		test = new Duration(2 * l5);
+		assertEquals(adapter.action1(2), adapter.toStandard(test));
+		test = new Duration(-1L);
+		assertEquals(adapter.action1(0), adapter.toStandard(test));
+		test = new Duration(l6 + 1);
+		assertEquals(adapter.action1(0), adapter.toStandard(test));
+		test = new Duration(l7);
+		assertEquals(adapter.action1(-1), adapter.toStandard(test));
+	}
+
+	interface TestDuration_BasicsTestToStandardAdapter {
+		BaseSingleFieldPeriod action1(int i1);
+
+		BaseSingleFieldPeriod toStandard(Duration duration1);
+	}
+
+	class TestDuration_BasicsTestToStandardHoursAdapterImpl implements TestDuration_BasicsTestToStandardAdapter {
+		public BaseSingleFieldPeriod action1(int i1) {
+			return Hours.hours(i1);
+		}
+
+		public BaseSingleFieldPeriod toStandard(Duration test) {
+			return test.toStandardHours();
+		}
+	}
+
+	class TestDuration_BasicsTestToStandardMinutesAdapterImpl implements TestDuration_BasicsTestToStandardAdapter {
+		public BaseSingleFieldPeriod action1(int i1) {
+			return Minutes.minutes(i1);
+		}
+
+		public BaseSingleFieldPeriod toStandard(Duration test) {
+			return test.toStandardMinutes();
+		}
+	}
 
 }

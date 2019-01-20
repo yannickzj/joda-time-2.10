@@ -294,109 +294,45 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(false, test.overlaps(empty));
     }
 
-    //-----------------------------------------------------------------------
     public void testIsBefore_long() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(false, test.isBefore(TEST_TIME1 - 1));
-        assertEquals(false, test.isBefore(TEST_TIME1));
-        assertEquals(false, test.isBefore(TEST_TIME1 + 1));
-        
-        assertEquals(false, test.isBefore(TEST_TIME2 - 1));
-        assertEquals(true, test.isBefore(TEST_TIME2));
-        assertEquals(true, test.isBefore(TEST_TIME2 + 1));
-    }
+		this.testMutableInterval_BasicsTestIsTemplate(new TestMutableInterval_BasicsTestIsBefore_longAdapterImpl(),
+				false, true, true);
+	}
 
     public void testIsBeforeNow() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2 - 1);
-        assertEquals(false, test.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2);
-        assertEquals(true, test.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2 + 1);
-        assertEquals(true, test.isBeforeNow());
-    }
+		this.testMutableInterval_BasicsTestIsNowTemplate(new TestMutableInterval_BasicsTestIsBeforeNowAdapterImpl(),
+				TEST_TIME2, false, TEST_TIME2, true, TEST_TIME2, true);
+	}
 
     public void testIsBefore_RI() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME1 - 1)));
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME1)));
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME2 - 1)));
-        assertEquals(true, test.isBefore(new Instant(TEST_TIME2)));
-        assertEquals(true, test.isBefore(new Instant(TEST_TIME2 + 1)));
-        
-        assertEquals(false, test.isBefore((ReadableInstant) null));
-    }
+		this.testMutableInterval_BasicsTestIsRITemplate(new TestMutableInterval_BasicsTestIsBefore_RIAdapterImpl(),
+				false, true, true);
+	}
 
     public void testIsBefore_RInterval() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
-        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1)));
-        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isBefore(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
-        assertEquals(true, test.isBefore(new Interval(TEST_TIME2, Long.MAX_VALUE)));
-        assertEquals(true, test.isBefore(new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
-        
-        assertEquals(false, test.isBefore((ReadableInterval) null));
-    }
+		this.testMutableInterval_BasicsTestIsRIntervalTemplate(
+				new TestMutableInterval_BasicsTestIsBefore_RIntervalAdapterImpl(), false, false, true, true);
+	}
 
-    //-----------------------------------------------------------------------
     public void testIsAfter_long() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(true, test.isAfter(TEST_TIME1 - 1));
-        assertEquals(false, test.isAfter(TEST_TIME1));
-        assertEquals(false, test.isAfter(TEST_TIME1 + 1));
-        
-        assertEquals(false, test.isAfter(TEST_TIME2 - 1));
-        assertEquals(false, test.isAfter(TEST_TIME2));
-        assertEquals(false, test.isAfter(TEST_TIME2 + 1));
-    }
+		this.testMutableInterval_BasicsTestIsTemplate(new TestMutableInterval_BasicsTestIsAfter_longAdapterImpl(), true,
+				false, false);
+	}
 
     public void testIsAfterNow() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 - 1);
-        assertEquals(true, test.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1);
-        assertEquals(false, test.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 + 1);
-        assertEquals(false, test.isAfterNow());
-    }
+		this.testMutableInterval_BasicsTestIsNowTemplate(new TestMutableInterval_BasicsTestIsAfterNowAdapterImpl(),
+				TEST_TIME1, true, TEST_TIME1, false, TEST_TIME1, false);
+	}
 
     public void testIsAfter_RI() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(true, test.isAfter(new Instant(TEST_TIME1 - 1)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME1)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME2 - 1)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME2)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME2 + 1)));
-        
-        assertEquals(false, test.isAfter((ReadableInstant) null));
-    }
+		this.testMutableInterval_BasicsTestIsRITemplate(new TestMutableInterval_BasicsTestIsAfter_RIAdapterImpl(), true,
+				false, false);
+	}
 
     public void testIsAfter_RInterval() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
-        assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1)));
-        assertEquals(false, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isAfter(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
-        assertEquals(false, test.isAfter(new Interval(TEST_TIME2, Long.MAX_VALUE)));
-        assertEquals(false, test.isAfter(new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
-        
-        assertEquals(false, test.isAfter((ReadableInterval) null));
-    }
+		this.testMutableInterval_BasicsTestIsRIntervalTemplate(
+				new TestMutableInterval_BasicsTestIsAfter_RIntervalAdapterImpl(), true, true, false, false);
+	}
 
     //-----------------------------------------------------------------------
     public void testToInterval1() {
@@ -484,6 +420,118 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(test, cloned);
         assertNotSame(test, cloned);
     }
+
+	public void testMutableInterval_BasicsTestIsRITemplate(TestMutableInterval_BasicsTestIsRIAdapter adapter,
+			boolean b1, boolean b2, boolean b3) {
+		MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
+		assertEquals(b1, adapter.is(test, new Instant(TEST_TIME1 - 1)));
+		assertEquals(false, adapter.is(test, new Instant(TEST_TIME1)));
+		assertEquals(false, adapter.is(test, new Instant(TEST_TIME1 + 1)));
+		assertEquals(false, adapter.is(test, new Instant(TEST_TIME2 - 1)));
+		assertEquals(b2, adapter.is(test, new Instant(TEST_TIME2)));
+		assertEquals(b3, adapter.is(test, new Instant(TEST_TIME2 + 1)));
+		assertEquals(false, adapter.is(test, (ReadableInstant) null));
+	}
+
+	interface TestMutableInterval_BasicsTestIsRIAdapter {
+		boolean is(MutableInterval mutableInterval1, ReadableInstant readableInstant1);
+	}
+
+	class TestMutableInterval_BasicsTestIsBefore_RIAdapterImpl implements TestMutableInterval_BasicsTestIsRIAdapter {
+		public boolean is(MutableInterval test, ReadableInstant readableInstant1) {
+			return test.isBefore(readableInstant1);
+		}
+	}
+
+	class TestMutableInterval_BasicsTestIsAfter_RIAdapterImpl implements TestMutableInterval_BasicsTestIsRIAdapter {
+		public boolean is(MutableInterval test, ReadableInstant readableInstant1) {
+			return test.isAfter(readableInstant1);
+		}
+	}
+
+	public void testMutableInterval_BasicsTestIsRIntervalTemplate(
+			TestMutableInterval_BasicsTestIsRIntervalAdapter adapter, boolean b1, boolean b2, boolean b3, boolean b4) {
+		MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
+		assertEquals(b1, adapter.is(test, new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
+		assertEquals(b2, adapter.is(test, new Interval(Long.MIN_VALUE, TEST_TIME1)));
+		assertEquals(false, adapter.is(test, new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
+		assertEquals(false, adapter.is(test, new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
+		assertEquals(b3, adapter.is(test, new Interval(TEST_TIME2, Long.MAX_VALUE)));
+		assertEquals(b4, adapter.is(test, new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
+		assertEquals(false, adapter.is(test, (ReadableInterval) null));
+	}
+
+	interface TestMutableInterval_BasicsTestIsRIntervalAdapter {
+		boolean is(MutableInterval mutableInterval1, ReadableInterval readableInterval1);
+	}
+
+	class TestMutableInterval_BasicsTestIsBefore_RIntervalAdapterImpl
+			implements TestMutableInterval_BasicsTestIsRIntervalAdapter {
+		public boolean is(MutableInterval test, ReadableInterval readableInterval1) {
+			return test.isBefore(readableInterval1);
+		}
+	}
+
+	class TestMutableInterval_BasicsTestIsAfter_RIntervalAdapterImpl
+			implements TestMutableInterval_BasicsTestIsRIntervalAdapter {
+		public boolean is(MutableInterval test, ReadableInterval readableInterval1) {
+			return test.isAfter(readableInterval1);
+		}
+	}
+
+	public void testMutableInterval_BasicsTestIsTemplate(TestMutableInterval_BasicsTestIsAdapter adapter, boolean b1,
+			boolean b2, boolean b3) {
+		MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
+		assertEquals(b1, adapter.is(test, TEST_TIME1 - 1));
+		assertEquals(false, adapter.is(test, TEST_TIME1));
+		assertEquals(false, adapter.is(test, TEST_TIME1 + 1));
+		assertEquals(false, adapter.is(test, TEST_TIME2 - 1));
+		assertEquals(b2, adapter.is(test, TEST_TIME2));
+		assertEquals(b3, adapter.is(test, TEST_TIME2 + 1));
+	}
+
+	interface TestMutableInterval_BasicsTestIsAdapter {
+		boolean is(MutableInterval mutableInterval1, long l1);
+	}
+
+	class TestMutableInterval_BasicsTestIsBefore_longAdapterImpl implements TestMutableInterval_BasicsTestIsAdapter {
+		public boolean is(MutableInterval test, long l1) {
+			return test.isBefore(l1);
+		}
+	}
+
+	class TestMutableInterval_BasicsTestIsAfter_longAdapterImpl implements TestMutableInterval_BasicsTestIsAdapter {
+		public boolean is(MutableInterval test, long l1) {
+			return test.isAfter(l1);
+		}
+	}
+
+	public void testMutableInterval_BasicsTestIsNowTemplate(TestMutableInterval_BasicsTestIsNowAdapter adapter, long l1,
+			boolean b1, long l2, boolean b2, long l3, boolean b3) {
+		MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
+		DateTimeUtils.setCurrentMillisFixed(l1 - 1);
+		assertEquals(b1, adapter.isNow(test));
+		DateTimeUtils.setCurrentMillisFixed(l2);
+		assertEquals(b2, adapter.isNow(test));
+		DateTimeUtils.setCurrentMillisFixed(l3 + 1);
+		assertEquals(b3, adapter.isNow(test));
+	}
+
+	interface TestMutableInterval_BasicsTestIsNowAdapter {
+		boolean isNow(MutableInterval mutableInterval1);
+	}
+
+	class TestMutableInterval_BasicsTestIsBeforeNowAdapterImpl implements TestMutableInterval_BasicsTestIsNowAdapter {
+		public boolean isNow(MutableInterval test) {
+			return test.isBeforeNow();
+		}
+	}
+
+	class TestMutableInterval_BasicsTestIsAfterNowAdapterImpl implements TestMutableInterval_BasicsTestIsNowAdapter {
+		public boolean isNow(MutableInterval test) {
+			return test.isAfterNow();
+		}
+	}
 
 
 }

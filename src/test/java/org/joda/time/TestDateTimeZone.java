@@ -15,6 +15,9 @@
  */
 package org.joda.time;
 
+import java.util.Locale;
+import org.joda.time.tz.NameProvider;
+import java.lang.String;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FilePermission;
@@ -32,7 +35,6 @@ import java.text.DateFormatSymbols;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -42,7 +44,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.tz.DefaultNameProvider;
-import org.joda.time.tz.NameProvider;
 import org.joda.time.tz.Provider;
 import org.joda.time.tz.UTCProvider;
 import org.joda.time.tz.ZoneInfoProvider;
@@ -767,11 +768,9 @@ public class TestDateTimeZone extends TestCase {
     }
 
     public void testGetShortName() {
-        DateTimeZone zone = DateTimeZone.forID("Europe/London");
-        assertEquals("BST", zone.getShortName(TEST_TIME_SUMMER));
-        assertEquals("GMT", zone.getShortName(TEST_TIME_WINTER));
-        assertEquals("BST", zone.getShortName(TEST_TIME_SUMMER, Locale.ENGLISH));
-    }
+		this.testDateTimeZoneTestGetNameTemplate(new TestDateTimeZoneTestGetShortNameAdapterImpl(), "BST", "GMT",
+				"BST");
+	}
 
     public void testGetShortName_berlin() {
         DateTimeZone berlin = DateTimeZone.forID("Europe/Berlin");
@@ -787,11 +786,9 @@ public class TestDateTimeZone extends TestCase {
     }
 
     public void testGetShortNameProviderName() {
-        assertEquals(null, DateTimeZone.getNameProvider().getShortName(null, "Europe/London", "BST"));
-        assertEquals(null, DateTimeZone.getNameProvider().getShortName(Locale.ENGLISH, null, "BST"));
-        assertEquals(null, DateTimeZone.getNameProvider().getShortName(Locale.ENGLISH, "Europe/London", null));
-        assertEquals(null, DateTimeZone.getNameProvider().getShortName(null, null, null));
-    }
+		this.testDateTimeZoneTestGetNameProviderNameTemplate(
+				new TestDateTimeZoneTestGetShortNameProviderNameAdapterImpl());
+	}
 
     public void testGetShortNameNullKey() {
         DateTimeZone zone = new MockDateTimeZone("Europe/London");
@@ -799,11 +796,9 @@ public class TestDateTimeZone extends TestCase {
     }
 
     public void testGetName() {
-        DateTimeZone zone = DateTimeZone.forID("Europe/London");
-        assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER));
-        assertEquals("Greenwich Mean Time", zone.getName(TEST_TIME_WINTER));
-        assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER, Locale.ENGLISH));
-    }
+		this.testDateTimeZoneTestGetNameTemplate(new TestDateTimeZoneTestGetNameAdapterImpl(), "British Summer Time",
+				"Greenwich Mean Time", "British Summer Time");
+	}
 
     public void testGetName_berlin_english() {
       DateTimeZone berlin = DateTimeZone.forID("Europe/Berlin");
@@ -830,11 +825,8 @@ public class TestDateTimeZone extends TestCase {
     }
 
     public void testGetNameProviderName() {
-        assertEquals(null, DateTimeZone.getNameProvider().getName(null, "Europe/London", "BST"));
-        assertEquals(null, DateTimeZone.getNameProvider().getName(Locale.ENGLISH, null, "BST"));
-        assertEquals(null, DateTimeZone.getNameProvider().getName(Locale.ENGLISH, "Europe/London", null));
-        assertEquals(null, DateTimeZone.getNameProvider().getName(null, null, null));
-    }
+		this.testDateTimeZoneTestGetNameProviderNameTemplate(new TestDateTimeZoneTestGetNameProviderNameAdapterImpl());
+	}
 
     public void testGetNameNullKey() {
         DateTimeZone zone = new MockDateTimeZone("Europe/London");
@@ -868,52 +860,21 @@ public class TestDateTimeZone extends TestCase {
         }
     }
 
-    //-----------------------------------------------------------------------
     public void testGetOffset_long() {
-        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
-        assertEquals(2L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_WINTER));
-        
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getStandardOffset(TEST_TIME_SUMMER));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getStandardOffset(TEST_TIME_WINTER));
-        
-        assertEquals(2L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffsetFromLocal(TEST_TIME_SUMMER));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffsetFromLocal(TEST_TIME_WINTER));
-        
-        assertEquals(false, zone.isStandardOffset(TEST_TIME_SUMMER));
-        assertEquals(true, zone.isStandardOffset(TEST_TIME_WINTER));
-    }
+		this.testDateTimeZoneTestGetTemplate("Europe/Paris", 2L, 2L, false);
+	}
 
     public void testGetOffset_RI() {
-        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
-        assertEquals(2L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_SUMMER)));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_WINTER)));
-        
-        assertEquals(zone.getOffset(DateTimeUtils.currentTimeMillis()), zone.getOffset(null));
-    }
+		this.testDateTimeZoneTestGetRITemplate("Europe/Paris", 2L);
+	}
 
     public void testGetOffsetFixed() {
-        DateTimeZone zone = DateTimeZone.forID("+01:00");
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_WINTER));
-        
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getStandardOffset(TEST_TIME_SUMMER));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getStandardOffset(TEST_TIME_WINTER));
-        
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffsetFromLocal(TEST_TIME_SUMMER));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffsetFromLocal(TEST_TIME_WINTER));
-        
-        assertEquals(true, zone.isStandardOffset(TEST_TIME_SUMMER));
-        assertEquals(true, zone.isStandardOffset(TEST_TIME_WINTER));
-    }
+		this.testDateTimeZoneTestGetTemplate("+01:00", 1L, 1L, true);
+	}
 
     public void testGetOffsetFixed_RI() {
-        DateTimeZone zone = DateTimeZone.forID("+01:00");
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_SUMMER)));
-        assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_WINTER)));
-        
-        assertEquals(zone.getOffset(DateTimeUtils.currentTimeMillis()), zone.getOffset(null));
-    }
+		this.testDateTimeZoneTestGetRITemplate("+01:00", 1L);
+	}
 
     //-----------------------------------------------------------------------
     public void testGetMillisKeepLocal() {
@@ -987,39 +948,15 @@ public class TestDateTimeZone extends TestCase {
 //        assertEquals(false, zone.isLocalDateTimeOverlap(new LocalDateTime(2007, 12, 24, 12, 34)));
 //    }
 
-    //-----------------------------------------------------------------------
     public void testIsLocalDateTimeGap_Berlin() {
-        DateTimeZone zone = DateTimeZone.forID("Europe/Berlin");
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 1, 0)));
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 1, 59, 59, 99)));
-        assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 2, 0)));
-        assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 2, 30)));
-        assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 2, 59, 59, 99)));
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 3, 0)));
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 25, 4, 0)));
-        
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 10, 28, 1, 30)));  // before overlap
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 10, 28, 2, 30)));  // overlap
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 10, 28, 3, 30)));  // after overlap
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 12, 24, 12, 34)));
-    }
+		this.testDateTimeZoneTestIsLocalDateTimeGap_Template("Europe/Berlin", 25, 25, 25, 25, 25, 25, 25, 10, 28, 10,
+				28, 10, 28, 3);
+	}
 
-    //-----------------------------------------------------------------------
     public void testIsLocalDateTimeGap_NewYork() {
-        DateTimeZone zone = DateTimeZone.forID("America/New_York");
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 1, 0)));
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 1, 59, 59, 99)));
-        assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 2, 0)));
-        assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 2, 30)));
-        assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 2, 59, 59, 99)));
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 3, 0)));
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, 11, 4, 0)));
-        
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 11, 4, 0, 30)));  // before overlap
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 11, 4, 1, 30)));  // overlap
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 11, 4, 2, 30)));  // after overlap
-        assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 12, 24, 12, 34)));
-    }
+		this.testDateTimeZoneTestIsLocalDateTimeGap_Template("America/New_York", 11, 11, 11, 11, 11, 11, 11, 11, 4, 11,
+				4, 11, 4, 0);
+	}
 
     //-----------------------------------------------------------------------
     public void testToTimeZone() {
@@ -1181,5 +1118,95 @@ public class TestDateTimeZone extends TestCase {
         String str2 = zone.getName(now.plusMonths(6).getMillis());
         assertEquals(false, str1.equals(str2));
     }
+
+	public void testDateTimeZoneTestIsLocalDateTimeGap_Template(String string1, int i1, int i2, int i3, int i4, int i5,
+			int i6, int i7, int i8, int i9, int i10, int i11, int i12, int i13, int i14) {
+		DateTimeZone zone = DateTimeZone.forID(string1);
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i1, 1, 0)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i2, 1, 59, 59, 99)));
+		assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i3, 2, 0)));
+		assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i4, 2, 30)));
+		assertEquals(true, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i5, 2, 59, 59, 99)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i6, 3, 0)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 3, i7, 4, 0)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, i8, i9, 1, 30)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, i10, i11, 2, 30)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, i12, i13, i14, 30)));
+		assertEquals(false, zone.isLocalDateTimeGap(new LocalDateTime(2007, 12, 24, 12, 34)));
+	}
+
+	public void testDateTimeZoneTestGetTemplate(String string1, long l1, long l2, boolean b1) {
+		DateTimeZone zone = DateTimeZone.forID(string1);
+		assertEquals(l1 * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
+		assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_WINTER));
+		assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getStandardOffset(TEST_TIME_SUMMER));
+		assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getStandardOffset(TEST_TIME_WINTER));
+		assertEquals(l2 * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffsetFromLocal(TEST_TIME_SUMMER));
+		assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffsetFromLocal(TEST_TIME_WINTER));
+		assertEquals(b1, zone.isStandardOffset(TEST_TIME_SUMMER));
+		assertEquals(true, zone.isStandardOffset(TEST_TIME_WINTER));
+	}
+
+	public void testDateTimeZoneTestGetRITemplate(String string1, long l1) {
+		DateTimeZone zone = DateTimeZone.forID(string1);
+		assertEquals(l1 * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_SUMMER)));
+		assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(new Instant(TEST_TIME_WINTER)));
+		assertEquals(zone.getOffset(DateTimeUtils.currentTimeMillis()), zone.getOffset(null));
+	}
+
+	public void testDateTimeZoneTestGetNameTemplate(TestDateTimeZoneTestGetNameAdapter adapter, String string1,
+			String string2, String string3) {
+		DateTimeZone zone = DateTimeZone.forID("Europe/London");
+		assertEquals(string1, adapter.getName(zone, TEST_TIME_SUMMER));
+		assertEquals(string2, adapter.getName(zone, TEST_TIME_WINTER));
+		assertEquals(string3, adapter.getName1(zone, TEST_TIME_SUMMER, Locale.ENGLISH));
+	}
+
+	interface TestDateTimeZoneTestGetNameAdapter {
+		String getName(DateTimeZone dateTimeZone1, long l1);
+
+		String getName1(DateTimeZone dateTimeZone1, long l1, Locale locale1);
+	}
+	class TestDateTimeZoneTestGetShortNameAdapterImpl implements TestDateTimeZoneTestGetNameAdapter {
+		public String getName(DateTimeZone zone, long TEST_TIME_SUMMER) {
+			return zone.getShortName(TEST_TIME_SUMMER);
+		}
+
+		public String getName1(DateTimeZone zone, long TEST_TIME_SUMMER, Locale locale1) {
+			return zone.getShortName(TEST_TIME_SUMMER, locale1);
+		}
+	}
+	class TestDateTimeZoneTestGetNameAdapterImpl implements TestDateTimeZoneTestGetNameAdapter {
+		public String getName(DateTimeZone zone, long TEST_TIME_SUMMER) {
+			return zone.getName(TEST_TIME_SUMMER);
+		}
+
+		public String getName1(DateTimeZone zone, long TEST_TIME_SUMMER, Locale locale1) {
+			return zone.getName(TEST_TIME_SUMMER, locale1);
+		}
+	}
+
+	public void testDateTimeZoneTestGetNameProviderNameTemplate(
+			TestDateTimeZoneTestGetNameProviderNameAdapter adapter) {
+		assertEquals(null, adapter.getName(DateTimeZone.getNameProvider(), null, "Europe/London", "BST"));
+		assertEquals(null, adapter.getName(DateTimeZone.getNameProvider(), Locale.ENGLISH, null, "BST"));
+		assertEquals(null, adapter.getName(DateTimeZone.getNameProvider(), Locale.ENGLISH, "Europe/London", null));
+		assertEquals(null, adapter.getName(DateTimeZone.getNameProvider(), null, null, null));
+	}
+
+	interface TestDateTimeZoneTestGetNameProviderNameAdapter {
+		String getName(NameProvider nameProvider1, Locale locale1, String string1, String string2);
+	}
+	class TestDateTimeZoneTestGetShortNameProviderNameAdapterImpl
+			implements TestDateTimeZoneTestGetNameProviderNameAdapter {
+		public String getName(NameProvider nameProvider1, Locale locale1, String string1, String string2) {
+			return nameProvider1.getShortName(locale1, string1, string2);
+		}
+	}
+	class TestDateTimeZoneTestGetNameProviderNameAdapterImpl implements TestDateTimeZoneTestGetNameProviderNameAdapter {
+		public String getName(NameProvider nameProvider1, Locale locale1, String string1, String string2) {
+			return nameProvider1.getName(locale1, string1, string2);
+		}
+	}
 
 }

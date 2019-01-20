@@ -205,36 +205,12 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testEqualsHashCodeLenient() {
-        Interval test1 = new Interval(
-                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
-                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
-        Interval test2 = new Interval(
-                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
-                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
-        assertEquals(true, test1.equals(test2));
-        assertEquals(true, test2.equals(test1));
-        assertEquals(true, test1.equals(test1));
-        assertEquals(true, test2.equals(test2));
-        assertEquals(true, test1.hashCode() == test2.hashCode());
-        assertEquals(true, test1.hashCode() == test1.hashCode());
-        assertEquals(true, test2.hashCode() == test2.hashCode());
-    }
+		this.testInterval_BasicsTestEqualsHashCodeTemplate();
+	}
 
     public void testEqualsHashCodeStrict() {
-        Interval test1 = new Interval(
-                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
-                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
-        Interval test2 = new Interval(
-                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
-                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
-        assertEquals(true, test1.equals(test2));
-        assertEquals(true, test2.equals(test1));
-        assertEquals(true, test1.equals(test1));
-        assertEquals(true, test2.equals(test2));
-        assertEquals(true, test1.hashCode() == test2.hashCode());
-        assertEquals(true, test1.hashCode() == test1.hashCode());
-        assertEquals(true, test2.hashCode() == test2.hashCode());
-    }
+		this.testInterval_BasicsTestEqualsHashCodeTemplate();
+	}
 
     //-----------------------------------------------------------------------
     public void test_useCase_ContainsOverlapAbutGap() {
@@ -681,29 +657,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testOverlap_RInterval_zone() {
-        Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
-        assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
-        
-        Interval testB = new Interval(new DateTime(4, MOSCOW), new DateTime(8, MOSCOW));
-        assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
-        
-        Interval resultAB = testA.overlap(testB);
-        assertEquals(ISOChronology.getInstance(LONDON), resultAB.getChronology());
-        
-        Interval resultBA = testB.overlap(testA);
-        assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
-    }
+		this.testInterval_BasicsTestRInterval_zoneTemplate(
+				new TestInterval_BasicsTestOverlap_RInterval_zoneAdapterImpl(), 4, 8);
+	}
 
     public void testOverlap_RInterval_zoneUTC() {
-        Interval testA = new Interval(new Instant(3), new Instant(7));
-        assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
-        
-        Interval testB = new Interval(new Instant(4), new Instant(8));
-        assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
-        
-        Interval result = testA.overlap(testB);
-        assertEquals(ISOChronology.getInstanceUTC(), result.getChronology());
-    }
+		this.testInterval_BasicsTestRInterval_zoneUTCTemplate(
+				new TestInterval_BasicsTestOverlap_RInterval_zoneUTCAdapterImpl(), 4, 8);
+	}
 
     //-----------------------------------------------------------------------
     public void testGap_RInterval() {
@@ -745,29 +706,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testGap_RInterval_zone() {
-        Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
-        assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
-        
-        Interval testB = new Interval(new DateTime(1, MOSCOW), new DateTime(2, MOSCOW));
-        assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
-        
-        Interval resultAB = testA.gap(testB);
-        assertEquals(ISOChronology.getInstance(LONDON), resultAB.getChronology());
-        
-        Interval resultBA = testB.gap(testA);
-        assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
-    }
+		this.testInterval_BasicsTestRInterval_zoneTemplate(new TestInterval_BasicsTestGap_RInterval_zoneAdapterImpl(),
+				1, 2);
+	}
 
     public void testGap_RInterval_zoneUTC() {
-        Interval testA = new Interval(new Instant(3), new Instant(7));
-        assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
-        
-        Interval testB = new Interval(new Instant(1), new Instant(2));
-        assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
-        
-        Interval result = testA.gap(testB);
-        assertEquals(ISOChronology.getInstanceUTC(), result.getChronology());
-    }
+		this.testInterval_BasicsTestRInterval_zoneUTCTemplate(
+				new TestInterval_BasicsTestGap_RInterval_zoneUTCAdapterImpl(), 1, 2);
+	}
 
     //-----------------------------------------------------------------------
     public void testAbuts_RInterval() {
@@ -839,19 +785,9 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testIsBeforeNow() {
-        DateTimeUtils.setCurrentMillisFixed(2);
-        assertEquals(false, interval37.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(false, interval37.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(4);
-        assertEquals(false, interval37.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(6);
-        assertEquals(false, interval37.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(7);
-        assertEquals(true, interval37.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(8);
-        assertEquals(true, interval37.isBeforeNow());
-    }
+		this.testInterval_BasicsTestIsNowTemplate(new TestInterval_BasicsTestIsBeforeNowAdapterImpl(), false, true,
+				true);
+	}
 
     public void testIsBefore_RI() {
         assertEquals(false, interval37.isBefore(new Instant(2)));
@@ -879,14 +815,9 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testIsBefore_RInterval() {
-        assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 2)));
-        assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 3)));
-        assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 4)));
-        
-        assertEquals(false, interval37.isBefore(new Interval(6, Long.MAX_VALUE)));
-        assertEquals(true, interval37.isBefore(new Interval(7, Long.MAX_VALUE)));
-        assertEquals(true, interval37.isBefore(new Interval(8, Long.MAX_VALUE)));
-    }
+		this.testInterval_BasicsTestIsRIntervalTemplate(new TestInterval_BasicsTestIsBefore_RIntervalAdapterImpl(),
+				false, false, true, true);
+	}
 
     public void testIsBefore_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
@@ -915,19 +846,9 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testIsAfterNow() {
-        DateTimeUtils.setCurrentMillisFixed(2);
-        assertEquals(true, interval37.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(false, interval37.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(4);
-        assertEquals(false, interval37.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(6);
-        assertEquals(false, interval37.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(7);
-        assertEquals(false, interval37.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(8);
-        assertEquals(false, interval37.isAfterNow());
-    }
+		this.testInterval_BasicsTestIsNowTemplate(new TestInterval_BasicsTestIsAfterNowAdapterImpl(), true, false,
+				false);
+	}
 
     public void testIsAfter_RI() {
         assertEquals(true,  interval37.isAfter(new Instant(2)));
@@ -955,14 +876,9 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testIsAfter_RInterval() {
-        assertEquals(true, interval37.isAfter(new Interval(Long.MIN_VALUE, 2)));
-        assertEquals(true, interval37.isAfter(new Interval(Long.MIN_VALUE, 3)));
-        assertEquals(false, interval37.isAfter(new Interval(Long.MIN_VALUE, 4)));
-        
-        assertEquals(false, interval37.isAfter(new Interval(6, Long.MAX_VALUE)));
-        assertEquals(false, interval37.isAfter(new Interval(7, Long.MAX_VALUE)));
-        assertEquals(false, interval37.isAfter(new Interval(8, Long.MAX_VALUE)));
-    }
+		this.testInterval_BasicsTestIsRIntervalTemplate(new TestInterval_BasicsTestIsAfter_RIntervalAdapterImpl(), true,
+				true, false, false);
+	}
 
     public void testIsAfter_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
@@ -1161,14 +1077,11 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME1, TEST_TIME_NOW, COPTIC_PARIS), test);
     }
 
-    //-----------------------------------------------------------------------
     public void testWithDurationAfterStart1() throws Throwable {
-        Duration dur = new Duration(TEST_TIME2 - TEST_TIME_NOW);
-        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
-        Interval test = base.withDurationAfterStart(dur);
-        
-        assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS), test);
-    }
+		this.testInterval_BasicsTestWithDurationTemplate(
+				new TestInterval_BasicsTestWithDurationAfterStart1AdapterImpl(), TEST_TIME2, TEST_TIME_NOW,
+				TEST_TIME_NOW, TEST_TIME2);
+	}
 
     public void testWithDurationAfterStart2() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
@@ -1193,14 +1106,10 @@ public class TestInterval_Basics extends TestCase {
         assertSame(base, test);
     }
 
-    //-----------------------------------------------------------------------
     public void testWithDurationBeforeEnd1() throws Throwable {
-        Duration dur = new Duration(TEST_TIME_NOW - TEST_TIME1);
-        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
-        Interval test = base.withDurationBeforeEnd(dur);
-        
-        assertEquals(new Interval(TEST_TIME1, TEST_TIME_NOW, COPTIC_PARIS), test);
-    }
+		this.testInterval_BasicsTestWithDurationTemplate(new TestInterval_BasicsTestWithDurationBeforeEnd1AdapterImpl(),
+				TEST_TIME_NOW, TEST_TIME1, TEST_TIME1, TEST_TIME_NOW);
+	}
 
     public void testWithDurationBeforeEnd2() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
@@ -1276,5 +1185,160 @@ public class TestInterval_Basics extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
     }
+
+	public void testInterval_BasicsTestEqualsHashCodeTemplate() {
+		Interval test1 = new Interval(new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
+				new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
+		Interval test2 = new Interval(new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
+				new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
+		assertEquals(true, test1.equals(test2));
+		assertEquals(true, test2.equals(test1));
+		assertEquals(true, test1.equals(test1));
+		assertEquals(true, test2.equals(test2));
+		assertEquals(true, test1.hashCode() == test2.hashCode());
+		assertEquals(true, test1.hashCode() == test1.hashCode());
+		assertEquals(true, test2.hashCode() == test2.hashCode());
+	}
+
+	public void testInterval_BasicsTestIsNowTemplate(TestInterval_BasicsTestIsNowAdapter adapter, boolean b1,
+			boolean b2, boolean b3) {
+		DateTimeUtils.setCurrentMillisFixed(2);
+		assertEquals(b1, adapter.isNow(interval37));
+		DateTimeUtils.setCurrentMillisFixed(3);
+		assertEquals(false, adapter.isNow(interval37));
+		DateTimeUtils.setCurrentMillisFixed(4);
+		assertEquals(false, adapter.isNow(interval37));
+		DateTimeUtils.setCurrentMillisFixed(6);
+		assertEquals(false, adapter.isNow(interval37));
+		DateTimeUtils.setCurrentMillisFixed(7);
+		assertEquals(b2, adapter.isNow(interval37));
+		DateTimeUtils.setCurrentMillisFixed(8);
+		assertEquals(b3, adapter.isNow(interval37));
+	}
+
+	interface TestInterval_BasicsTestIsNowAdapter {
+		boolean isNow(Interval interval1);
+	}
+
+	class TestInterval_BasicsTestIsBeforeNowAdapterImpl implements TestInterval_BasicsTestIsNowAdapter {
+		public boolean isNow(Interval interval37) {
+			return interval37.isBeforeNow();
+		}
+	}
+
+	class TestInterval_BasicsTestIsAfterNowAdapterImpl implements TestInterval_BasicsTestIsNowAdapter {
+		public boolean isNow(Interval interval37) {
+			return interval37.isAfterNow();
+		}
+	}
+
+	public void testInterval_BasicsTestRInterval_zoneTemplate(TestInterval_BasicsTestRInterval_zoneAdapter adapter,
+			int i1, int i2) {
+		Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
+		assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
+		Interval testB = new Interval(new DateTime(i1, MOSCOW), new DateTime(i2, MOSCOW));
+		assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
+		Interval resultAB = adapter.action1(testA, testB);
+		assertEquals(ISOChronology.getInstance(LONDON), resultAB.getChronology());
+		Interval resultBA = adapter.action1(testB, testA);
+		assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
+	}
+
+	interface TestInterval_BasicsTestRInterval_zoneAdapter {
+		Interval action1(Interval interval1, ReadableInterval readableInterval1);
+	}
+
+	class TestInterval_BasicsTestOverlap_RInterval_zoneAdapterImpl
+			implements TestInterval_BasicsTestRInterval_zoneAdapter {
+		public Interval action1(Interval testA, ReadableInterval testB) {
+			return testA.overlap(testB);
+		}
+	}
+
+	class TestInterval_BasicsTestGap_RInterval_zoneAdapterImpl implements TestInterval_BasicsTestRInterval_zoneAdapter {
+		public Interval action1(Interval testA, ReadableInterval testB) {
+			return testA.gap(testB);
+		}
+	}
+
+	public void testInterval_BasicsTestRInterval_zoneUTCTemplate(
+			TestInterval_BasicsTestRInterval_zoneUTCAdapter adapter, int i1, int i2) {
+		Interval testA = new Interval(new Instant(3), new Instant(7));
+		assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
+		Interval testB = new Interval(new Instant(i1), new Instant(i2));
+		assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
+		Interval result = adapter.action1(testA, testB);
+		assertEquals(ISOChronology.getInstanceUTC(), result.getChronology());
+	}
+
+	interface TestInterval_BasicsTestRInterval_zoneUTCAdapter {
+		Interval action1(Interval interval1, ReadableInterval readableInterval1);
+	}
+
+	class TestInterval_BasicsTestOverlap_RInterval_zoneUTCAdapterImpl
+			implements TestInterval_BasicsTestRInterval_zoneUTCAdapter {
+		public Interval action1(Interval testA, ReadableInterval testB) {
+			return testA.overlap(testB);
+		}
+	}
+
+	class TestInterval_BasicsTestGap_RInterval_zoneUTCAdapterImpl
+			implements TestInterval_BasicsTestRInterval_zoneUTCAdapter {
+		public Interval action1(Interval testA, ReadableInterval testB) {
+			return testA.gap(testB);
+		}
+	}
+
+	public void testInterval_BasicsTestIsRIntervalTemplate(TestInterval_BasicsTestIsRIntervalAdapter adapter,
+			boolean b1, boolean b2, boolean b3, boolean b4) {
+		assertEquals(b1, adapter.is(interval37, new Interval(Long.MIN_VALUE, 2)));
+		assertEquals(b2, adapter.is(interval37, new Interval(Long.MIN_VALUE, 3)));
+		assertEquals(false, adapter.is(interval37, new Interval(Long.MIN_VALUE, 4)));
+		assertEquals(false, adapter.is(interval37, new Interval(6, Long.MAX_VALUE)));
+		assertEquals(b3, adapter.is(interval37, new Interval(7, Long.MAX_VALUE)));
+		assertEquals(b4, adapter.is(interval37, new Interval(8, Long.MAX_VALUE)));
+	}
+
+	interface TestInterval_BasicsTestIsRIntervalAdapter {
+		boolean is(Interval interval1, ReadableInterval readableInterval1);
+	}
+
+	class TestInterval_BasicsTestIsBefore_RIntervalAdapterImpl implements TestInterval_BasicsTestIsRIntervalAdapter {
+		public boolean is(Interval interval37, ReadableInterval readableInterval1) {
+			return interval37.isBefore(readableInterval1);
+		}
+	}
+
+	class TestInterval_BasicsTestIsAfter_RIntervalAdapterImpl implements TestInterval_BasicsTestIsRIntervalAdapter {
+		public boolean is(Interval interval37, ReadableInterval readableInterval1) {
+			return interval37.isAfter(readableInterval1);
+		}
+	}
+
+	public void testInterval_BasicsTestWithDurationTemplate(TestInterval_BasicsTestWithDurationAdapter adapter, long l1,
+			long l2, long l3, long l4) throws Throwable {
+		Duration dur = new Duration(l1 - l2);
+		Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
+		Interval test = adapter.withDuration(base, dur);
+		assertEquals(new Interval(l3, l4, COPTIC_PARIS), test);
+	}
+
+	interface TestInterval_BasicsTestWithDurationAdapter {
+		Interval withDuration(Interval interval1, ReadableDuration readableDuration1);
+	}
+
+	class TestInterval_BasicsTestWithDurationAfterStart1AdapterImpl
+			implements TestInterval_BasicsTestWithDurationAdapter {
+		public Interval withDuration(Interval base, ReadableDuration dur) {
+			return base.withDurationAfterStart(dur);
+		}
+	}
+
+	class TestInterval_BasicsTestWithDurationBeforeEnd1AdapterImpl
+			implements TestInterval_BasicsTestWithDurationAdapter {
+		public Interval withDuration(Interval base, ReadableDuration dur) {
+			return base.withDurationBeforeEnd(dur);
+		}
+	}
 
 }

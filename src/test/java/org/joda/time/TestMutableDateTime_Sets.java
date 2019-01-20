@@ -624,13 +624,9 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     public void testSetSecondOfDay_int2() {
-        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
-        try {
-            test.setSecondOfDay(24 * 60 * 60);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
-    }
+		this.testMutableDateTime_SetsTestSetOfDay_int2Template(
+				new TestMutableDateTime_SetsTestSetSecondOfDay_int2AdapterImpl(), 24 * 60 * 60);
+	}
 
     //-----------------------------------------------------------------------
     public void testSetMilliOfSecond_int1() {
@@ -656,12 +652,37 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     public void testSetMilliOfDay_int2() {
-        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
-        try {
-            test.setMillisOfDay(24 * 60 * 60 * 1000);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
-    }
+		this.testMutableDateTime_SetsTestSetOfDay_int2Template(
+				new TestMutableDateTime_SetsTestSetMilliOfDay_int2AdapterImpl(), 24 * 60 * 60 * 1000);
+	}
+
+	public void testMutableDateTime_SetsTestSetOfDay_int2Template(
+			TestMutableDateTime_SetsTestSetOfDay_int2Adapter adapter, int i1) {
+		MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+		try {
+			adapter.setOfDay(test, i1);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+		assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
+	}
+
+	interface TestMutableDateTime_SetsTestSetOfDay_int2Adapter {
+		void setOfDay(MutableDateTime mutableDateTime1, int i1);
+	}
+
+	class TestMutableDateTime_SetsTestSetSecondOfDay_int2AdapterImpl
+			implements TestMutableDateTime_SetsTestSetOfDay_int2Adapter {
+		public void setOfDay(MutableDateTime test, int i1) {
+			test.setSecondOfDay(i1);
+		}
+	}
+
+	class TestMutableDateTime_SetsTestSetMilliOfDay_int2AdapterImpl
+			implements TestMutableDateTime_SetsTestSetOfDay_int2Adapter {
+		public void setOfDay(MutableDateTime test, int i1) {
+			test.setMillisOfDay(i1);
+		}
+	}
 
 }

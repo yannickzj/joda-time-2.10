@@ -318,23 +318,12 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
     }
 
-    //-----------------------------------------------------------------------
     public void testConstructor_long_PeriodType_Chronology1() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Period test = new Period(length, PeriodType.time().withMillisRemoved(), ISOChronology.getInstance());
-        assertEquals(PeriodType.time().withMillisRemoved(), test.getPeriodType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals((4 * 24) + 5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(0, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1Template
+				.testPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1Template(
+						new TestPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1AdapterImpl(),
+						Period.class);
+	}
 
     public void testConstructor_long_PeriodType_Chronology2() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
@@ -582,21 +571,12 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(1, test.getMillis());
     }
 
-    //-----------------------------------------------------------------------
     public void testConstructor_long_long_PeriodType_Chronology1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
-        Period test = new Period(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, CopticChronology.getInstance());
-        assertEquals(PeriodType.standard(), test.getPeriodType());
-        assertEquals(1, test.getYears());
-        assertEquals(1, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(1, test.getDays());
-        assertEquals(1, test.getHours());
-        assertEquals(1, test.getMinutes());
-        assertEquals(1, test.getSeconds());
-        assertEquals(1, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1Template
+				.testPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1Template(
+						new TestPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1AdapterImpl(),
+						Period.class);
+	}
 
     public void testConstructor_long_long_PeriodType_Chronology2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -660,34 +640,14 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_RI_RI4() throws Throwable {
-        DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        Period test = new Period(dt1, dt2);
-        assertEquals(PeriodType.standard(), test.getPeriodType());
-        assertEquals(-3, test.getYears());
-        assertEquals(-1, test.getMonths());
-        assertEquals(-1, test.getWeeks());
-        assertEquals(-1, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(-1, test.getMinutes());
-        assertEquals(-1, test.getSeconds());
-        assertEquals(-1, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_RI_RI4Template.testPeriod_ConstructorsTestConstructor_RI_RI4Template(
+				new TestPeriod_ConstructorsTestConstructor_RI_RI4AdapterImpl(), Period.class);
+	}
 
     public void testConstructor_RI_RI5() throws Throwable {
-        DateTime dt1 = null;  // 2002-06-09T01:00+01:00
-        DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        Period test = new Period(dt1, dt2);
-        assertEquals(PeriodType.standard(), test.getPeriodType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_RI_RI5Template.testPeriod_ConstructorsTestConstructor_RI_RI5Template(
+				new TestPeriod_ConstructorsTestConstructor_RI_RI5AdapterImpl(), Period.class);
+	}
 
     public void testConstructor_RI_RI6() throws Throwable {
         DateTimeZone zone = PARIS;
@@ -886,22 +846,14 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_RP_RP7() throws Throwable {
-        Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.monthOfYear(), 12);
-        Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
-        try {
-            new Period(dt1, dt2);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPeriod_ConstructorsTestConstructor_RP_Template(
+				new TestPeriod_ConstructorsTestConstructor_RP_RP7AdapterImpl());
+	}
 
     public void testConstructor_RP_RP8() throws Throwable {
-        Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 12);
-        Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
-        try {
-            new Period(dt1, dt2);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPeriod_ConstructorsTestConstructor_RP_Template(
+				new TestPeriod_ConstructorsTestConstructor_RP_RP8AdapterImpl());
+	}
 
     //-----------------------------------------------------------------------
     @SuppressWarnings("deprecation")
@@ -992,22 +944,14 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_RP_RP_PeriodType7() throws Throwable {
-        Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.monthOfYear(), 12);
-        Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
-        try {
-            new Period(dt1, dt2, PeriodType.standard());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPeriod_ConstructorsTestConstructor_RP_RP_PeriodTemplate(
+				new TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodType7AdapterImpl());
+	}
 
     public void testConstructor_RP_RP_PeriodType8() throws Throwable {
-        Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 12);
-        Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
-        try {
-            new Period(dt1, dt2, PeriodType.standard());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPeriod_ConstructorsTestConstructor_RP_RP_PeriodTemplate(
+				new TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodType8AdapterImpl());
+	}
 
     //-----------------------------------------------------------------------
     public void testConstructor_RI_RD1() throws Throwable {
@@ -1212,17 +1156,10 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_PeriodType2() throws Throwable {
-        Period test = new Period((Object) null, PeriodType.yearMonthDayTime());
-        assertEquals(PeriodType.yearMonthDayTime(), test.getPeriodType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-    }
+		TestPeriod_ConstructorsTestConstructor_Object_PeriodType2Template
+				.testPeriod_ConstructorsTestConstructor_Object_PeriodType2Template(
+						new TestPeriod_ConstructorsTestConstructor_Object_PeriodType2AdapterImpl(), Period.class);
+	}
 
     public void testConstructor_Object_PeriodType3() throws Throwable {
         Period test = new Period(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.dayTime()), PeriodType.yearMonthDayTime());
@@ -1558,5 +1495,238 @@ public class TestPeriod_Constructors extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
     }
+
+	class TestPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_long_PeriodType_Chronology1Adapter<Period> {
+		public int getYears(Period test) {
+			return test.getYears();
+		}
+
+		public int getMonths(Period test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(Period test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(Period test) {
+			return test.getDays();
+		}
+
+		public int getHours(Period test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(Period test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(Period test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(Period test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_long_long_PeriodType_Chronology1Adapter<Period> {
+		public int getYears(Period test) {
+			return test.getYears();
+		}
+
+		public int getMonths(Period test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(Period test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(Period test) {
+			return test.getDays();
+		}
+
+		public int getHours(Period test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(Period test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(Period test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(Period test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_RI_RI5AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RI_RI5Adapter<Period> {
+		public int getYears(Period test) {
+			return test.getYears();
+		}
+
+		public int getMonths(Period test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(Period test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(Period test) {
+			return test.getDays();
+		}
+
+		public int getHours(Period test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(Period test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(Period test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(Period test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_RI_RI4AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RI_RI4Adapter<Period> {
+		public int getYears(Period test) {
+			return test.getYears();
+		}
+
+		public int getMonths(Period test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(Period test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(Period test) {
+			return test.getDays();
+		}
+
+		public int getHours(Period test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(Period test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(Period test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(Period test) {
+			return test.getMillis();
+		}
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_Object_PeriodType2AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_Object_PeriodType2Adapter<Period> {
+		public int getYears(Period test) {
+			return test.getYears();
+		}
+
+		public int getMonths(Period test) {
+			return test.getMonths();
+		}
+
+		public int getWeeks(Period test) {
+			return test.getWeeks();
+		}
+
+		public int getDays(Period test) {
+			return test.getDays();
+		}
+
+		public int getHours(Period test) {
+			return test.getHours();
+		}
+
+		public int getMinutes(Period test) {
+			return test.getMinutes();
+		}
+
+		public int getSeconds(Period test) {
+			return test.getSeconds();
+		}
+
+		public int getMillis(Period test) {
+			return test.getMillis();
+		}
+	}
+
+	public void testPeriod_ConstructorsTestConstructor_RP_RP_PeriodTemplate(
+			TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodAdapter adapter) throws Throwable {
+		Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(adapter.of(), 12);
+		Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
+		try {
+			new Period(dt1, dt2, PeriodType.standard());
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
+
+	interface TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodAdapter {
+		DateTimeFieldType of();
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodType7AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodAdapter {
+		public DateTimeFieldType of() {
+			return DateTimeFieldType.monthOfYear();
+		}
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodType8AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RP_RP_PeriodAdapter {
+		public DateTimeFieldType of() {
+			return DateTimeFieldType.hourOfDay();
+		}
+	}
+
+	public void testPeriod_ConstructorsTestConstructor_RP_Template(
+			TestPeriod_ConstructorsTestConstructor_RP_Adapter adapter) throws Throwable {
+		Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(adapter.of(), 12);
+		Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
+		try {
+			new Period(dt1, dt2);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
+
+	interface TestPeriod_ConstructorsTestConstructor_RP_Adapter {
+		DateTimeFieldType of();
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_RP_RP7AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RP_Adapter {
+		public DateTimeFieldType of() {
+			return DateTimeFieldType.monthOfYear();
+		}
+	}
+
+	class TestPeriod_ConstructorsTestConstructor_RP_RP8AdapterImpl
+			implements TestPeriod_ConstructorsTestConstructor_RP_Adapter {
+		public DateTimeFieldType of() {
+			return DateTimeFieldType.hourOfDay();
+		}
+	}
 
 }

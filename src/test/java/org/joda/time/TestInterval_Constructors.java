@@ -169,13 +169,9 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     public void testConstructor_long_long3() throws Throwable {
-        DateTime dt1 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        try {
-            new Interval(dt1.getMillis(), dt2.getMillis());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		TestInterval_ConstructorsTestConstructor_long_long3Template
+				.testInterval_ConstructorsTestConstructor_long_long3Template(Interval.class);
+	}
 
     public void testConstructor_long_long_minMax() throws Throwable {
         Interval test = new Interval(Long.MIN_VALUE, Long.MAX_VALUE);
@@ -310,13 +306,9 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     public void testConstructor_RI_RI7() throws Throwable {
-        DateTime dt1 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        try {
-            new Interval(dt1, dt2);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		TestInterval_ConstructorsTestConstructor_RI_RI7Template
+				.testInterval_ConstructorsTestConstructor_RI_RI7Template(Interval.class);
+	}
 
     public void testConstructor_RI_RI_chronoStart() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, GJChronology.getInstance());
@@ -618,14 +610,10 @@ public class TestInterval_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    //-----------------------------------------------------------------------
     public void testConstructor_Object1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Interval test = new Interval(dt1.toString() + '/' + dt2.toString());
-        assertEquals(dt1.getMillis(), test.getStartMillis());
-        assertEquals(dt2.getMillis(), test.getEndMillis());
-    }
+		TestInterval_ConstructorsTestConstructor_Object1Template
+				.testInterval_ConstructorsTestConstructor_Object1Template(Interval.class);
+	}
 
     public void testConstructor_Object2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);

@@ -567,17 +567,9 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     public void testConstructor_Object2_Chronology() throws Throwable {
-        LocalTime test = new LocalTime("T10:20");
-        assertEquals(10, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(0, test.getSecondOfMinute());
-        assertEquals(0, test.getMillisOfSecond());
-        
-        try {
-            new LocalTime("T1020");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		TestConstructorsTestChronologyTemplate.testConstructorsTestChronologyTemplate(
+				new TestLocalTime_ConstructorsTestConstructor_Object2_ChronologyAdapterImpl(), LocalTime.class);
+	}
 
     public void testConstructor_nullObject_Chronology() throws Throwable {
         LocalTime test = new LocalTime((Object) null, JULIAN_LONDON);
@@ -756,5 +748,24 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
     }
+
+	class TestLocalTime_ConstructorsTestConstructor_Object2_ChronologyAdapterImpl
+			implements TestConstructorsTestChronologyAdapter<LocalTime> {
+		public int getHourOfDay(LocalTime test) {
+			return test.getHourOfDay();
+		}
+
+		public int getMinuteOfHour(LocalTime test) {
+			return test.getMinuteOfHour();
+		}
+
+		public int getSecondOfMinute(LocalTime test) {
+			return test.getSecondOfMinute();
+		}
+
+		public int getMillisOfSecond(LocalTime test) {
+			return test.getMillisOfSecond();
+		}
+	}
 
 }

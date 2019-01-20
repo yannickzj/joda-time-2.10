@@ -117,36 +117,9 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals("2003-05-06T14:28:00.000Z", new Instant(TEST_TIME2).toString());
     }
 
-    //-----------------------------------------------------------------------
-    public void testGet_DateTimeField() {
-        MutableDateTime test = new MutableDateTime();
-        assertEquals(1, test.get(ISOChronology.getInstance().era()));
-        assertEquals(20, test.get(ISOChronology.getInstance().centuryOfEra()));
-        assertEquals(2, test.get(ISOChronology.getInstance().yearOfCentury()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().yearOfEra()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().year()));
-        assertEquals(6, test.get(ISOChronology.getInstance().monthOfYear()));
-        assertEquals(9, test.get(ISOChronology.getInstance().dayOfMonth()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().weekyear()));
-        assertEquals(23, test.get(ISOChronology.getInstance().weekOfWeekyear()));
-        assertEquals(7, test.get(ISOChronology.getInstance().dayOfWeek()));
-        assertEquals(160, test.get(ISOChronology.getInstance().dayOfYear()));
-        assertEquals(0, test.get(ISOChronology.getInstance().halfdayOfDay()));
-        assertEquals(1, test.get(ISOChronology.getInstance().hourOfHalfday()));
-        assertEquals(1, test.get(ISOChronology.getInstance().clockhourOfDay()));
-        assertEquals(1, test.get(ISOChronology.getInstance().clockhourOfHalfday()));
-        assertEquals(1, test.get(ISOChronology.getInstance().hourOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().minuteOfHour()));
-        assertEquals(60, test.get(ISOChronology.getInstance().minuteOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().secondOfMinute()));
-        assertEquals(60 * 60, test.get(ISOChronology.getInstance().secondOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().millisOfSecond()));
-        assertEquals(60 * 60 * 1000, test.get(ISOChronology.getInstance().millisOfDay()));
-        try {
-            test.get((DateTimeField) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+    public void testGet_DateTimeField() throws Exception {
+		TestBasicsTestGet_DateTimeFieldTemplate.testBasicsTestGet_DateTimeFieldTemplate(MutableDateTime.class);
+	}
 
     public void testGet_DateTimeFieldType() {
         MutableDateTime test = new MutableDateTime();
@@ -642,28 +615,15 @@ public class TestMutableDateTime_Basics extends TestCase {
     }
 
     public void testRounding3() {
-        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
-        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_CEILING);
-        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
-        assertEquals(MutableDateTime.ROUND_HALF_CEILING, test.getRoundingMode());
-        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
-        
-        test = new MutableDateTime(2002, 6, 9, 5, 30, 0, 0);
-        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_CEILING);
-        assertEquals("2002-06-09T06:00:00.000+01:00", test.toString());
-    }
+		this.testMutableDateTime_BasicsTestTemplate(MutableDateTime.ROUND_HALF_CEILING,
+				MutableDateTime.ROUND_HALF_CEILING, MutableDateTime.ROUND_HALF_CEILING,
+				"2002-06-09T06:00:00.000+01:00");
+	}
 
     public void testRounding4() {
-        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
-        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_FLOOR);
-        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
-        assertEquals(MutableDateTime.ROUND_HALF_FLOOR, test.getRoundingMode());
-        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
-        
-        test = new MutableDateTime(2002, 6, 9, 5, 30, 0, 0);
-        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_FLOOR);
-        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
-    }
+		this.testMutableDateTime_BasicsTestTemplate(MutableDateTime.ROUND_HALF_FLOOR, MutableDateTime.ROUND_HALF_FLOOR,
+				MutableDateTime.ROUND_HALF_FLOOR, "2002-06-09T05:00:00.000+01:00");
+	}
 
     public void testRounding5() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
@@ -751,5 +711,16 @@ public class TestMutableDateTime_Basics extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
     }
+
+	public void testMutableDateTime_BasicsTestTemplate(int i1, int i2, int i3, String string1) {
+		MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+		test.setRounding(ISOChronology.getInstance().hourOfDay(), i1);
+		assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
+		assertEquals(i2, test.getRoundingMode());
+		assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+		test = new MutableDateTime(2002, 6, 9, 5, 30, 0, 0);
+		test.setRounding(ISOChronology.getInstance().hourOfDay(), i3);
+		assertEquals(string1, test.toString());
+	}
 
 }

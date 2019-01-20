@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.AssembledChronology;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -134,45 +135,13 @@ public class TestChronology extends TestCase {
         assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
     }
 
-    //-----------------------------------------------------------------------
     public void testEqualsHashCode_Lenient() {
-        Chronology chrono1 = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
-        Chronology chrono2 = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
-        Chronology chrono3 = LenientChronology.getInstance(ISOChronology.getInstance());
-        
-        assertEquals(true, chrono1.equals(chrono2));
-        assertEquals(false, chrono1.equals(chrono3));
-        
-        DateTime dt1 = new DateTime(0L, chrono1);
-        DateTime dt2 = new DateTime(0L, chrono2);
-        DateTime dt3 = new DateTime(0L, chrono3);
-        
-        assertEquals(true, dt1.equals(dt2));
-        assertEquals(false, dt1.equals(dt3));
-        
-        assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
-        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
-    }
+		this.testChronologyTestEqualsHashCode_Template(new TestChronologyTestEqualsHashCode_LenientAdapterImpl());
+	}
 
-    //-----------------------------------------------------------------------
     public void testEqualsHashCode_Strict() {
-        Chronology chrono1 = StrictChronology.getInstance(ISOChronology.getInstanceUTC());
-        Chronology chrono2 = StrictChronology.getInstance(ISOChronology.getInstanceUTC());
-        Chronology chrono3 = StrictChronology.getInstance(ISOChronology.getInstance());
-        
-        assertEquals(true, chrono1.equals(chrono2));
-        assertEquals(false, chrono1.equals(chrono3));
-        
-        DateTime dt1 = new DateTime(0L, chrono1);
-        DateTime dt2 = new DateTime(0L, chrono2);
-        DateTime dt3 = new DateTime(0L, chrono3);
-        
-        assertEquals(true, dt1.equals(dt2));
-        assertEquals(false, dt1.equals(dt3));
-        
-        assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
-        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
-    }
+		this.testChronologyTestEqualsHashCode_Template(new TestChronologyTestEqualsHashCode_StrictAdapterImpl());
+	}
 
     //-----------------------------------------------------------------------
     public void testEqualsHashCode_Limit() {
@@ -245,5 +214,36 @@ public class TestChronology extends TestCase {
         assertEquals("LimitChronology[ISOChronology[Europe/Paris], NoLimit, NoLimit]", LimitChronology.getInstance(isoParis, null, null).toString());
         assertEquals("ZonedChronology[ISOChronology[UTC], Europe/Paris]", ZonedChronology.getInstance(isoParis, paris).toString());
     }
+
+	public void testChronologyTestEqualsHashCode_Template(TestChronologyTestEqualsHashCode_Adapter adapter) {
+		Chronology chrono1 = adapter.getInstance(ISOChronology.getInstanceUTC());
+		Chronology chrono2 = adapter.getInstance(ISOChronology.getInstanceUTC());
+		Chronology chrono3 = adapter.getInstance(ISOChronology.getInstance());
+		assertEquals(true, chrono1.equals(chrono2));
+		assertEquals(false, chrono1.equals(chrono3));
+		DateTime dt1 = new DateTime(0L, chrono1);
+		DateTime dt2 = new DateTime(0L, chrono2);
+		DateTime dt3 = new DateTime(0L, chrono3);
+		assertEquals(true, dt1.equals(dt2));
+		assertEquals(false, dt1.equals(dt3));
+		assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
+		assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
+	}
+
+	interface TestChronologyTestEqualsHashCode_Adapter {
+		AssembledChronology getInstance(Chronology chronology1);
+	}
+
+	class TestChronologyTestEqualsHashCode_LenientAdapterImpl implements TestChronologyTestEqualsHashCode_Adapter {
+		public AssembledChronology getInstance(Chronology chronology1) {
+			return LenientChronology.getInstance(chronology1);
+		}
+	}
+
+	class TestChronologyTestEqualsHashCode_StrictAdapterImpl implements TestChronologyTestEqualsHashCode_Adapter {
+		public AssembledChronology getInstance(Chronology chronology1) {
+			return StrictChronology.getInstance(chronology1);
+		}
+	}
 
 }

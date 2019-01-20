@@ -109,29 +109,17 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(new Duration(6000), Duration.parse("PT6S"));
     }
 
-    //-----------------------------------------------------------------------
     public void testFactory_standardDays_long() throws Throwable {
-        Duration test = Duration.standardDays(1);
-        assertEquals(24L * 60L * 60L * 1000L, test.getMillis());
-        
-        test = Duration.standardDays(2);
-        assertEquals(2L * 24L * 60L * 60L * 1000L, test.getMillis());
-        
-        test = Duration.standardDays(0);
-        assertSame(Duration.ZERO, test);
-    }
+		this.testDuration_ConstructorsTestFactory_standardTemplate(
+				new TestDuration_ConstructorsTestFactory_standardDays_longAdapterImpl(), 24L * 60L * 60L * 1000L,
+				2L * 24L * 60L * 60L * 1000L);
+	}
 
-    //-----------------------------------------------------------------------
     public void testFactory_standardHours_long() throws Throwable {
-        Duration test = Duration.standardHours(1);
-        assertEquals(60L * 60L * 1000L, test.getMillis());
-        
-        test = Duration.standardHours(2);
-        assertEquals(2L * 60L * 60L * 1000L, test.getMillis());
-        
-        test = Duration.standardHours(0);
-        assertSame(Duration.ZERO, test);
-    }
+		this.testDuration_ConstructorsTestFactory_standardTemplate(
+				new TestDuration_ConstructorsTestFactory_standardHours_longAdapterImpl(), 60L * 60L * 1000L,
+				2L * 60L * 60L * 1000L);
+	}
 
     //-----------------------------------------------------------------------
     public void testFactory_standardMinutes_long() throws Throwable {
@@ -145,29 +133,15 @@ public class TestDuration_Constructors extends TestCase {
         assertSame(Duration.ZERO, test);
     }
 
-    //-----------------------------------------------------------------------
     public void testFactory_standardSeconds_long() throws Throwable {
-        Duration test = Duration.standardSeconds(1);
-        assertEquals(1000L, test.getMillis());
-        
-        test = Duration.standardSeconds(2);
-        assertEquals(2L * 1000L, test.getMillis());
-        
-        test = Duration.standardSeconds(0);
-        assertSame(Duration.ZERO, test);
-    }
+		this.testDuration_ConstructorsTestTemplate(
+				new TestDuration_ConstructorsTestFactory_standardSeconds_longAdapterImpl(), 1000L, 2L * 1000L);
+	}
 
-    //-----------------------------------------------------------------------
     public void testFactory_millis_long() throws Throwable {
-        Duration test = Duration.millis(1);
-        assertEquals(1L, test.getMillis());
-        
-        test = Duration.millis(2);
-        assertEquals(2L, test.getMillis());
-        
-        test = Duration.millis(0);
-        assertSame(Duration.ZERO, test);
-    }
+		this.testDuration_ConstructorsTestTemplate(new TestDuration_ConstructorsTestFactory_millis_longAdapterImpl(),
+				1L, 2L);
+	}
 
     //-----------------------------------------------------------------------
     public void testConstructor_long1() throws Throwable {
@@ -297,4 +271,59 @@ public class TestDuration_Constructors extends TestCase {
             // expected
         }
     }
+
+	public void testDuration_ConstructorsTestFactory_standardTemplate(
+			TestDuration_ConstructorsTestFactory_standardAdapter adapter, long l1, long l2) throws Throwable {
+		Duration test = adapter.standard(1);
+		assertEquals(l1, test.getMillis());
+		test = adapter.standard(2);
+		assertEquals(l2, test.getMillis());
+		test = adapter.standard(0);
+		assertSame(Duration.ZERO, test);
+	}
+
+	interface TestDuration_ConstructorsTestFactory_standardAdapter {
+		Duration standard(long l1);
+	}
+
+	class TestDuration_ConstructorsTestFactory_standardDays_longAdapterImpl
+			implements TestDuration_ConstructorsTestFactory_standardAdapter {
+		public Duration standard(long l1) {
+			return Duration.standardDays(l1);
+		}
+	}
+
+	class TestDuration_ConstructorsTestFactory_standardHours_longAdapterImpl
+			implements TestDuration_ConstructorsTestFactory_standardAdapter {
+		public Duration standard(long l1) {
+			return Duration.standardHours(l1);
+		}
+	}
+
+	public void testDuration_ConstructorsTestTemplate(TestDuration_ConstructorsTestAdapter adapter, long l1, long l2)
+			throws Throwable {
+		Duration test = adapter.action1(1);
+		assertEquals(l1, test.getMillis());
+		test = adapter.action1(2);
+		assertEquals(l2, test.getMillis());
+		test = adapter.action1(0);
+		assertSame(Duration.ZERO, test);
+	}
+
+	interface TestDuration_ConstructorsTestAdapter {
+		Duration action1(long l1);
+	}
+
+	class TestDuration_ConstructorsTestFactory_standardSeconds_longAdapterImpl
+			implements TestDuration_ConstructorsTestAdapter {
+		public Duration action1(long l1) {
+			return Duration.standardSeconds(l1);
+		}
+	}
+
+	class TestDuration_ConstructorsTestFactory_millis_longAdapterImpl implements TestDuration_ConstructorsTestAdapter {
+		public Duration action1(long l1) {
+			return Duration.millis(l1);
+		}
+	}
 }

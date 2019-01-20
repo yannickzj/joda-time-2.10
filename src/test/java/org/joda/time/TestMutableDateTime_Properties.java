@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import org.joda.time.MutableDateTime.Property;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -536,32 +537,16 @@ public class TestMutableDateTime_Properties extends TestCase {
     }
 
     public void testPropertyRoundHalfFloorHourOfDay() {
-        MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 0);
-        test.hourOfDay().roundHalfFloor();
-        assertEquals("2004-06-09T13:00:00.000+01:00", test.toString());
-        
-        test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 1);
-        test.hourOfDay().roundHalfFloor();
-        assertEquals("2004-06-09T14:00:00.000+01:00", test.toString());
-        
-        test = new MutableDateTime(2004, 6, 9, 13, 29, 59, 999);
-        test.hourOfDay().roundHalfFloor();
-        assertEquals("2004-06-09T13:00:00.000+01:00", test.toString());
-    }
+		this.testMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayTemplate(
+				new TestMutableDateTime_PropertiesTestPropertyRoundHalfFloorHourOfDayAdapterImpl(),
+				"2004-06-09T13:00:00.000+01:00");
+	}
 
     public void testPropertyRoundHalfCeilingHourOfDay() {
-        MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 0);
-        test.hourOfDay().roundHalfCeiling();
-        assertEquals("2004-06-09T14:00:00.000+01:00", test.toString());
-        
-        test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 1);
-        test.hourOfDay().roundHalfCeiling();
-        assertEquals("2004-06-09T14:00:00.000+01:00", test.toString());
-        
-        test = new MutableDateTime(2004, 6, 9, 13, 29, 59, 999);
-        test.hourOfDay().roundHalfCeiling();
-        assertEquals("2004-06-09T13:00:00.000+01:00", test.toString());
-    }
+		this.testMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayTemplate(
+				new TestMutableDateTime_PropertiesTestPropertyRoundHalfCeilingHourOfDayAdapterImpl(),
+				"2004-06-09T14:00:00.000+01:00");
+	}
 
     public void testPropertyRoundHalfEvenHourOfDay() {
         MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 0);
@@ -722,32 +707,16 @@ public class TestMutableDateTime_Properties extends TestCase {
     }
 
     public void testPropertyToIntervalDayOfMonth() {
-      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
-      Interval testInterval = test.dayOfMonth().toInterval();
-      assertEquals(new MutableDateTime(2004, 6, 9, 0, 0, 0, 0), testInterval.getStart());
-      assertEquals(new MutableDateTime(2004, 6, 10, 0, 0, 0, 0), testInterval.getEnd());
-      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
-
-      MutableDateTime febTest = new MutableDateTime(2004, 2, 29, 13, 23, 43, 53);
-      Interval febTestInterval = febTest.dayOfMonth().toInterval();
-      assertEquals(new MutableDateTime(2004, 2, 29, 0, 0, 0, 0), febTestInterval.getStart());
-      assertEquals(new MutableDateTime(2004, 3, 1, 0, 0, 0, 0), febTestInterval.getEnd());
-      assertEquals(new MutableDateTime(2004, 2, 29, 13, 23, 43, 53), febTest);
-    }
+		this.testMutableDateTime_PropertiesTestPropertyToIntervalOfDayTemplate(
+				new TestMutableDateTime_PropertiesTestPropertyToIntervalDayOfMonthAdapterImpl(), 0, 10, 0, 2, 29, 13, 2,
+				29, 0, 3, 1, 2, 29, 13);
+	}
 
     public void testPropertyToIntervalHourOfDay() {
-      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
-      Interval testInterval = test.hourOfDay().toInterval();
-      assertEquals(new MutableDateTime(2004, 6, 9, 13, 0, 0, 0), testInterval.getStart());
-      assertEquals(new MutableDateTime(2004, 6, 9, 14, 0, 0, 0), testInterval.getEnd());
-      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
-
-      MutableDateTime midnightTest = new MutableDateTime(2004, 6, 9, 23, 23, 43, 53);
-      Interval midnightTestInterval = midnightTest.hourOfDay().toInterval();
-      assertEquals(new MutableDateTime(2004, 6, 9, 23, 0, 0, 0), midnightTestInterval.getStart());
-      assertEquals(new MutableDateTime(2004, 6, 10, 0, 0, 0, 0), midnightTestInterval.getEnd());
-      assertEquals(new MutableDateTime(2004, 6, 9, 23, 23, 43, 53), midnightTest);
-    }
+		this.testMutableDateTime_PropertiesTestPropertyToIntervalOfDayTemplate(
+				new TestMutableDateTime_PropertiesTestPropertyToIntervalHourOfDayAdapterImpl(), 13, 9, 14, 6, 9, 23, 6,
+				9, 23, 6, 10, 6, 9, 23);
+	}
 
     public void testPropertyToIntervalMinuteOfHour() {
       MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
@@ -772,5 +741,69 @@ public class TestMutableDateTime_Properties extends TestCase {
       assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 54), testInterval.getEnd());
       assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
     }
+
+	public void testMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayTemplate(
+			TestMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter adapter, String string1) {
+		MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 0);
+		adapter.roundHalf(test.hourOfDay());
+		assertEquals(string1, test.toString());
+		test = new MutableDateTime(2004, 6, 9, 13, 30, 0, 1);
+		adapter.roundHalf(test.hourOfDay());
+		assertEquals("2004-06-09T14:00:00.000+01:00", test.toString());
+		test = new MutableDateTime(2004, 6, 9, 13, 29, 59, 999);
+		adapter.roundHalf(test.hourOfDay());
+		assertEquals("2004-06-09T13:00:00.000+01:00", test.toString());
+	}
+
+	interface TestMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter {
+		MutableDateTime roundHalf(MutableDateTime.Property property1);
+	}
+
+	class TestMutableDateTime_PropertiesTestPropertyRoundHalfFloorHourOfDayAdapterImpl
+			implements TestMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter {
+		public MutableDateTime roundHalf(MutableDateTime.Property property1) {
+			return property1.roundHalfFloor();
+		}
+	}
+
+	class TestMutableDateTime_PropertiesTestPropertyRoundHalfCeilingHourOfDayAdapterImpl
+			implements TestMutableDateTime_PropertiesTestPropertyRoundHalfHourOfDayAdapter {
+		public MutableDateTime roundHalf(MutableDateTime.Property property1) {
+			return property1.roundHalfCeiling();
+		}
+	}
+
+	public void testMutableDateTime_PropertiesTestPropertyToIntervalOfDayTemplate(
+			TestMutableDateTime_PropertiesTestPropertyToIntervalOfDayAdapter adapter, int i1, int i2, int i3, int i4,
+			int i5, int i6, int i7, int i8, int i9, int i10, int i11, int i12, int i13, int i14) {
+		MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+		Interval testInterval = adapter.ofDay(test).toInterval();
+		assertEquals(new MutableDateTime(2004, 6, 9, i1, 0, 0, 0), testInterval.getStart());
+		assertEquals(new MutableDateTime(2004, 6, i2, i3, 0, 0, 0), testInterval.getEnd());
+		assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+		MutableDateTime test1 = new MutableDateTime(2004, i4, i5, i6, 23, 43, 53);
+		Interval testInterval2 = adapter.ofDay(test1).toInterval();
+		assertEquals(new MutableDateTime(2004, i7, i8, i9, 0, 0, 0), testInterval2.getStart());
+		assertEquals(new MutableDateTime(2004, i10, i11, 0, 0, 0, 0), testInterval2.getEnd());
+		assertEquals(new MutableDateTime(2004, i12, i13, i14, 23, 43, 53), test1);
+	}
+
+	interface TestMutableDateTime_PropertiesTestPropertyToIntervalOfDayAdapter {
+		MutableDateTime.Property ofDay(MutableDateTime mutableDateTime1);
+	}
+
+	class TestMutableDateTime_PropertiesTestPropertyToIntervalDayOfMonthAdapterImpl
+			implements TestMutableDateTime_PropertiesTestPropertyToIntervalOfDayAdapter {
+		public MutableDateTime.Property ofDay(MutableDateTime test) {
+			return test.dayOfMonth();
+		}
+	}
+
+	class TestMutableDateTime_PropertiesTestPropertyToIntervalHourOfDayAdapterImpl
+			implements TestMutableDateTime_PropertiesTestPropertyToIntervalOfDayAdapter {
+		public MutableDateTime.Property ofDay(MutableDateTime test) {
+			return test.hourOfDay();
+		}
+	}
 
 }

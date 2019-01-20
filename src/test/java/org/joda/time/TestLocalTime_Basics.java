@@ -516,23 +516,10 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(new LocalTime(0, 59, 59, 999), result);
     }
 
-    public void testWithFieldAdded_DurationFieldType_int_8() {
-        LocalTime test = new LocalTime(0, 0, 0, 0);
-        LocalTime result = test.withFieldAdded(DurationFieldType.millis(), -1);
-        assertEquals(new LocalTime(23, 59, 59, 999), result);
-        
-        test = new LocalTime(0, 0, 0, 0);
-        result = test.withFieldAdded(DurationFieldType.seconds(), -1);
-        assertEquals(new LocalTime(23, 59, 59, 0), result);
-        
-        test = new LocalTime(0, 0, 0, 0);
-        result = test.withFieldAdded(DurationFieldType.minutes(), -1);
-        assertEquals(new LocalTime(23, 59, 0, 0), result);
-        
-        test = new LocalTime(0, 0, 0, 0);
-        result = test.withFieldAdded(DurationFieldType.hours(), -1);
-        assertEquals(new LocalTime(23, 0, 0, 0), result);
-    }
+    public void testWithFieldAdded_DurationFieldType_int_8() throws Exception {
+		TestBasicsTestWithFieldTemplate.testBasicsTestWithFieldTemplate(
+				new TestLocalTime_BasicsTestWithFieldAdded_DurationFieldType_int_8AdapterImpl(), LocalTime.class);
+	}
 
     //-----------------------------------------------------------------------
     public void testPlus_RP() {
@@ -816,4 +803,11 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(sec, test.getSecondOfMinute());
         assertEquals(milli, test.getMillisOfSecond());
     }
+
+	class TestLocalTime_BasicsTestWithFieldAdded_DurationFieldType_int_8AdapterImpl
+			implements TestBasicsTestWithFieldAdapter<LocalTime> {
+		public LocalTime withFieldAdded(LocalTime test, DurationFieldType durationFieldType1, int i1) {
+			return test.withFieldAdded(durationFieldType1, i1);
+		}
+	}
 }

@@ -131,13 +131,10 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(JULIAN, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), JULIAN));
     }
 
-    //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
-        TimeOfDay tod = new TimeOfDay();
-        int[] expected = ISOChronology.getInstance().get(tod, 12345678L);
-        int[] actual = ReadableInstantConverter.INSTANCE.getPartialValues(tod, new Instant(12345678L), ISOChronology.getInstance());
-        assertEquals(true, Arrays.equals(expected, actual));
-    }
+		TestConverterTestGetPartialValuesTemplate.testConverterTestGetPartialValuesTemplate(Instant.class,
+				ReadableInstantConverter.INSTANCE);
+	}
 
     //-----------------------------------------------------------------------
     public void testToString() {

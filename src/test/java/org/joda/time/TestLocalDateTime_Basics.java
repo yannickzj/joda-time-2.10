@@ -846,58 +846,17 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
-    //-----------------------------------------------------------------------
     public void testToDate_summer() {
-        LocalDateTime base = new LocalDateTime(2005, 7, 9, 10, 20, 30, 40, COPTIC_PARIS);
-        
-        Date test = base.toDate();
-        check(base, 2005, 7, 9, 10, 20, 30, 40);
-        
-        GregorianCalendar gcal = new GregorianCalendar();
-        gcal.clear();
-        gcal.set(Calendar.YEAR, 2005);
-        gcal.set(Calendar.MONTH, Calendar.JULY);
-        gcal.set(Calendar.DAY_OF_MONTH, 9);
-        gcal.set(Calendar.HOUR_OF_DAY, 10);
-        gcal.set(Calendar.MINUTE, 20);
-        gcal.set(Calendar.SECOND, 30);
-        gcal.set(Calendar.MILLISECOND, 40);
-        assertEquals(gcal.getTime(), test);
-    }
+		this.testLocalDateTime_BasicsTestToTemplate(7, 7, Calendar.JULY);
+	}
 
     public void testToDate_winter() {
-        LocalDateTime base = new LocalDateTime(2005, 1, 9, 10, 20, 30, 40, COPTIC_PARIS);
-        
-        Date test = base.toDate();
-        check(base, 2005, 1, 9, 10, 20, 30, 40);
-        
-        GregorianCalendar gcal = new GregorianCalendar();
-        gcal.clear();
-        gcal.set(Calendar.YEAR, 2005);
-        gcal.set(Calendar.MONTH, Calendar.JANUARY);
-        gcal.set(Calendar.DAY_OF_MONTH, 9);
-        gcal.set(Calendar.HOUR_OF_DAY, 10);
-        gcal.set(Calendar.MINUTE, 20);
-        gcal.set(Calendar.SECOND, 30);
-        gcal.set(Calendar.MILLISECOND, 40);
-        assertEquals(gcal.getTime(), test);
-    }
+		this.testLocalDateTime_BasicsTestToTemplate(1, 1, Calendar.JANUARY);
+	}
 
     public void testToDate_springDST() {
-        LocalDateTime base = new LocalDateTime(2007, 4, 2, 0, 20, 0, 0);
-        
-        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
-                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000);
-        TimeZone currentZone = TimeZone.getDefault();
-        try {
-            TimeZone.setDefault(testZone);
-            Date test = base.toDate();
-            check(base, 2007, 4, 2, 0, 20, 0, 0);
-            assertEquals("Mon Apr 02 01:00:00 GMT+02:00 2007", test.toString());
-        } finally {
-            TimeZone.setDefault(currentZone);
-        }
-    }
+		this.testLocalDateTime_BasicsTestToDSTTemplate(4, 0, 4, 0, "Mon Apr 02 01:00:00 GMT+02:00 2007");
+	}
 
     public void testToDate_springDST_2Hour40Savings() {
         LocalDateTime base = new LocalDateTime(2007, 4, 2, 0, 20, 0, 0);
@@ -916,20 +875,8 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     public void testToDate_autumnDST() {
-        LocalDateTime base = new LocalDateTime(2007, 10, 2, 0, 20, 30, 0);
-        
-        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
-                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000);
-        TimeZone currentZone = TimeZone.getDefault();
-        try {
-            TimeZone.setDefault(testZone);
-            Date test = base.toDate();
-            check(base, 2007, 10, 2, 0, 20, 30, 0);
-            assertEquals("Tue Oct 02 00:20:30 GMT+02:00 2007", test.toString());
-        } finally {
-            TimeZone.setDefault(currentZone);
-        }
-    }
+		this.testLocalDateTime_BasicsTestToDSTTemplate(10, 30, 10, 30, "Tue Oct 02 00:20:30 GMT+02:00 2007");
+	}
 
     //-----------------------------------------------------------------------
     public void testToDate_summer_Zone() {
@@ -1106,4 +1053,35 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(sec, test.getSecondOfMinute());
         assertEquals(mil, test.getMillisOfSecond());
     }
+
+	public void testLocalDateTime_BasicsTestToTemplate(int i1, int i2, int i3) {
+		LocalDateTime base = new LocalDateTime(2005, i1, 9, 10, 20, 30, 40, COPTIC_PARIS);
+		Date test = base.toDate();
+		check(base, 2005, i2, 9, 10, 20, 30, 40);
+		GregorianCalendar gcal = new GregorianCalendar();
+		gcal.clear();
+		gcal.set(Calendar.YEAR, 2005);
+		gcal.set(Calendar.MONTH, i3);
+		gcal.set(Calendar.DAY_OF_MONTH, 9);
+		gcal.set(Calendar.HOUR_OF_DAY, 10);
+		gcal.set(Calendar.MINUTE, 20);
+		gcal.set(Calendar.SECOND, 30);
+		gcal.set(Calendar.MILLISECOND, 40);
+		assertEquals(gcal.getTime(), test);
+	}
+
+	public void testLocalDateTime_BasicsTestToDSTTemplate(int i1, int i2, int i3, int i4, String string1) {
+		LocalDateTime base = new LocalDateTime(2007, i1, 2, 0, 20, i2, 0);
+		SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight", Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER,
+				2, 0, 3600000);
+		TimeZone currentZone = TimeZone.getDefault();
+		try {
+			TimeZone.setDefault(testZone);
+			Date test = base.toDate();
+			check(base, 2007, i3, 2, 0, 20, i4, 0);
+			assertEquals(string1, test.toString());
+		} finally {
+			TimeZone.setDefault(currentZone);
+		}
+	}
 }

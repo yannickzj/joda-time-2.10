@@ -15,6 +15,9 @@
  */
 package org.joda.time;
 
+import java.util.Locale;
+import java.lang.String;
+import org.joda.time.chrono.AssembledChronology;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -23,7 +26,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
@@ -284,28 +286,14 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testEqualsHashCodeLenient() {
-        LocalDate test1 = new LocalDate(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
-        LocalDate test2 = new LocalDate(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
-        assertEquals(true, test1.equals(test2));
-        assertEquals(true, test2.equals(test1));
-        assertEquals(true, test1.equals(test1));
-        assertEquals(true, test2.equals(test2));
-        assertEquals(true, test1.hashCode() == test2.hashCode());
-        assertEquals(true, test1.hashCode() == test1.hashCode());
-        assertEquals(true, test2.hashCode() == test2.hashCode());
-    }
+		this.testLocalDate_BasicsTestEqualsHashCodeTemplate(
+				new TestLocalDate_BasicsTestEqualsHashCodeLenientAdapterImpl());
+	}
 
     public void testEqualsHashCodeStrict() {
-        LocalDate test1 = new LocalDate(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
-        LocalDate test2 = new LocalDate(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
-        assertEquals(true, test1.equals(test2));
-        assertEquals(true, test2.equals(test1));
-        assertEquals(true, test1.equals(test1));
-        assertEquals(true, test2.equals(test2));
-        assertEquals(true, test1.hashCode() == test2.hashCode());
-        assertEquals(true, test1.hashCode() == test1.hashCode());
-        assertEquals(true, test2.hashCode() == test2.hashCode());
-    }
+		this.testLocalDate_BasicsTestEqualsHashCodeTemplate(
+				new TestLocalDate_BasicsTestEqualsHashCodeStrictAdapterImpl());
+	}
 
     public void testEqualsHashCodeAPI() {
         LocalDate test = new LocalDate(1970, 6, 9, COPTIC_PARIS);
@@ -1028,20 +1016,8 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testToDate_springDST() {
-        LocalDate base = new LocalDate(2007, 4, 2);
-        
-        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
-                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000);
-        TimeZone currentZone = TimeZone.getDefault();
-        try {
-            TimeZone.setDefault(testZone);
-            Date test = base.toDate();
-            check(base, 2007, 4, 2);
-            assertEquals("Mon Apr 02 01:00:00 GMT+02:00 2007", test.toString());
-        } finally {
-            TimeZone.setDefault(currentZone);
-        }
-    }
+		this.testLocalDate_BasicsTestToDSTTemplate(4, 4, "Mon Apr 02 01:00:00 GMT+02:00 2007");
+	}
 
     public void testToDate_springDST_2Hour40Savings() {
         LocalDate base = new LocalDate(2007, 4, 2);
@@ -1060,20 +1036,8 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testToDate_autumnDST() {
-        LocalDate base = new LocalDate(2007, 10, 2);
-        
-        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
-                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000);
-        TimeZone currentZone = TimeZone.getDefault();
-        try {
-            TimeZone.setDefault(testZone);
-            Date test = base.toDate();
-            check(base, 2007, 10, 2);
-            assertEquals("Tue Oct 02 00:00:00 GMT+02:00 2007", test.toString());
-        } finally {
-            TimeZone.setDefault(currentZone);
-        }
-    }
+		this.testLocalDate_BasicsTestToDSTTemplate(10, 10, "Tue Oct 02 00:00:00 GMT+02:00 2007");
+	}
 
     //-----------------------------------------------------------------------
     public void testProperty() {
@@ -1133,22 +1097,15 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals("2002-06-09", test.toString((String) null));
     }
 
-    //-----------------------------------------------------------------------
-    public void testToString_String_Locale() {
-        LocalDate test = new LocalDate(1970, 6, 9);
-        assertEquals("Tue 9/6", test.toString("EEE d/M", Locale.ENGLISH));
-        assertEquals("mar. 9/6", test.toString("EEE d/M", Locale.FRENCH));
-        assertEquals("1970-06-09", test.toString(null, Locale.ENGLISH));
-        assertEquals("Tue 9/6", test.toString("EEE d/M", null));
-        assertEquals("1970-06-09", test.toString(null, null));
-    }
+    public void testToString_String_Locale() throws Exception {
+		TestBasicsTestToString_String_LocaleTemplate.testBasicsTestToString_String_LocaleTemplate(
+				new TestLocalDate_BasicsTestToString_String_LocaleAdapterImpl(), LocalDate.class, "Tue 9/6", "mar. 9/6",
+				"1970-06-09", "Tue 9/6", "1970-06-09");
+	}
 
-    //-----------------------------------------------------------------------
-    public void testToString_DTFormatter() {
-        LocalDate test = new LocalDate(2002, 6, 9);
-        assertEquals("2002 \ufffd\ufffd", test.toString(DateTimeFormat.forPattern("yyyy HH")));
-        assertEquals("2002-06-09", test.toString((DateTimeFormatter) null));
-    }
+    public void testToString_DTFormatter() throws Exception {
+		TestBasicsTestToString_DTFormatterTemplate.testBasicsTestToString_DTFormatterTemplate(LocalDate.class);
+	}
 
     //-----------------------------------------------------------------------
     private void check(LocalDate test, int hour, int min, int sec) {
@@ -1156,4 +1113,56 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals(min, test.getMonthOfYear());
         assertEquals(sec, test.getDayOfMonth());
     }
+
+	public void testLocalDate_BasicsTestToDSTTemplate(int i1, int i2, String string1) {
+		LocalDate base = new LocalDate(2007, i1, 2);
+		SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight", Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER,
+				2, 0, 3600000);
+		TimeZone currentZone = TimeZone.getDefault();
+		try {
+			TimeZone.setDefault(testZone);
+			Date test = base.toDate();
+			check(base, 2007, i2, 2);
+			assertEquals(string1, test.toString());
+		} finally {
+			TimeZone.setDefault(currentZone);
+		}
+	}
+
+	public void testLocalDate_BasicsTestEqualsHashCodeTemplate(TestLocalDate_BasicsTestEqualsHashCodeAdapter adapter) {
+		LocalDate test1 = new LocalDate(1970, 6, 9, adapter.getInstance(COPTIC_PARIS));
+		LocalDate test2 = new LocalDate(1970, 6, 9, adapter.getInstance(COPTIC_PARIS));
+		assertEquals(true, test1.equals(test2));
+		assertEquals(true, test2.equals(test1));
+		assertEquals(true, test1.equals(test1));
+		assertEquals(true, test2.equals(test2));
+		assertEquals(true, test1.hashCode() == test2.hashCode());
+		assertEquals(true, test1.hashCode() == test1.hashCode());
+		assertEquals(true, test2.hashCode() == test2.hashCode());
+	}
+
+	interface TestLocalDate_BasicsTestEqualsHashCodeAdapter {
+		AssembledChronology getInstance(Chronology chronology1);
+	}
+
+	class TestLocalDate_BasicsTestEqualsHashCodeLenientAdapterImpl
+			implements TestLocalDate_BasicsTestEqualsHashCodeAdapter {
+		public AssembledChronology getInstance(Chronology COPTIC_PARIS) {
+			return LenientChronology.getInstance(COPTIC_PARIS);
+		}
+	}
+
+	class TestLocalDate_BasicsTestEqualsHashCodeStrictAdapterImpl
+			implements TestLocalDate_BasicsTestEqualsHashCodeAdapter {
+		public AssembledChronology getInstance(Chronology COPTIC_PARIS) {
+			return StrictChronology.getInstance(COPTIC_PARIS);
+		}
+	}
+
+	class TestLocalDate_BasicsTestToString_String_LocaleAdapterImpl
+			implements TestBasicsTestToString_String_LocaleAdapter<LocalDate> {
+		public String toString(LocalDate test, String string1, Locale locale1) throws IllegalArgumentException {
+			return test.toString(string1, locale1);
+		}
+	}
 }

@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.lang.String;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -466,17 +467,10 @@ public class TestPeriod_Basics extends TestCase {
 //        } catch (IllegalArgumentException ex) {}
 //    }
     
-    //-----------------------------------------------------------------------
-    public void testToString() {
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString());
-        
-        test = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-        assertEquals("PT0S", test.toString());
-        
-        test = new Period(12345L);
-        assertEquals("PT12.345S", test.toString());
-    }
+    public void testToString() throws Exception {
+		TestPeriod_BasicsTestToStringTemplate
+				.testPeriod_BasicsTestToStringTemplate(new TestPeriod_BasicsTestToStringAdapterImpl(), Period.class);
+	}
 
     //-----------------------------------------------------------------------
     public void testToString_PeriodFormatter() {
@@ -607,12 +601,8 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     public void testWithField2() {
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        try {
-            test.withField(null, 6);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPeriod_BasicsTestWithTemplate(new TestPeriod_BasicsTestWithField2AdapterImpl(), 6);
+	}
 
     public void testWithField3() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
@@ -638,12 +628,8 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     public void testWithFieldAdded2() {
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        try {
-            test.withFieldAdded(null, 0);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		this.testPeriod_BasicsTestWithTemplate(new TestPeriod_BasicsTestWithFieldAdded2AdapterImpl(), 0);
+	}
 
     public void testWithFieldAdded3() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
@@ -707,153 +693,15 @@ public class TestPeriod_Basics extends TestCase {
         } catch (UnsupportedOperationException ex) {}
     }
 
-    //-----------------------------------------------------------------------
     public void testPlus() {
-        Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
-        
-        Period test = base.plus((ReadablePeriod) null);
-        assertSame(base, test);
-        
-        test = base.plus(Period.years(10));
-        assertEquals(11, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(3, test.getWeeks());
-        assertEquals(4, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
-        
-        test = base.plus(Years.years(10));
-        assertEquals(11, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(3, test.getWeeks());
-        assertEquals(4, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
-        
-        test = base.plus(Period.days(10));
-        assertEquals(1, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(3, test.getWeeks());
-        assertEquals(14, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
-        
-        test = baseDaysOnly.plus(Period.years(0));
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(10, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        
-        test = baseDaysOnly.plus(baseDaysOnly);
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(20, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        
-        try {
-            baseDaysOnly.plus(Period.years(1));
-            fail();
-        } catch (UnsupportedOperationException ex) {}
-        
-        try {
-            Period.days(Integer.MAX_VALUE).plus(Period.days(1));
-            fail();
-        } catch (ArithmeticException ex) {}
-        
-        try {
-            Period.days(Integer.MIN_VALUE).plus(Period.days(-1));
-            fail();
-        } catch (ArithmeticException ex) {}
-    }
+		this.testPeriod_BasicsTestTemplate(new TestPeriod_BasicsTestPlusAdapterImpl(), 11, 11, 14, 20,
+				Integer.MAX_VALUE, Integer.MIN_VALUE);
+	}
 
-    //-----------------------------------------------------------------------
     public void testMinus() {
-        Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
-        
-        Period test = base.minus((ReadablePeriod) null);
-        assertSame(base, test);
-        
-        test = base.minus(Period.years(10));
-        assertEquals(-9, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(3, test.getWeeks());
-        assertEquals(4, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
-        
-        test = base.minus(Years.years(10));
-        assertEquals(-9, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(3, test.getWeeks());
-        assertEquals(4, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
-        
-        test = base.minus(Period.days(10));
-        assertEquals(1, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(3, test.getWeeks());
-        assertEquals(-6, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
-        
-        test = baseDaysOnly.minus(Period.years(0));
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(10, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        
-        test = baseDaysOnly.minus(baseDaysOnly);
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        
-        try {
-            baseDaysOnly.minus(Period.years(1));
-            fail();
-        } catch (UnsupportedOperationException ex) {}
-        
-        try {
-            Period.days(Integer.MAX_VALUE).minus(Period.days(-1));
-            fail();
-        } catch (ArithmeticException ex) {}
-        
-        try {
-            Period.days(Integer.MIN_VALUE).minus(Period.days(1));
-            fail();
-        } catch (ArithmeticException ex) {}
-    }
+		this.testPeriod_BasicsTestTemplate(new TestPeriod_BasicsTestMinusAdapterImpl(), -9, -9, -6, 0,
+				Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
 
     //-----------------------------------------------------------------------
     public void testPlusFields() {
@@ -1407,12 +1255,8 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     public void testNormalizedStandard_yearMonth2() {
-        Period test = new Period(Integer.MAX_VALUE, 15, 0, 0, 0, 0, 0, 0);
-        try {
-            test.normalizedStandard();
-            fail();
-        } catch (ArithmeticException ex) {}
-    }
+		this.testPeriod_BasicsTestNormalizedTemplate(Integer.MAX_VALUE, 15, 0, 0);
+	}
 
     public void testNormalizedStandard_weekDay1() {
         Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
@@ -1422,12 +1266,8 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     public void testNormalizedStandard_weekDay2() {
-        Period test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
-        try {
-            test.normalizedStandard();
-            fail();
-        } catch (ArithmeticException ex) {}
-    }
+		this.testPeriod_BasicsTestNormalizedTemplate(0, 0, Integer.MAX_VALUE, 7);
+	}
 
     public void testNormalizedStandard_yearMonthWeekDay() {
         Period test = new Period(1, 15, 1, 12, 0, 0, 0, 0);
@@ -1466,12 +1306,8 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     public void testNormalizedStandard_periodType_yearMonth2() {
-        Period test = new Period(Integer.MAX_VALUE, 15, 0, 0, 0, 0, 0, 0);
-        try {
-            test.normalizedStandard((PeriodType) null);
-            fail();
-        } catch (ArithmeticException ex) {}
-    }
+		this.testPeriod_BasicsTestNormalizedStandard_periodTemplate(Integer.MAX_VALUE, 15, 0, 0);
+	}
 
     public void testNormalizedStandard_periodType_yearMonth3() {
         Period test = new Period(1, 15, 3, 4, 0, 0, 0, 0);
@@ -1489,12 +1325,8 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     public void testNormalizedStandard_periodType_weekDay2() {
-        Period test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
-        try {
-            test.normalizedStandard((PeriodType) null);
-            fail();
-        } catch (ArithmeticException ex) {}
-    }
+		this.testPeriod_BasicsTestNormalizedStandard_periodTemplate(0, 0, Integer.MAX_VALUE, 7);
+	}
 
     public void testNormalizedStandard_periodType_weekDay3() {
         Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
@@ -1558,5 +1390,138 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(2, 4, 6, 0, 0, 0, 0, 0), test);
         assertEquals(new Period(0, 28, 6, 0, 0, 0, 0, 0, type), result);
     }
+
+	public void testPeriod_BasicsTestTemplate(TestPeriod_BasicsTestAdapter adapter, int i1, int i2, int i3, int i4,
+			int i5, int i6) {
+		Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+		Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
+		Period test = adapter.action1(base, (ReadablePeriod) null);
+		assertSame(base, test);
+		test = adapter.action1(base, Period.years(10));
+		assertEquals(i1, test.getYears());
+		assertEquals(2, test.getMonths());
+		assertEquals(3, test.getWeeks());
+		assertEquals(4, test.getDays());
+		assertEquals(5, test.getHours());
+		assertEquals(6, test.getMinutes());
+		assertEquals(7, test.getSeconds());
+		assertEquals(8, test.getMillis());
+		test = adapter.action1(base, Years.years(10));
+		assertEquals(i2, test.getYears());
+		assertEquals(2, test.getMonths());
+		assertEquals(3, test.getWeeks());
+		assertEquals(4, test.getDays());
+		assertEquals(5, test.getHours());
+		assertEquals(6, test.getMinutes());
+		assertEquals(7, test.getSeconds());
+		assertEquals(8, test.getMillis());
+		test = adapter.action1(base, Period.days(10));
+		assertEquals(1, test.getYears());
+		assertEquals(2, test.getMonths());
+		assertEquals(3, test.getWeeks());
+		assertEquals(i3, test.getDays());
+		assertEquals(5, test.getHours());
+		assertEquals(6, test.getMinutes());
+		assertEquals(7, test.getSeconds());
+		assertEquals(8, test.getMillis());
+		test = adapter.action1(baseDaysOnly, Period.years(0));
+		assertEquals(0, test.getYears());
+		assertEquals(0, test.getMonths());
+		assertEquals(0, test.getWeeks());
+		assertEquals(10, test.getDays());
+		assertEquals(0, test.getHours());
+		assertEquals(0, test.getMinutes());
+		assertEquals(0, test.getSeconds());
+		assertEquals(0, test.getMillis());
+		test = adapter.action1(baseDaysOnly, baseDaysOnly);
+		assertEquals(0, test.getYears());
+		assertEquals(0, test.getMonths());
+		assertEquals(0, test.getWeeks());
+		assertEquals(i4, test.getDays());
+		assertEquals(0, test.getHours());
+		assertEquals(0, test.getMinutes());
+		assertEquals(0, test.getSeconds());
+		assertEquals(0, test.getMillis());
+		try {
+			adapter.action1(baseDaysOnly, Period.years(1));
+			fail();
+		} catch (UnsupportedOperationException ex) {
+		}
+		try {
+			adapter.action1(Period.days(i5), Period.days(1));
+			fail();
+		} catch (ArithmeticException ex) {
+		}
+		try {
+			adapter.action1(Period.days(i6), Period.days(-1));
+			fail();
+		} catch (ArithmeticException ex) {
+		}
+	}
+
+	interface TestPeriod_BasicsTestAdapter {
+		Period action1(Period period1, ReadablePeriod readablePeriod1);
+	}
+
+	class TestPeriod_BasicsTestPlusAdapterImpl implements TestPeriod_BasicsTestAdapter {
+		public Period action1(Period base, ReadablePeriod readablePeriod1) {
+			return base.plus(readablePeriod1);
+		}
+	}
+
+	class TestPeriod_BasicsTestMinusAdapterImpl implements TestPeriod_BasicsTestAdapter {
+		public Period action1(Period base, ReadablePeriod readablePeriod1) {
+			return base.minus(readablePeriod1);
+		}
+	}
+
+	class TestPeriod_BasicsTestToStringAdapterImpl implements TestPeriod_BasicsTestToStringAdapter<Period> {
+		public String toString(Period test) {
+			return test.toString();
+		}
+	}
+
+	public void testPeriod_BasicsTestNormalizedTemplate(int i1, int i2, int i3, int i4) {
+		Period test = new Period(i1, i2, i3, i4, 0, 0, 0, 0);
+		try {
+			test.normalizedStandard();
+			fail();
+		} catch (ArithmeticException ex) {
+		}
+	}
+
+	public void testPeriod_BasicsTestNormalizedStandard_periodTemplate(int i1, int i2, int i3, int i4) {
+		Period test = new Period(i1, i2, i3, i4, 0, 0, 0, 0);
+		try {
+			test.normalizedStandard((PeriodType) null);
+			fail();
+		} catch (ArithmeticException ex) {
+		}
+	}
+
+	public void testPeriod_BasicsTestWithTemplate(TestPeriod_BasicsTestWithAdapter adapter, int i1) {
+		Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+		try {
+			adapter.withField(test, null, i1);
+			fail();
+		} catch (IllegalArgumentException ex) {
+		}
+	}
+
+	interface TestPeriod_BasicsTestWithAdapter {
+		Period withField(Period period1, DurationFieldType durationFieldType1, int i1);
+	}
+
+	class TestPeriod_BasicsTestWithField2AdapterImpl implements TestPeriod_BasicsTestWithAdapter {
+		public Period withField(Period test, DurationFieldType durationFieldType1, int i1) {
+			return test.withField(durationFieldType1, i1);
+		}
+	}
+
+	class TestPeriod_BasicsTestWithFieldAdded2AdapterImpl implements TestPeriod_BasicsTestWithAdapter {
+		public Period withField(Period test, DurationFieldType durationFieldType1, int i1) {
+			return test.withFieldAdded(durationFieldType1, i1);
+		}
+	}
 
 }

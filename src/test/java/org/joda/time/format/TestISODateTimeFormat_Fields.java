@@ -15,6 +15,7 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.DateTimeFieldType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,7 +25,6 @@ import java.util.List;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.Partial;
 
 /**
@@ -592,37 +592,11 @@ public class TestISODateTimeFormat_Fields extends TestCase {
         assertEquals(0, types.size());
     }
 
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
     public void testForFields_time_HMSm() {
-        DateTimeFieldType[] fields = new DateTimeFieldType[] {
-                DateTimeFieldType.hourOfDay(),
-                DateTimeFieldType.minuteOfHour(),
-                DateTimeFieldType.secondOfMinute(),
-                DateTimeFieldType.millisOfSecond(),
-        };
-        int[] values = new int[] {10, 20, 30, 40};
-        List types = new ArrayList(Arrays.asList(fields));
-        DateTimeFormatter f = ISODateTimeFormat.forFields(types, true, true);
-        assertEquals("10:20:30.040", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-        
-        types = new ArrayList(Arrays.asList(fields));
-        f = ISODateTimeFormat.forFields(types, true, false);
-        assertEquals("10:20:30.040", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-        
-        types = new ArrayList(Arrays.asList(fields));
-        f = ISODateTimeFormat.forFields(types, false, true);
-        assertEquals("102030.040", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-        
-        types = new ArrayList(Arrays.asList(fields));
-        f = ISODateTimeFormat.forFields(types, false, false);
-        assertEquals("102030.040", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-    }
+		this.testISODateTimeFormat_FieldsTestForTemplate(
+				new TestISODateTimeFormat_FieldsTestForFields_time_HMSmAdapterImpl(), 10, 20, 30, 40, "10:20:30.040",
+				"10:20:30.040", "102030.040", "102030.040");
+	}
 
     //-----------------------------------------------------------------------
     public void testForFields_time_HMS() {
@@ -1028,37 +1002,11 @@ public class TestISODateTimeFormat_Fields extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
     public void testForFields_datetime_YMDH() {
-        DateTimeFieldType[] fields = new DateTimeFieldType[] {
-                DateTimeFieldType.year(),
-                DateTimeFieldType.monthOfYear(),
-                DateTimeFieldType.dayOfMonth(),
-                DateTimeFieldType.hourOfDay(),
-        };
-        int[] values = new int[] {2005, 6, 25, 12};
-        List types = new ArrayList(Arrays.asList(fields));
-        DateTimeFormatter f = ISODateTimeFormat.forFields(types, true, true);
-        assertEquals("2005-06-25T12", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-        
-        types = new ArrayList(Arrays.asList(fields));
-        f = ISODateTimeFormat.forFields(types, true, false);
-        assertEquals("2005-06-25T12", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-        
-        types = new ArrayList(Arrays.asList(fields));
-        f = ISODateTimeFormat.forFields(types, false, true);
-        assertEquals("20050625T12", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-        
-        types = new ArrayList(Arrays.asList(fields));
-        f = ISODateTimeFormat.forFields(types, false, false);
-        assertEquals("20050625T12", f.print(new Partial(fields, values)));
-        assertEquals(0, types.size());
-    }
+		this.testISODateTimeFormat_FieldsTestForTemplate(
+				new TestISODateTimeFormat_FieldsTestForFields_datetime_YMDHAdapterImpl(), 2005, 6, 25, 12,
+				"2005-06-25T12", "2005-06-25T12", "20050625T12", "20050625T12");
+	}
 
     //-----------------------------------------------------------------------
     public void testForFields_datetime_DH() {
@@ -1147,5 +1095,76 @@ public class TestISODateTimeFormat_Fields extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
     }
+
+	public void testISODateTimeFormat_FieldsTestForTemplate(TestISODateTimeFormat_FieldsTestForAdapter adapter, int i1,
+			int i2, int i3, int i4, String string1, String string2, String string3, String string4) {
+		DateTimeFieldType[] fields = new DateTimeFieldType[] { adapter.action1(), adapter.of(), adapter.of1(),
+				adapter.of2() };
+		int[] values = new int[] { i1, i2, i3, i4 };
+		List types = new ArrayList(Arrays.asList(fields));
+		DateTimeFormatter f = ISODateTimeFormat.forFields(types, true, true);
+		assertEquals(string1, f.print(new Partial(fields, values)));
+		assertEquals(0, types.size());
+		types = new ArrayList(Arrays.asList(fields));
+		f = ISODateTimeFormat.forFields(types, true, false);
+		assertEquals(string2, f.print(new Partial(fields, values)));
+		assertEquals(0, types.size());
+		types = new ArrayList(Arrays.asList(fields));
+		f = ISODateTimeFormat.forFields(types, false, true);
+		assertEquals(string3, f.print(new Partial(fields, values)));
+		assertEquals(0, types.size());
+		types = new ArrayList(Arrays.asList(fields));
+		f = ISODateTimeFormat.forFields(types, false, false);
+		assertEquals(string4, f.print(new Partial(fields, values)));
+		assertEquals(0, types.size());
+	}
+
+	interface TestISODateTimeFormat_FieldsTestForAdapter {
+		DateTimeFieldType action1();
+
+		DateTimeFieldType of();
+
+		DateTimeFieldType of1();
+
+		DateTimeFieldType of2();
+	}
+
+	class TestISODateTimeFormat_FieldsTestForFields_time_HMSmAdapterImpl
+			implements TestISODateTimeFormat_FieldsTestForAdapter {
+		public DateTimeFieldType action1() {
+			return DateTimeFieldType.hourOfDay();
+		}
+
+		public DateTimeFieldType of() {
+			return DateTimeFieldType.minuteOfHour();
+		}
+
+		public DateTimeFieldType of1() {
+			return DateTimeFieldType.secondOfMinute();
+		}
+
+		public DateTimeFieldType of2() {
+			return DateTimeFieldType.millisOfSecond();
+		}
+	}
+
+	class TestISODateTimeFormat_FieldsTestForFields_datetime_YMDHAdapterImpl
+			implements TestISODateTimeFormat_FieldsTestForAdapter {
+		public DateTimeFieldType action1() {
+			return DateTimeFieldType.year();
+		}
+
+		public DateTimeFieldType of() {
+			return DateTimeFieldType.monthOfYear();
+		}
+
+		public DateTimeFieldType of1() {
+			return DateTimeFieldType.dayOfMonth();
+		}
+
+		public DateTimeFieldType of2() {
+			return DateTimeFieldType.hourOfDay();
+		}
+	}
 
 }

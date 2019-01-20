@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.lang.Object;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -492,30 +493,10 @@ public class TestYearMonthDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testPropertyEquals() {
-        YearMonthDay test1 = new YearMonthDay(2005, 11, 8);
-        YearMonthDay test2 = new YearMonthDay(2005, 11, 9);
-        YearMonthDay test3 = new YearMonthDay(2005, 11, 8, CopticChronology.getInstanceUTC());
-        assertEquals(false, test1.dayOfMonth().equals(test1.year()));
-        assertEquals(false, test1.dayOfMonth().equals(test1.monthOfYear()));
-        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
-        assertEquals(false, test1.dayOfMonth().equals(test2.year()));
-        assertEquals(false, test1.dayOfMonth().equals(test2.monthOfYear()));
-        assertEquals(false, test1.dayOfMonth().equals(test2.dayOfMonth()));
-        
-        assertEquals(false, test1.monthOfYear().equals(test1.year()));
-        assertEquals(true, test1.monthOfYear().equals(test1.monthOfYear()));
-        assertEquals(false, test1.monthOfYear().equals(test1.dayOfMonth()));
-        assertEquals(false, test1.monthOfYear().equals(test2.year()));
-        assertEquals(true, test1.monthOfYear().equals(test2.monthOfYear()));
-        assertEquals(false, test1.monthOfYear().equals(test2.dayOfMonth()));
-        
-        assertEquals(false, test1.dayOfMonth().equals(null));
-        assertEquals(false, test1.dayOfMonth().equals("any"));
-        
-        // chrono
-        assertEquals(false, test1.dayOfMonth().equals(test3.dayOfMonth()));
-    }
+    public void testPropertyEquals() throws Exception {
+		TestPropertiesTestPropertyEqualsTemplate.testPropertiesTestPropertyEqualsTemplate(
+				new TestYearMonthDay_PropertiesTestPropertyEqualsAdapterImpl(), YearMonthDay.class);
+	}
 
     public void testPropertyHashCode() {
         YearMonthDay test1 = new YearMonthDay(2005, 11, 8);
@@ -556,4 +537,19 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(month, test.getMonthOfYear());
         assertEquals(day, test.getDayOfMonth());
     }
+
+	class TestYearMonthDay_PropertiesTestPropertyEqualsAdapterImpl
+			implements TestPropertiesTestPropertyEqualsAdapter<YearMonthDay> {
+		public Object year(YearMonthDay test1) {
+			return test1.year();
+		}
+
+		public Object dayOfMonth(YearMonthDay test1) {
+			return test1.dayOfMonth();
+		}
+
+		public Object monthOfYear(YearMonthDay test1) {
+			return test1.monthOfYear();
+		}
+	}
 }

@@ -458,20 +458,12 @@ public class TestTimeOfDay_Constructors extends TestCase {
     }
 
     /**
-     * Test constructor (Object, Chronology)
-     */
-    public void testConstructor2_Object_Chronology() throws Throwable {
-        TimeOfDay test = new TimeOfDay("T10:20");
-        assertEquals(10, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(0, test.getSecondOfMinute());
-        assertEquals(0, test.getMillisOfSecond());
-        
-        try {
-            new TimeOfDay("T1020");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+	 * Test constructor (Object, Chronology)
+	 */
+	public void testConstructor2_Object_Chronology() throws Throwable {
+		TestConstructorsTestChronologyTemplate.testConstructorsTestChronologyTemplate(
+				new TestTimeOfDay_ConstructorsTestConstructor2_Object_ChronologyAdapterImpl(), TimeOfDay.class);
+	}
 
     /**
      * Test constructor (Object=null, Chronology)
@@ -762,5 +754,24 @@ public class TestTimeOfDay_Constructors extends TestCase {
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
     }
+
+	class TestTimeOfDay_ConstructorsTestConstructor2_Object_ChronologyAdapterImpl
+			implements TestConstructorsTestChronologyAdapter<TimeOfDay> {
+		public int getHourOfDay(TimeOfDay test) {
+			return test.getHourOfDay();
+		}
+
+		public int getMinuteOfHour(TimeOfDay test) {
+			return test.getMinuteOfHour();
+		}
+
+		public int getSecondOfMinute(TimeOfDay test) {
+			return test.getSecondOfMinute();
+		}
+
+		public int getMillisOfSecond(TimeOfDay test) {
+			return test.getMillisOfSecond();
+		}
+	}
 
 }

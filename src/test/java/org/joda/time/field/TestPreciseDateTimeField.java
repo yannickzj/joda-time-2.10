@@ -213,45 +213,11 @@ public class TestPreciseDateTimeField extends TestCase {
         assertEquals(1, MockCountingDurationField.add_long);
     }
 
-    public void test_add_RP_int_intarray_int() {
-        int[] values = new int[] {10, 20, 30, 40};
-        int[] expected = new int[] {10, 20, 30, 40};
-        BaseDateTimeField field = new MockStandardDateTimeField();
-        int[] result = field.add(new TimeOfDay(), 2, values, 0);
-        assertEquals(true, Arrays.equals(expected, result));
-        
-        values = new int[] {10, 20, 30, 40};
-        expected = new int[] {10, 20, 31, 40};
-        result = field.add(new TimeOfDay(), 2, values, 1);
-        assertEquals(true, Arrays.equals(expected, result));
-        
-        values = new int[] {10, 20, 30, 40};
-        expected = new int[] {10, 21, 0, 40};
-        result = field.add(new TimeOfDay(), 2, values, 30);
-        assertEquals(true, Arrays.equals(expected, result));
-        
-        values = new int[] {23, 59, 30, 40};
-        try {
-            field.add(new TimeOfDay(), 2, values, 30);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        
-        values = new int[] {10, 20, 30, 40};
-        expected = new int[] {10, 20, 29, 40};
-        result = field.add(new TimeOfDay(), 2, values, -1);
-        assertEquals(true, Arrays.equals(expected, result));
-        
-        values = new int[] {10, 20, 30, 40};
-        expected = new int[] {10, 19, 59, 40};
-        result = field.add(new TimeOfDay(), 2, values, -31);
-        assertEquals(true, Arrays.equals(expected, result));
-        
-        values = new int[] {0, 0, 30, 40};
-        try {
-            field.add(new TimeOfDay(), 2, values, -31);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+    public void test_add_RP_int_intarray_int() throws Exception {
+		TestPreciseDateTimeFieldTest_add_RP_int_intarray_intTemplate
+				.testPreciseDateTimeFieldTest_add_RP_int_intarray_intTemplate(
+						TestPreciseDateTimeField.MockStandardDateTimeField.class);
+	}
 
     //-----------------------------------------------------------------------
     public void test_addWrapField_long_int() {

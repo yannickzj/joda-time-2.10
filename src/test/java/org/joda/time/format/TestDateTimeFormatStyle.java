@@ -15,6 +15,7 @@
  */
 package org.joda.time.format;
 
+import java.lang.String;
 import java.text.DateFormat;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
@@ -88,25 +89,10 @@ public class TestDateTimeFormatStyle extends TestCase {
         originalLocale = null;
     }
 
-    //-----------------------------------------------------------------------
     public void testForStyle_stringLengths() {
-        try {
-            DateTimeFormat.forStyle(null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            DateTimeFormat.forStyle("");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            DateTimeFormat.forStyle("S");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        try {
-            DateTimeFormat.forStyle("SSS");
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+		TestDateTimeFormatTestTemplate.testDateTimeFormatTestTemplate(
+				new TestDateTimeFormatStyleTestForStyle_stringLengthsAdapterImpl(), "S", "SSS");
+	}
 
     public void testForStyle_invalidStrings() {
         try {
@@ -371,5 +357,11 @@ public class TestDateTimeFormatStyle extends TestCase {
         String format = DateTimeFormat.patternForStyle("MF", UK);
         assertNotNull(format);
     }
+
+	class TestDateTimeFormatStyleTestForStyle_stringLengthsAdapterImpl implements TestDateTimeFormatTestAdapter {
+		public DateTimeFormatter forAction(String string1) {
+			return DateTimeFormat.forStyle(string1);
+		}
+	}
 
 }

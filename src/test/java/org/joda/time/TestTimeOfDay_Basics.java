@@ -465,23 +465,10 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(new TimeOfDay(0, 59, 59, 999), result);
     }
 
-    public void testWithFieldAdded8() {
-        TimeOfDay test = new TimeOfDay(0, 0, 0, 0);
-        TimeOfDay result = test.withFieldAdded(DurationFieldType.millis(), -1);
-        assertEquals(new TimeOfDay(23, 59, 59, 999), result);
-        
-        test = new TimeOfDay(0, 0, 0, 0);
-        result = test.withFieldAdded(DurationFieldType.seconds(), -1);
-        assertEquals(new TimeOfDay(23, 59, 59, 0), result);
-        
-        test = new TimeOfDay(0, 0, 0, 0);
-        result = test.withFieldAdded(DurationFieldType.minutes(), -1);
-        assertEquals(new TimeOfDay(23, 59, 0, 0), result);
-        
-        test = new TimeOfDay(0, 0, 0, 0);
-        result = test.withFieldAdded(DurationFieldType.hours(), -1);
-        assertEquals(new TimeOfDay(23, 0, 0, 0), result);
-    }
+    public void testWithFieldAdded8() throws Exception {
+		TestBasicsTestWithFieldTemplate.testBasicsTestWithFieldTemplate(
+				new TestTimeOfDay_BasicsTestWithFieldAdded8AdapterImpl(), TimeOfDay.class);
+	}
 
     //-----------------------------------------------------------------------
     public void testPlus_RP() {
@@ -903,4 +890,10 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(sec, test.getSecondOfMinute());
         assertEquals(milli, test.getMillisOfSecond());
     }
+
+	class TestTimeOfDay_BasicsTestWithFieldAdded8AdapterImpl implements TestBasicsTestWithFieldAdapter<TimeOfDay> {
+		public TimeOfDay withFieldAdded(TimeOfDay test, DurationFieldType durationFieldType1, int i1) {
+			return test.withFieldAdded(durationFieldType1, i1);
+		}
+	}
 }
